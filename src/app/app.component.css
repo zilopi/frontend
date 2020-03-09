@@ -1,0 +1,10 @@
+footer{
+    background-color: #08264D !important;
+    color: black;
+}
+a.active{
+    color: blue !important;
+}
+body{
+    background: url('../assets/back.jpg');
+}

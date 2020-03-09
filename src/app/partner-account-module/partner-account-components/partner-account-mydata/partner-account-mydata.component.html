@@ -1,0 +1,44 @@
+<div id="page-root">
+  <div class="row">
+    <div class=" card col s12" id="card-section">
+      <form action="" [formGroup]="myDataSearch">
+        <div class="row">
+          <div class="input-feild col s12" style="padding:1rem">
+
+            <input type="text" name="" id="mydatasearchbar" formControlName="searchMyData" id="dataSearch"
+              placeholder="Search Your Data" class="z-depth-2" style="border: 1px solid grey !important;
+                        border-radius: 25px !important;
+                        /* padding: 0%; */
+                        /* padding-left: 1%; */
+                        /* padding-right: 1%; */
+                        text-align: center !important;">
+
+          </div>
+
+        </div>
+      </form>
+      <div class="data-section">
+        <hr>
+        <div style="border-bottom:1px solid lightgrey">        
+          <h3>Your Data and Downloads</h3>
+        </div>
+
+        <div class="result-pane">
+          <div *ngIf="data.length==0" style="text-align: center;" >
+            <h5>No data uploaded</h5>
+          </div>
+          <app-partner-data *ngFor="let i of data" [rating]=i.data_rating [description]=i.description [title]=i.title [price]=i.price [downloads]=i.downloads [downloadURI]=i.url [mime]=i.mime>
+
+          </app-partner-data>
+        </div>
+
+
+      </div>
+    </div>
+
+
+  </div>
+
+
+
+</div>

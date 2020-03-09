@@ -3,16 +3,67 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { NavigationComponent } from './components/navigation/navigation.component';
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { ClientRegistrationComponent } from './components/client-registration/client-registration.component';
+import { PartnerRegistrationComponent } from './components/partner-registration/partner-registration.component';
+import { RootComponent } from './login/root/root.component';
+import { UserComponent } from './login/user/user.component';
+import { PartnerComponent } from './login/partner/partner.component';
+import { AccountService } from './services/account-service/account.service';
+import {ReactiveFormsModule} from '@angular/forms';
+import { PartnerAccountModule } from './partner-account-module/partner-account.module';
+import { AuthGuard } from './services/account-service/authorization-service/authorization.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {HttpClientModule} from '@angular/common/http';
+import { RegistrationService } from './services/registration-service/registration-service';
+import { LoginService } from './services/login-service/login-service';
+import { PartnerDataUploadService } from './services/upload-partner-data-service/upload-partner-data-service';
+import { UpdateAboutMeService } from './services/account-service/aboutMeUpdate-service/aboutMeUpdate-service';
+import { SearchPageComponent } from './components/search-page/search-page.component';
+import { BarRatingModule } from './rating';
+import { SearchService } from './services/search-service/search.service';
+import { RouteReuseStrategy } from '@angular/router';
+import { CacheRouteReuseStratergy } from './services/component-reuse-handler/PageReuse';
+import { APP_BASE_HREF } from '@angular/common';
+import { SearchItem } from './components/search-page/search-item.component/search-item.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ViewSearchDetailsComponent } from './components/search-page/view-details.component/view-details.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavigationComponent,
+    LandingPageComponent,
+    ClientRegistrationComponent,
+    PartnerRegistrationComponent,
+    RootComponent,
+    UserComponent,
+    PartnerComponent,
+    SearchItem,
+    SearchPageComponent,
+    ViewSearchDetailsComponent
+   
   ],
   imports: [
+   
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    PartnerAccountModule.forRoot()
   ],
-  providers: [],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass :CacheRouteReuseStratergy
+  },
+  {
+    provide:APP_BASE_HREF,
+    useValue :"/"
+  },
+    SearchService,LoginService,RegistrationService,AccountService,AuthGuard,PartnerDataUploadService,UpdateAboutMeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

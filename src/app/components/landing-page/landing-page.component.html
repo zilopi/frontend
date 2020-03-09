@@ -1,0 +1,423 @@
+
+
+<div id="search-root">
+    <div class="main-container z-depth-4">
+        <div class="container">
+          <div class="row">
+            <div class="col s12 center">
+      
+              <div id="top-section">
+      
+                <h1>Global Business Data Repository</h1>
+                <h5 id=""> Get latest industry data from experienced professionals worldwide. 
+                   Download complete datasets for Product/services costs, pricing, market share and userbase across multiple industries.
+                </h5>
+                <br>
+                <form id="search-bar-form" [formGroup]="searchFrom">
+                  <!-- Search -->
+                  <div id="main-search-bar-container" class="z-depth-2">
+                    <input type="text" name="" id="" id="main-search-bar"
+                      placeholder="Find statistics, datasets, and studies" formControlName="search">
+                    <button id="search-btn" class="z-depth-4" (click)="search()"><span>Search</span></button>
+                    <div class="progress" style="    /* padding-left: 5rem; */
+                    width: 85%;
+                    left: 1.5rem;
+                    margin-top: -0.8rem;
+                    color: yellow;" *ngIf="searchInit">
+                      <div class="indeterminate" style="    background-color: chartreuse;"></div>
+                  </div>
+                  </div>
+      
+                </form>
+                <div id="search-caption-container">
+                  <div id="search-caption">Try searching for Oil prices in Japan, Crime rate in Delhi, etc</div>
+      
+                </div>
+              </div>
+      
+              <br>
+              <br>
+      
+      
+      
+      
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-container-5  container-padding">
+        <div id="main-container-5-blue-backdrop">
+      
+        </div>
+        <div class="main-container-5-inside">
+          <h4 style="text-shadow: 2px 2px 2px black;
+          color: #EEC643;
+          font-size: 40px;
+          text-transform: uppercase;
+          font-weight: 900;">How it works</h4>
+          <h6 style="color: blue;
+          font-size: 20px;
+          font-weight: 800;text-transform: uppercase;">Zilopi helps you in saving money on expensive reports and enables you to take sound business decisions by providing relevant data for your business.</h6>
+        
+         
+        
+          <div class="row" style="display: flex;justify-content: space-around;" id="how-it-works-row">
+            
+            <div class="col s4 how-it-works-card">
+              <div class="card how-it-works-card">
+                <div class="card-content">
+                  <!-- <span class="card-title">Card Title</span> -->
+                  <div class="card-content">
+                    <div style="text-align: center;">
+                      <i class="material-icons large">timeline</i><br>
+                      <h5 style="font-weight: 500 !important;">Data marketplace</h5>
+                      <p style="    font-size: 14px !important;
+                      font-weight: 100;">Zilopi is a marketplace of industry data focusing on the cost, pricing, market share and userbase data. Our database is provided by hundreds of partners who are industry professionals with many years of experience</p>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s4 how-it-works-card">
+              <div class="card how-it-works-card">
+                <div class="card-content">
+                  <div style="text-align: center;" class="card-content">
+                    <i class="material-icons large">touch_app</i><br>
+                  <h5 style="font-weight: 500 !important;">Consulting</h5>
+                  <p style="    font-size: 14px !important;
+                  font-weight: 100;">Whenther you have a question on the dataset you have downloaded or you need any consulting for your business 
+                  from our experienced professionals, Zilopi partners are available on call/email to help you</p>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            <div class="col s4 how-it-works-card">
+              <div class="card ">
+                <div class="card-content">
+                  <div style="text-align: center;" class="card-content">
+                    <i class="material-icons large">people</i><br>
+                  <h5 style="font-weight: 500 !important;">Join us for free</h5>
+                  <p style="    font-size: 14px !important;
+                  font-weight: 100;">Become a partner if ypu are an experienced professional and would like to get extrea income by sharing your knowledge/data with our clients. Or become a client if you are looking for data or consulting for your business</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- <div class="col s3">
+              <div class="card">
+                <div class="card-content">
+                  <span class="card-title">Card Title</span>
+                  <div class="card-content">
+                    Some stats here
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <a href="" class="btn large blue" style="border-radius:20px">Explore the Tool</a>
+          
+      
+        </div>
+      </div>
+
+
+      <!-- World's Knowledge marketplace -->
+      <div class="main-container-2 z-depth-4">
+          <div id="main-container-2-blue-backdrop">
+        
+          </div>
+          <div class="main-container-2-inside">
+            <h2>Join the</h2>
+            <h2 style="color: #EEC643;
+            /* text-decoration-style: initial; */
+            text-transform: uppercase;
+            font-size: 75px;
+            text-shadow: 0px 2px 2px black;
+            font-weight: 800;">Global</h2>
+            <h2>Marketplace</h2>
+        
+            <h5>For industry data and empower your decisions with latest industry trends. </h5>
+        
+            <div class="main-container-2-box-buttons" [routerLink]="['/user/register-client']">
+              <button class="main-container-2-button z-depth-4" [routerLink]="['/user/register-client']">BECOME A CLIENT</button>
+            </div>
+        
+        
+            <div class="main-container-2-box-buttons" [routerLink]="['/user/register-partner']">
+              <button class="main-container-2-button z-depth-4" [routerLink]="['/user/register-partner']"> BECOME A PARTNER</button>
+            </div>
+        
+          </div>
+        </div>
+      <div id="search-content" class="">
+          
+            
+            <br>
+
+        
+            <!-- Get facts and insights on topics that matter -->
+
+            
+            <div id="main-container-3">
+              <!-- <div class="main-container-3-backdrop">
+            
+
+              </div> -->
+              <!-- <hr style="color: grey;border:1px solid lightgrey"> -->
+              <br>
+              <br>
+              <p style="color: blue;
+              font-size: 20px;
+              font-weight: 800;">TRENDING STATS</p>
+              <h4>Get Facts and Insights on Topics that matter</h4>
+            
+              <!-- Carousel Start -->
+              <div id="card-carousel">
+            
+                <div class="container">
+                  <!-- <h1 class="text-center mb-3">Bootstrap Multi-Card Carousel</h1> -->
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            
+                    <div class="carousel-inner row ">
+            
+                      <div class="carousel-item col s4 active">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+            
+                        </div>
+                      </div>
+                      <div class="carousel-item col s4">
+                        <div class="card">
+            
+                          <div class="card-content ">
+                            <span class="card-title">Card Title</span>
+                            <p>I am a very simple card. I am good at containing small bits of information.
+                              I am convenient because I require little markup to use effectively.</p>
+                          </div>
+            
+                        </div>
+                      </div>
+                    </div>
+            
+            
+                    <div id="carousel-controls">
+                      <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"><i class="material-icons">fast_rewind</i></span>
+                        <!-- <span class="sr-only">Previous</span> -->
+                      </a>
+                      <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"><i
+                            class="material-icons">fast_forward</i></span>
+                        <span class="sr-only"></span>
+                      </a>
+                    </div>
+            
+            
+            
+                  </div>
+                </div>
+            
+                <!-- Carousel end -->
+              </div>
+              <hr style="color: grey;border:1px solid lightgrey">
+            
+            </div>
+            
+            <!-- parallax -->
+         
+        
+
+            <!-- Research in condensed form -->
+            <div id="main-container-4" class="container-padding">
+              <!-- <div class="main-container-4-backdrop">
+            
+              </div> -->
+              <p style="color: blue;
+              font-size: 30px;
+              font-weight: 800;text-transform: uppercase;">Business data made easily available</p>
+              
+              <h4> Real data from industry experts</h4>
+            
+              <div id="main-container-4-scroll-row" style="margin-top:2rem">
+                <div id="main-container-4-scroll-nav">
+            
+                </div>
+                <div class="main-container-4-card" style="width: 30%;">
+                  <div class="row">
+                    <div class="col s12 ">
+                      <div class="card" style="min-height: 40.4rem !important;">
+                        <div class="card-image">
+                          <img src="../../../assets/cardimg.png">
+                          <span class="card-title">Euro Transportation Data</span>
+                          <a class="btn-floating halfway-fab waves-effect waves-light blue card-fab-style" >
+                            <!-- <i class="material-icons">add</i> -->
+                            NEW
+                          </a>
+                        </div>
+                        <div class="card-content" style="padding: 10%;">
+                          <p style="text-align: start;">This report presents transportation data in top four markets in Europe.  It presents detailed cost analysis for fixed and variable cost. You will get below insights</p>
+                          <ul style="text-align: start;padding: 5%;">
+                            <li style="list-style-type: disc !important; ">Operating cost breakdown</li>
+                            <li style="list-style-type: disc !important; ">Top 100 contractors with their contact details</li>
+                            <li style="list-style-type: disc !important; ">Toll charges</li>
+                            <li style="list-style-type: disc !important; ">Sustainability investment analysis</li>
+                            <li style="list-style-type: disc !important; ">Rates/KM</li>
+                          </ul>
+                       
+                        </div>
+                        <div class="card-action">
+                          <a href="#">Know more</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
+               <div class="main-container-4-card" style="width: 30%;margin-top: 0rem;"> 
+                  <div class="row">
+                    <div class="col s12 ">
+                      <div class="card" style="min-height: 40.4rem !important;">
+                        <div class="card-image">
+                          <img src="../../../assets/cardimg2.jpg">
+                          <span class="card-title">Methanol Plant</span>
+                          <a class="btn-floating halfway-fab waves-effect waves-light blue card-fab-style" >
+                            <!-- <i class="material-icons">add</i> -->
+                            NEW
+                          </a>
+                        </div>
+                        <div class="card-content" style="padding: 10%;">
+                          <p style="text-align: start;">This report gives detailed cost analysis of setting up a methanol plant, it provides complete breakdown of cost of producing methanol from natural gas.  </p>
+                          <ul style="text-align: start;padding: 5%;">
+                            <li style="list-style-type: disc !important; ">Variable cost/fixed cost analysis </li>
+                            <li style="list-style-type: disc !important; ">Raw material cost breakdown </li>
+                            <li style="list-style-type: disc !important; ">Toll charges</li>
+                            <li style="list-style-type: disc !important; ">Raw material required per ton </li>
+                            <li style="list-style-type: disc !important; ">Investment cost per ton </li>
+                          </ul>
+                       
+                        </div>
+                        <div class="card-action" style="margin-top: 0.7rem;">
+                          <a href="#">Know more</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="main-container-4-card" style="width: 30%;">
+                  <div class="row">
+                    <div class="col s12 ">
+                      <div class="card" style="min-height: 40.4rem !important;">
+                        <div class="card-image">
+                          <img src="../../../assets/cardimg3.jfif">
+                          <span class="card-title">Freight data</span>
+                          <a class="btn-floating halfway-fab waves-effect waves-light blue card-fab-style" >
+                            <!-- <i class="material-icons">add</i> -->
+                            NEW
+                          </a>
+                        </div>
+                        <div class="card-content" style="padding: 10%;">
+                          <p style="text-align: start;">
+                            This data provides average freight rate in 40 different cities in Europe.  
+                            Provides rates based upon distance, availability of freight providers. 
+                          </p>
+                        <!--  <ul style="text-align: start;padding: 5%;">
+                            <li style="list-style-type: disc !important; ">Operating cost breakdown</li>
+                            <li style="list-style-type: disc !important; ">Top 100 contractors with their contact details</li>
+                            <li style="list-style-type: disc !important; ">Toll charges</li>
+                            <li style="list-style-type: disc !important; ">Sustainability investment analysis</li>
+                            <li style="list-style-type: disc !important; ">Rates/KM</li>
+                          </ul>
+                         -->
+                        </div>
+                        <div class="card-action" style="margin-top: 11.5rem;">
+                          <a href="#">Know more</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> 
+
+               
+            
+              
+                
+              </div>
+            
+            </div>
+<br>
+
+            <!-- <hr style="color: grey;border:1px solid lightgrey"> -->
+            <br>
+            
+
+           
+      </div>
+      
+
+</div>

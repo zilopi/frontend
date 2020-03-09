@@ -1,0 +1,308 @@
+<div id="page-root" >
+  
+
+
+  <div class="card" id="main-card">
+
+    <div class="modal-holder" *ngIf="showModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>You are not Logged in</h4>
+          <a  (click)="showModal =false"><i class="material-icons close-modal ">close</i></a>
+        </div>
+        <div style="text-align: center;" class="modal-data">
+          <p style="font-size: large;">You should be logged in to download this data</p>
+          <div>
+            <button class="btn-large ui-flat-button" [routerLink]="['/login/client']">Login As Client</button>
+          </div>
+          <br>
+          <hr>
+          <p style="font-size: large;">Not a part of us?</p>
+            <div>
+              <button class="btn-large ui-flat-button" [routerLink]="['/user/register-client']">Join as a Client</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="search-container">
+      <div id="search-form" class="z-depth-2">
+        <input type="text" name="" id="" placeholder="Search Here" id="search-input" #searchInput >
+        <button id="search-submit" (click)="searchQuery()">Search</button>
+      </div>
+      <div class="" style="padding-top:1rem">
+
+        <div class="">
+          <!-- Locale and Relevance controls -->
+          <div class="">
+            <div class="">
+              <div class="">
+                <div class="row">
+                  <div class="col s6">
+                    <form action="" [formGroup]="sortControl">
+                      <div class="input-feild">
+                        <label for="">Sort By</label>
+                        <select name="" id="" formControlName="sortType">
+                          <option value="relevance" >Relevance</option>
+                          <option value="recent" >Recent</option>
+                        </select>
+                      </div>
+                    </form>
+
+                  </div>
+                  <div class="col s6">
+                    <form action="" [formGroup]="locationFocusControl">
+                      <div class="input-feild">
+                        <label for="">Location Focus <a class="tooltipped" data-position="right"
+                            data-tooltip="Location focus decides the location of the data you want"><i
+                              class="material-icons" style="font-size: 17px;
+                                              position: relative;
+                                              top: 4px;">info_outline</i></a>
+                        </label>
+                        <select name="loc" id="loc" formControlName="selectLocationFocus">
+                          <option value="unfocused">Unfocused</option>
+                          <option value="India">India</option>
+                          <option value="Australia">Australia</option>
+                          <option value="USA">USA</option>
+                          <option value="Afganistan">Afganistan</option>
+                          <option value="Ukranie">Ukraine</option>
+                          <option value="Russia">Russia</option>
+                        </select>
+                      </div>
+                    </form>
+
+                  </div>
+                </div>
+
+
+              </div>
+
+             
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <div id="search-result-container">
+      <div class="loadingDisplay" *ngIf="showLoading">
+        <div class="preloader-wrapper big active">
+          <div class="spinner-layer spinner-blue-only">
+            <div class="circle-clipper left">
+              <div class="circle"></div>
+            </div><div class="gap-patch">
+              <div class="circle"></div>
+            </div><div class="circle-clipper right">
+              <div class="circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Left Hand Side Controls -->
+        <div class="col s3 filters-container " style="border-right: 1px solid grey;">
+          <div>
+           
+          </div>
+          <div class="search-filter-categories" style="border-top: none;">
+            <div class="filter-headings" >
+              <h6>Industry</h6>
+            </div>
+              <form action="" [formGroup]="filterIndustry">
+                <div style="padding-bottom: 1rem;">
+                  <span>Show all industries</span>
+                  <div class="switch inline-switch" >
+                    <label>
+                      Off
+                      <input type="checkbox" formControlName="selectAllIndustry">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                  </div>
+                </div>
+                <div class="align-left">
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" formControlName="automobile" />
+                    <span>Automobile</span>
+                  </label>
+                </div>
+                <div class="align-left">
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" formControlName="chemicals" />
+                    <span>Chemicals</span>
+                  </label>
+                </div>
+                <div class="align-left">
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" formControlName="aeronautics" />
+                    <span>Aeronautics</span>
+                  </label>
+                </div>
+                <div class="align-left">
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" formControlName="logistics" />
+                    <span>Logistics</span>
+                  </label>
+                </div>
+                <div class="align-left">
+                  <label>
+                    <input type="checkbox" class="filled-in" checked="checked" formControlName="agriculture" />
+                    <span>Agriculture</span>
+                  </label>
+                </div>
+              </form>
+            
+          </div>
+
+          <div class="search-filter-categories">
+              <div class="filter-headings">
+                    <h6>Information Type</h6>
+              </div>
+              <form action="" [formGroup]="filterInformationType">
+                <div style="padding-bottom:1rem">
+                  <span>Show all </span>
+                  <div class="switch inline-switch" >
+                    <label>
+                      Off
+                      <input type="checkbox" formControlName="showAll">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                  </div>
+                </div>
+                <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="marketSize" />
+                      <span>Market Size</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="price" />
+                      <span>Price</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="costOfProduction" />
+                      <span>Cost Of Production</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="demand" />
+                      <span>Demand</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="false" formControlName="marketValue" />
+                      <span>Market value</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="uncategorized" />
+                      <span>Uncategorized</span>
+                    </label>
+                  </div>
+
+              </form>
+          </div>
+          <div class="search-filter-categories">
+              <div class="filter-headings">
+                    <h6>Information Format</h6>
+              </div>
+              <form action="" [formGroup]="filterInformationFormat">
+                <div style="padding-bottom: 1rem;">
+                  <span>Show all Formats</span>
+                  <div class="switch inline-switch" >
+                    <label>
+                      Off
+                      <input type="checkbox" formControlName="showAllFormats">
+                      <span class="lever"></span>
+                      On
+                    </label>
+                  </div>
+                </div>
+                <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="word" />
+                      <span>Word</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="excel" />
+                      <span>Excel</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="pdf" />
+                      <span>PDF</span>
+                    </label>
+                  </div>
+                  <div class="align-left">
+                    <label>
+                      <input type="checkbox" class="filled-in" checked="checked" formControlName="image" />
+                      <span>Image</span>
+                    </label>
+                  </div>
+            </form>
+          </div>
+          <div style="margin-top: 1rem; text-align: center;">
+            <button class="btn red" (click)="resetFilters()" style="width: 100%;">Reset Filters</button>
+          <br>
+            <button class="btn green" (click)="filter()" style="width: 100%;margin-top:
+            1rem">Set Filters</button>
+          </div>
+        </div>
+        <!-- Right hand side content -->
+         <!-- Search Results Display Container -->
+         <div class="col s9" style="padding-top: 0.9rem; padding-bottom: 1rem;">
+          <div style="border-bottom:1px solid lightgrey;padding-top: 0.7rem;">
+              <span style="display: inline-block;font-size: 25px;font-weight: 700;text-transform: uppercase;">Results</span>
+              
+
+              <div style="display: inline-block;float:right;margin-top: 0rem;" *ngIf="results.length!=0">
+                <span ><i>{{numberOfResults}} Results &bull; </i></span>
+                <span style="margin-right: 1rem;">Showing page {{pageNumber}} of {{pagenatedResults.length>0? pagenatedResults.length: 1 }}</span>
+                <button class="btn" style="margin-right: 0.5rem;"  [ngClass]="{'disabled':pageNumber==1}" (click)="prevPage()"><i class="material-icons " >arrow_back</i></button>
+                <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()" [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length ==0}"><i class="material-icons ">arrow_forward</i></button>
+                
+               
+              </div>
+              
+          </div>
+
+          <!--Show no results available-->
+          <div id="no-results" style="text-align:center;padding-top: 1rem;" *ngIf="results.length==0">
+            <h4>No results :(</h4>
+            <h6 style="font-style: italic;">Search for another item, service or data</h6>
+          </div>
+          <!--Search Results Container-->
+          <div id="resuls-display" *ngIf="results.length!=0">
+              <app-search-result *ngFor = " let i of results"
+              [data]=i
+              (download) = "listenForDownload($event)"
+              (view) = listenForView($event)
+              >
+
+              </app-search-result>
+              <div style="display: flex;justify-content: center;margin-top: 1rem;">
+                <button class="btn" style="margin-right: 0.5rem;"  [ngClass]="{'disabled':pageNumber==1}" (click)="prevPage()"><i class="material-icons " >arrow_back</i></button>
+                  <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()" [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length == 0}"><i class="material-icons ">arrow_forward</i></button>
+                
+              </div>
+
+          </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

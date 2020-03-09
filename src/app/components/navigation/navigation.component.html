@@ -1,0 +1,49 @@
+<div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper">
+      <div  style="border-right:1px solid lightgrey">
+        <a href="#" [routerLink]="['landing-page']" class="brand-logo"><img src="../../../assets/vectorpaint.svg" alt="" style="width: 8vw;
+          color: white;
+          margin-top: 0.2rem;
+      "></a>
+        
+        
+      </div>
+      
+      <ul id="nav-mobile" class=" hide-on-med-and-down right">
+        <span>
+        <li><a *ngIf="!currentRoute.includes('landing-page')" [routerLink]="['landing-page']">Home</a></li>
+        <li><a>Industry</a></li>
+        <li><a>Product Offering</a></li>
+        <li><a>About Us</a></li>
+      </span>
+      <li *ngIf="currentRoute.includes('partner-account') && !currentRoute.includes('addData')"><a href="" class="btn" style="background-color:#08264D;border:1px solid black" [routerLink]="['/partner-account/addData']"><i class="material-icons left" >show_chart</i>Upload dataset</a></li>
+
+      <li style="color: yellow;" *ngIf="getAuthStatus()" > | </li>
+      <li><a [routerLink]="['partner-account']" *ngIf="getAuthStatus() && getAccountType()=='Partner' && currentRoute!='/partner-account'" >Dashboard</a></li>
+      <li><a [routerLink]="['client-account']" *ngIf="getAuthStatus() && getAccountType()=='Client' && currentRoute!='/client-account'" >Dashboard</a></li>
+
+     
+        <!-- <li style="color: yellow;"> | </li> -->
+        <li *ngIf="getAuthStatus()==false"><a class="dropdown-trigger" href="#!" data-target="dropdown1">Login<i
+              class="material-icons right">arrow_drop_down</i></a></li>
+              
+          <li *ngIf="getAuthStatus()" ><a href="" (click)="logout()">Logout</a></li>
+          <li *ngIf="getAuthStatus()"><a href="" class="btn z-depth-2 tooltipped" data-position="left" data-tooltip='You are logged in' style=" background: content-box;
+            border-bottom: 1px solid yellow;"><i class="material-icons left">account_circle</i>{{getName()}}</a></li>
+          
+        <li *ngIf="!currentRoute.includes('user') && !currentRoute.includes('partner-account') && getAuthStatus()==false"><a [routerLink]="['/user/register-client']">Create Free Account</a></li>
+  
+      </ul>
+      <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!" [routerLink]="['/login/partner']">Partner</a></li>
+        <li><a href="#!" [routerLink]="['/login/client']">Customer</a></li>
+  
+      </ul>
+    </div>
+  
+  
+  </nav>
+</div>
+
+

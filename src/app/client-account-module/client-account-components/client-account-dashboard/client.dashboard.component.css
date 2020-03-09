@@ -1,0 +1,153 @@
+#page-root{
+    /* height: 5rem; */
+    padding:2rem
+}
+#profile-image{
+    width: 15rem;
+    height: 15rem;
+}
+#profile-image-container{
+    padding-top: 2rem;
+    text-align:center;
+}
+#profile-image-container image{
+    border:1px solid lightgray !important;
+}
+.card-title{
+    text-align:center;
+}
+#user-profile-display{
+    padding-left: 1rem;
+    padding-right :1rem;
+    padding-bottom:2rem;
+
+}
+#user-email-display{
+    color:blue;
+    text-align: center;
+    font-weight: 700;
+
+}
+#user-phone-display{
+    color:blue;
+    text-align: center;
+    font-weight: 700;
+
+}
+.recent-purchase{
+    border: 1px solid black;
+    padding: 2%;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+
+}
+.recent-purchase-actions{
+    display: flex;
+    justify-content: flex-end;
+}
+.recent-purchase-price{
+    font-size: x-large;
+    font-weight: 500;
+    color: green;
+    margin-right:0.5rem;
+}
+.recent-purchase-actions i{
+    border-radius: 20px;
+padding: 2%;
+border: 1px solid lightgrey;
+margin-right: 0.5rem;
+}
+.recent-purchase-header{
+    font-size: large;
+    font-style: bold;
+
+}
+.recent-purchase-date{
+    font-style: italic;
+    color: lightgrey;
+}
+#recent-purchase-container{
+    overflow-y: scroll;
+    height: 50vh;
+}
+.card-padding{
+    padding:2%
+}
+.section-icon{
+    position:relative;
+    top: 5px;
+}
+.section-heading{
+    font-weight:700 ;
+    /* text-transform: uppercase; */
+    /* color: blue; */
+}
+.section-heading-container{
+    font-size: large;
+}
+#welcome-banner{
+    color: white;
+    font-weight: 700;
+    padding:1rem;
+    background: rgb(161,56,94);
+    background: linear-gradient(97deg, rgba(161,56,94,1) 4%, rgba(253,29,29,0.9923319669664741) 50%, rgba(252,176,69,1) 100%);}
+
+    .chart-container{
+        margin-top: 2rem;
+    }
+    .options-pane-button{
+        box-shadow: none;
+        width: 100%;
+        margin-top: 1rem;
+        background-color: #08264D;
+    }
+
+.editAboutIndicator{
+    background:grey !important;
+}
+
+.result-heading{
+    padding-left:2%;
+    padding-right:2%;
+}
+.result {
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    width: 100%;
+    padding: 1rem;
+    margin-top: 5px;
+  }
+  .title{
+    font-size: x-large;   
+    color: black;
+
+}
+.title:hover{
+    border-bottom : 1px solid black;
+    color: #08264D;
+  }
+  .metadata{
+    color:grey
+}
+.date{
+    float:left;
+    font-style: italic;
+}
+.typeIcons{
+    width: 30px;
+    float: right;
+    margin-right: 2px;
+  }
+  .price {
+    color: green;
+    font-weight: 500;
+    float: right;
+    font-size: x-large
+  }
+  .buy-buttons {
+    display: block;
+    width: 100%;
+    margin-top: 3px;
+    background-color: #08264D !important;
+    border-bottom : 1px solid yellow
+  }

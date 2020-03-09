@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+.sr-only{
+    display:none
+}
+.ui-flat-button{
+    border-bottom: 1px solid yellow !important;
+    box-shadow: none !important;
+    background-color:#08264D !important;
+}
+.accent-color{
+    color:#08264D !important;
+}
+.accent-background{
+    color:#08264D !important;
+
+}

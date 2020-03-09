@@ -1,0 +1,1047 @@
+<div class="row" id="page-root">
+  <div style="text-align:center" [ngStyle]="{'visibility': showUpload==true ? 'hidden' : 'visible'}">
+    <h4>Upload your data</h4>
+    <h6>Fill the required details to upload your data</h6>
+  </div>
+  <div id="content-container">
+   
+    <div class="col s12 card" id="main-content-card" [ngClass]="{'step1-height-adjust':step==1}">
+
+      <!-- upload Page shown when the data is being uploaded -->
+      <div id="uploadPage"*ngIf="showUpload" >
+        <div class="row">
+          <div class="col s12">
+            <h4>Upload Progress</h4>
+            <hr>
+            <div style="display: flex;align-items: center;align-content: center;flex-direction: column;margin-top: 8%;  padding-left: 4rem;
+            padding-right: 4rem;">
+              <h6 *ngIf="!uploadSuccess && uploadProgress!=100" >Your Data is being uploaded, please wait</h6>
+              <h6 *ngIf="uploadProgress==100 && uploadSuccess==true" style="color: green;">Complete!</h6>
+            
+             <div class="progress">
+                <div class="determinate" [ngStyle]="{'width':uploadProgress+'%'}"></div>
+            </div>
+            <div *ngIf="uploadProgress==100">
+              <h6>Success! Your data has been uploaded.</h6>
+              <h6>Our team will audit the file and then notify you. This takes 3-4 business days</h6>
+              <h6>Feel Free to contact our <a>Support</a> in case of any queries</h6>
+              <br>
+              <a class="btn buttons"[routerLink]="['/partner-account']">Back to Dashboard</a><span> | </span>
+              <a class="btn buttons" [routerLink]="['/partner-account/mydata']">uploaded data</a><span> | </span>
+              <a class="btn buttons" [routerLink] = "['/partner-account/addData']" >Upload another dataset</a>
+            </div>
+        
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <!-- Left hand Side Rows -->
+        <div class="col s3" id="left-pane">
+          <div class="row" id="steps-completed-pane">
+            <div class="col s12" class="upward-arrow" [ngClass]="{'invisible':step<2}">
+            <a class="tooltipped" data-position="right" data-tooltip="Go back to previous step" (click)="backStep()"><i class="material-icons">arrow_upward</i></a>  
+            </div>
+            <div class="col s12 " [ngClass]="{'tab-active':step>=1,'z-depth-3':step==1,'completedStep':step>1} ">
+              <span>Select Your Industry and Category/Services</span>
+            </div>
+            <div class="col s12 " [ngClass]="{'tab-active':step>=2,'z-depth-3':step==2,'unfinished-step':step<2,'completedStep':step>2}">
+              <span>Choose Type of Upload</span>
+            </div>
+            <div class="col s12" [ngClass]="{'tab-active':step==3,'z-depth-3':step==3,'unfinished-step':step!=3}">
+              <span>Upload</span>
+
+            </div>
+          </div>
+        </div>
+        <!-- Right hand side contents -->
+        <div class="col s8">
+          <div id="form-contents">
+            <div id="step-1" *ngIf="step==1">
+              <h5>Select Your Industry and Category</h5>
+              <hr>
+
+              <!--TODO: Type of data the partner is uploading, add another dropdown as input type of the data you're uploading-->
+              <div class="row" id="step-1-form-container"
+                [ngClass]="{'min-height-no-cas':showChemicalCASCodeFeild==false,'min-height-with-cas':showChemicalCASCodeFeild==true}">
+                <form action="" [formGroup]="selectIndustry" class="col s12" id="step1form">
+                  <div class="input-field col s12">
+                    <input type="text" name="" id="itemName" formControlName="itemName" #itemName>
+                    <label for="">Item/Service Name/Title</label>
+                  </div>
+
+                  <div class="input-field col s12">
+                    <select formControlName="selectIndustryInput">
+                      <option value="Chemicals">Chemicals</option>
+                      <option value="Logistics" selected>Logistics</option>
+                      <option value="Automobile">Automobile</option>
+                      <option value="Agriculture">Agriculture</option>
+                      <option value="Aeronautics">Aeronautics</option>
+                      <!-- <option value="Agriculture">Agriculture</option> -->
+                    </select>
+                    <label>Select the type of industry<span style="color:red;font-size:large"> * </span> </label>
+                  </div>
+
+                  <div class="input-field col s12">
+                    <select formControlName="setLocationFocus">
+                      <option value="Unfocused" selected>Unfocused</option>
+                      <option value="USA">USA</option>
+                      <option value="Ukraine" >Ukraine</option>
+                      <option value="Russia">Russia</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Afganistan">Afganistan</option>
+                      <option value="India">India</option>
+                    </select>
+                    <label>Set Location Focus<span style="color:red;font-size:large"> * </span> </label>
+                  </div>
+
+                  <div class="input-field col s12">
+                    <select formControlName="setTypeOfData">
+                      <option value="None" selected>Uncategorized</option>
+                      <option value="Marketsize">Market Size</option>
+                      <option value="Price" selected>Price</option>
+                      <option value="MarketValue">Market Value</option>
+                      <option value="Demand">Demand</option>
+                      <option value="costOfProduction">Cost of production</option>
+                    </select>
+                    <label>Set category of data<span style="color:red;font-size:large"> * </span> </label>
+                  </div>
+
+                  <p style="margin-top: 1rem;margin-left: 1rem;"> <i >Description is an important part of the data you're providing us. A good and concise description will help you to get more views as well as generate more income and helps us to get you more views on the data you're providing us</i>
+                  </p>
+                  <div class="input-field col s12" style="margin-bottom:1rem">
+                    <textarea formControlName="descriptionOfItem"
+                      placeholder="Description of the data that you are providing us " class="materialize-textarea"
+                      rows="10"></textarea>
+
+                  </div>
+                  <div class="input-field col s12">
+                    <input type="text" formControlName="itemGrade">
+                    <label>Item Grade/Product Code (<span style="font-style: italic;">If your data has an item grade or
+                        product code, please specify</span>) </label>
+                  </div>
+                  <div class="input-field col s12" *ngIf="showChemicalCASCodeFeild==true">
+                    <input type="text" formControlName="CAS">
+                    <label>CAS Code<span style="color:red;font-size:large">*</span> </label>
+                  </div>
+                  <button style="float: right;" class="btn-large waves" id="step-1-next" (click)="getIndustryOfData()"
+                    [disabled]="selectIndustry.status!='VALID'">Next Step</button>
+
+                </form>
+
+
+              </div>
+              <!--row end-->
+
+
+            </div>
+            <!--Step 1 Main Closing Div-->
+
+            <div id="step2" *ngIf="step==2">
+              <!-- Main Select for the user to choose the format of upload -->
+              <div id="choose-upload-frame" *ngIf="step_2==1">
+
+                <h5>Choose Type Of Upload</h5>
+                <hr>
+                <br>
+                <div id="step-2-choose-upload-type">
+                  <h6>How do you wish to upload data</h6>
+                  <br>
+                  <div class="row">
+                    <div class="col s5 step-2-choose-upload-type-title">
+                      <button class="btn-large upload-data-buttons" (click)="inputDataViaExcel()">Upload a File 
+                      </button>
+                      <hr>
+                      <p class="upload-data-description">
+                        You can choose to upload your own data in form of an MS-Excel File, Document or Image. More accurate and
+                        descriptive data gets better reviews and generates more income for you
+                      </p>
+                    </div>
+                    <div class="col s2" style="text-align: center;">
+                      <span style="font-size: 50px;
+                      text-transform: uppercase;
+                      color: yellow;
+                      text-shadow: 1px 1px 1px black;
+                      font-weight: 600;">Or</span>
+                    </div>
+                    <div class="col s5 step-2-choose-upload-type-title">
+                      <button class="btn-large upload-data-buttons" (click)="inputDataViaForm()">Input data
+                        Manually</button>
+                      <hr>
+                      <p class="upload-data-description">
+                        You will have to fill out a form describing your data
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="describe-your-data-frame" *ngIf="step_2==3">
+                <h5>Define Your data</h5>
+                <br>
+                <h6>Select the types of data that you want to upload</h6>
+                <div class="row">
+                  <form action="" [formGroup]="typesOfData" class="col s12">
+                    <div class=" col s12">
+                      <select formControlName="dataFeildInput">
+                        <!-- <option value="" disabled selected>Choose your option</option> -->
+                        <!-- <option value="1">Option 1</option>
+                      <option value="2">Option 2</option>
+                      <option value="3">Option 3</option> -->
+                        <option *ngFor="let x of TypeOfInputs" value={{x}}>{{x}}</option>
+                      </select>
+                      <button class="btn" (click)="addDataFeild()">Add Feild</button>
+                    </div>
+                  </form>
+                  
+                  <div class="selectedDataTypesRow col s12" *ngIf="TypesOfDataFeildsSelected.length>0"
+                    style="margin-left: 1rem;padding-top:1.5rem">
+                    <hr>
+                    <div>
+                      <span *ngFor="let i of TypesOfDataFeildsSelected" class="option-tags">{{i}}</span>
+                    </div>
+                    <div>
+                      <br>
+                      <button class="btn" (click)="generateDataFeilds()">Create Feilds</button>
+                    </div>
+                    <hr>
+                  </div>
+                  <div class="col s12" *ngIf="generateFeilds" style="margin-left: 1rem;">
+                   
+                    <br>
+                    <div class="row">
+                      <h5>Fill the details as shown</h5>
+                      <!-- show only when the fields are to be generated -->
+                      <div class="col s12" >
+                          <form action="" [formGroup]="generatedFormForUpload">
+                            <!-- Cost -->
+
+                            <div *ngIf="showCostData">
+                              <h6>Cost Data</h6>
+                              <i> We require you to upload the cost related excel file or image </i>
+                              <i>Max size of the file : 30 MB</i>
+                              <div class="file-field input-field">
+                                <div class="btn">
+                                  <span>File</span>
+                                  <input type="file" formControlName="costInput" (change)="setCostPriceFile($event)">
+                                </div>
+                                <div class="file-path-wrapper">
+                                  <input class="file-path validate" type="text" placeholder="Upload file relating to cost" >
+                                </div>
+                              </div>
+                              <br>
+                            </div>
+                        
+                            <!-- Price -->
+                            <div *ngIf="showPrice">
+                              <h6>Prices</h6>
+                              <i> We require you to upload the price related excel file or image </i>
+                              <i>Max size of the file : 30 MB</i>
+                              
+                              <div class="file-field input-field">
+                                <div class="btn">
+                                  <span>File</span>
+                                  <input type="file" formControlName="priceInput" (change)="setPriceDataFile($event)">
+                                </div>
+                                <div class="file-path-wrapper">
+                                  <input class="file-path validate" type="text" placeholder="Upload file relating to prices" >
+                                </div>
+                              </div>
+                              <br>
+
+                            </div>
+                   
+
+                            <!-- Market Size -->
+                            <div *ngIf="showMarketSize">
+                              <h6>Market Size</h6>
+                              <div class="input-field">
+                                <input formControlName = "marketSizeInput" id="" type="number" class="validate">
+      
+                              </div>
+                              <br>
+                            </div>
+                      
+
+                            <!-- Top manufacturing countries -->
+                            <div *ngIf="showTopMarkets">
+                              <h6>Top Manufacturing countries</h6>
+                              <div class="input-field">
+                                <select formControlName="manufacturingCountriesInput">
+                                  <option value="Afganistan">Afghanistan</option>
+                                  <option value="Albania">Albania</option>
+                                  <option value="Algeria">Algeria</option>
+                                  <option value="American Samoa">American Samoa</option>
+                                  <option value="Andorra">Andorra</option>
+                                  <option value="Angola">Angola</option>
+                                  <option value="Anguilla">Anguilla</option>
+                                  <option value="Antigua & Barbuda">Antigua & Barbuda</option>
+                                  <option value="Argentina">Argentina</option>
+                                  <option value="Armenia">Armenia</option>
+                                  <option value="Aruba">Aruba</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Austria">Austria</option>
+                                  <option value="Azerbaijan">Azerbaijan</option>
+                                  <option value="Bahamas">Bahamas</option>
+                                  <option value="Bahrain">Bahrain</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Barbados">Barbados</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Belgium">Belgium</option>
+                                  <option value="Belize">Belize</option>
+                                  <option value="Benin">Benin</option>
+                                  <option value="Bermuda">Bermuda</option>
+                                  <option value="Bhutan">Bhutan</option>
+                                  <option value="Bolivia">Bolivia</option>
+                                  <option value="Bonaire">Bonaire</option>
+                                  <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+                                  <option value="Botswana">Botswana</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="British Indian Ocean Ter">British Indian Ocean Ter</option>
+                                  <option value="Brunei">Brunei</option>
+                                  <option value="Bulgaria">Bulgaria</option>
+                                  <option value="Burkina Faso">Burkina Faso</option>
+                                  <option value="Burundi">Burundi</option>
+                                  <option value="Cambodia">Cambodia</option>
+                                  <option value="Cameroon">Cameroon</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="Canary Islands">Canary Islands</option>
+                                  <option value="Cape Verde">Cape Verde</option>
+                                  <option value="Cayman Islands">Cayman Islands</option>
+                                  <option value="Central African Republic">Central African Republic</option>
+                                  <option value="Chad">Chad</option>
+                                  <option value="Channel Islands">Channel Islands</option>
+                                  <option value="Chile">Chile</option>
+                                  <option value="China">China</option>
+                                  <option value="Christmas Island">Christmas Island</option>
+                                  <option value="Cocos Island">Cocos Island</option>
+                                  <option value="Colombia">Colombia</option>
+                                  <option value="Comoros">Comoros</option>
+                                  <option value="Congo">Congo</option>
+                                  <option value="Cook Islands">Cook Islands</option>
+                                  <option value="Costa Rica">Costa Rica</option>
+                                  <option value="Cote DIvoire">Cote DIvoire</option>
+                                  <option value="Croatia">Croatia</option>
+                                  <option value="Cuba">Cuba</option>
+                                  <option value="Curaco">Curacao</option>
+                                  <option value="Cyprus">Cyprus</option>
+                                  <option value="Czech Republic">Czech Republic</option>
+                                  <option value="Denmark">Denmark</option>
+                                  <option value="Djibouti">Djibouti</option>
+                                  <option value="Dominica">Dominica</option>
+                                  <option value="Dominican Republic">Dominican Republic</option>
+                                  <option value="East Timor">East Timor</option>
+                                  <option value="Ecuador">Ecuador</option>
+                                  <option value="Egypt">Egypt</option>
+                                  <option value="El Salvador">El Salvador</option>
+                                  <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                  <option value="Eritrea">Eritrea</option>
+                                  <option value="Estonia">Estonia</option>
+                                  <option value="Ethiopia">Ethiopia</option>
+                                  <option value="Falkland Islands">Falkland Islands</option>
+                                  <option value="Faroe Islands">Faroe Islands</option>
+                                  <option value="Fiji">Fiji</option>
+                                  <option value="Finland">Finland</option>
+                                  <option value="France">France</option>
+                                  <option value="French Guiana">French Guiana</option>
+                                  <option value="French Polynesia">French Polynesia</option>
+                                  <option value="French Southern Ter">French Southern Ter</option>
+                                  <option value="Gabon">Gabon</option>
+                                  <option value="Gambia">Gambia</option>
+                                  <option value="Georgia">Georgia</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="Ghana">Ghana</option>
+                                  <option value="Gibraltar">Gibraltar</option>
+                                  <option value="Great Britain">Great Britain</option>
+                                  <option value="Greece">Greece</option>
+                                  <option value="Greenland">Greenland</option>
+                                  <option value="Grenada">Grenada</option>
+                                  <option value="Guadeloupe">Guadeloupe</option>
+                                  <option value="Guam">Guam</option>
+                                  <option value="Guatemala">Guatemala</option>
+                                  <option value="Guinea">Guinea</option>
+                                  <option value="Guyana">Guyana</option>
+                                  <option value="Haiti">Haiti</option>
+                                  <option value="Hawaii">Hawaii</option>
+                                  <option value="Honduras">Honduras</option>
+                                  <option value="Hong Kong">Hong Kong</option>
+                                  <option value="Hungary">Hungary</option>
+                                  <option value="Iceland">Iceland</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="India" selected>India</option>
+                                  <option value="Iran">Iran</option>
+                                  <option value="Iraq">Iraq</option>
+                                  <option value="Ireland">Ireland</option>
+                                  <option value="Isle of Man">Isle of Man</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Jamaica">Jamaica</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Jordan">Jordan</option>
+                                  <option value="Kazakhstan">Kazakhstan</option>
+                                  <option value="Kenya">Kenya</option>
+                                  <option value="Kiribati">Kiribati</option>
+                                  <option value="Korea North">Korea North</option>
+                                  <option value="Korea Sout">Korea South</option>
+                                  <option value="Kuwait">Kuwait</option>
+                                  <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                  <option value="Laos">Laos</option>
+                                  <option value="Latvia">Latvia</option>
+                                  <option value="Lebanon">Lebanon</option>
+                                  <option value="Lesotho">Lesotho</option>
+                                  <option value="Liberia">Liberia</option>
+                                  <option value="Libya">Libya</option>
+                                  <option value="Liechtenstein">Liechtenstein</option>
+                                  <option value="Lithuania">Lithuania</option>
+                                  <option value="Luxembourg">Luxembourg</option>
+                                  <option value="Macau">Macau</option>
+                                  <option value="Macedonia">Macedonia</option>
+                                  <option value="Madagascar">Madagascar</option>
+                                  <option value="Malaysia">Malaysia</option>
+                                  <option value="Malawi">Malawi</option>
+                                  <option value="Maldives">Maldives</option>
+                                  <option value="Mali">Mali</option>
+                                  <option value="Malta">Malta</option>
+                                  <option value="Marshall Islands">Marshall Islands</option>
+                                  <option value="Martinique">Martinique</option>
+                                  <option value="Mauritania">Mauritania</option>
+                                  <option value="Mauritius">Mauritius</option>
+                                  <option value="Mayotte">Mayotte</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Midway Islands">Midway Islands</option>
+                                  <option value="Moldova">Moldova</option>
+                                  <option value="Monaco">Monaco</option>
+                                  <option value="Mongolia">Mongolia</option>
+                                  <option value="Montserrat">Montserrat</option>
+                                  <option value="Morocco">Morocco</option>
+                                  <option value="Mozambique">Mozambique</option>
+                                  <option value="Myanmar">Myanmar</option>
+                                  <option value="Nambia">Nambia</option>
+                                  <option value="Nauru">Nauru</option>
+                                  <option value="Nepal">Nepal</option>
+                                  <option value="Netherland Antilles">Netherland Antilles</option>
+                                  <option value="Netherlands">Netherlands (Holland, Europe)</option>
+                                  <option value="Nevis">Nevis</option>
+                                  <option value="New Caledonia">New Caledonia</option>
+                                  <option value="New Zealand">New Zealand</option>
+                                  <option value="Nicaragua">Nicaragua</option>
+                                  <option value="Niger">Niger</option>
+                                  <option value="Nigeria">Nigeria</option>
+                                  <option value="Niue">Niue</option>
+                                  <option value="Norfolk Island">Norfolk Island</option>
+                                  <option value="Norway">Norway</option>
+                                  <option value="Oman">Oman</option>
+                                  <option value="Pakistan">Pakistan</option>
+                                  <option value="Palau Island">Palau Island</option>
+                                  <option value="Palestine">Palestine</option>
+                                  <option value="Panama">Panama</option>
+                                  <option value="Papua New Guinea">Papua New Guinea</option>
+                                  <option value="Paraguay">Paraguay</option>
+                                  <option value="Peru">Peru</option>
+                                  <option value="Phillipines">Philippines</option>
+                                  <option value="Pitcairn Island">Pitcairn Island</option>
+                                  <option value="Poland">Poland</option>
+                                  <option value="Portugal">Portugal</option>
+                                  <option value="Puerto Rico">Puerto Rico</option>
+                                  <option value="Qatar">Qatar</option>
+                                  <option value="Republic of Montenegro">Republic of Montenegro</option>
+                                  <option value="Republic of Serbia">Republic of Serbia</option>
+                                  <option value="Reunion">Reunion</option>
+                                  <option value="Romania">Romania</option>
+                                  <option value="Russia">Russia</option>
+                                  <option value="Rwanda">Rwanda</option>
+                                  <option value="St Barthelemy">St Barthelemy</option>
+                                  <option value="St Eustatius">St Eustatius</option>
+                                  <option value="St Helena">St Helena</option>
+                                  <option value="St Kitts-Nevis">St Kitts-Nevis</option>
+                                  <option value="St Lucia">St Lucia</option>
+                                  <option value="St Maarten">St Maarten</option>
+                                  <option value="St Pierre & Miquelon">St Pierre & Miquelon</option>
+                                  <option value="St Vincent & Grenadines">St Vincent & Grenadines</option>
+                                  <option value="Saipan">Saipan</option>
+                                  <option value="Samoa">Samoa</option>
+                                  <option value="Samoa American">Samoa American</option>
+                                  <option value="San Marino">San Marino</option>
+                                  <option value="Sao Tome & Principe">Sao Tome & Principe</option>
+                                  <option value="Saudi Arabia">Saudi Arabia</option>
+                                  <option value="Senegal">Senegal</option>
+                                  <option value="Seychelles">Seychelles</option>
+                                  <option value="Sierra Leone">Sierra Leone</option>
+                                  <option value="Singapore">Singapore</option>
+                                  <option value="Slovakia">Slovakia</option>
+                                  <option value="Slovenia">Slovenia</option>
+                                  <option value="Solomon Islands">Solomon Islands</option>
+                                  <option value="Somalia">Somalia</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Spain">Spain</option>
+                                  <option value="Sri Lanka">Sri Lanka</option>
+                                  <option value="Sudan">Sudan</option>
+                                  <option value="Suriname">Suriname</option>
+                                  <option value="Swaziland">Swaziland</option>
+                                  <option value="Sweden">Sweden</option>
+                                  <option value="Switzerland">Switzerland</option>
+                                  <option value="Syria">Syria</option>
+                                  <option value="Tahiti">Tahiti</option>
+                                  <option value="Taiwan">Taiwan</option>
+                                  <option value="Tajikistan">Tajikistan</option>
+                                  <option value="Tanzania">Tanzania</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Togo">Togo</option>
+                                  <option value="Tokelau">Tokelau</option>
+                                  <option value="Tonga">Tonga</option>
+                                  <option value="Trinidad & Tobago">Trinidad & Tobago</option>
+                                  <option value="Tunisia">Tunisia</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Turkmenistan">Turkmenistan</option>
+                                  <option value="Turks & Caicos Is">Turks & Caicos Is</option>
+                                  <option value="Tuvalu">Tuvalu</option>
+                                  <option value="Uganda">Uganda</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Erimates">United Arab Emirates</option>
+                                  <option value="United States of America">United States of America</option>
+                                  <option value="Uraguay">Uruguay</option>
+                                  <option value="Uzbekistan">Uzbekistan</option>
+                                  <option value="Vanuatu">Vanuatu</option>
+                                  <option value="Vatican City State">Vatican City State</option>
+                                  <option value="Venezuela">Venezuela</option>
+                                  <option value="Vietnam">Vietnam</option>
+                                  <option value="Virgin Islands (Brit)">Virgin Islands (Brit)</option>
+                                  <option value="Virgin Islands (USA)">Virgin Islands (USA)</option>
+                                  <option value="Wake Island">Wake Island</option>
+                                  <option value="Wallis & Futana Is">Wallis & Futana Is</option>
+                                  <option value="Yemen">Yemen</option>
+                                  <option value="Zaire">Zaire</option>
+                                  <option value="Zambia">Zambia</option>
+                                  <option value="Zimbabwe">Zimbabwe</option>
+                              </select>
+                              <label for="">Select Country</label>
+                              </div>
+                              <button class="btn" (click)="manufacturingCountriesAddition()">Add Country</button>
+                              <!-- Pills display -->
+                              <div class="display-options-div">
+                              <span class="option-tags" *ngFor="let i of manufacturingCountries">{{i}}</span>
+                              </div>
+                              <br>
+                            </div>
+                     
+
+                            <!-- top manufacturing companies -->
+                            <div *ngIf="showTopMakers">
+                              <h6>Top Manufacturing companies</h6>
+                              <div class="input-field">
+                                <select name="" id="" formControlName="manufacturingCompaniesInput">
+                                  <option value="Exxon">Exxon</option>
+                                  <option value="BP">BP</option>
+                                  <option value="L&T">L&T</option>
+                                </select>
+                              </div>
+                              <button class="btn" (click)="manufacturingCompaniesAddition()">Add Company</button>
+                              <div class="display-options-div">
+                              <span *ngFor="let i of manufacturingCompanies" class="option-tags">{{i}}</span>
+                              </div>
+                              <br>
+                            </div>
+                        
+
+                            <!-- Demand Markets -->
+                            <div *ngIf="showDemandMarkets">
+                              <h6>Top Demand Markets</h6>
+                              <div class="input-field">
+                                <select formControlName="demandMarketInput">
+                                  
+                                  <option value="Afganistan">Afghanistan</option>
+                                  <option value="Albania">Albania</option>
+                                  <option value="Algeria">Algeria</option>
+                                  <option value="American Samoa">American Samoa</option>
+                                  <option value="Andorra">Andorra</option>
+                                  <option value="Angola">Angola</option>
+                                  <option value="Anguilla">Anguilla</option>
+                                  <option value="Antigua & Barbuda">Antigua & Barbuda</option>
+                                  <option value="Argentina">Argentina</option>
+                                  <option value="Armenia">Armenia</option>
+                                  <option value="Aruba">Aruba</option>
+                                  <option value="Australia">Australia</option>
+                                  <option value="Austria">Austria</option>
+                                  <option value="Azerbaijan">Azerbaijan</option>
+                                  <option value="Bahamas">Bahamas</option>
+                                  <option value="Bahrain">Bahrain</option>
+                                  <option value="Bangladesh">Bangladesh</option>
+                                  <option value="Barbados">Barbados</option>
+                                  <option value="Belarus">Belarus</option>
+                                  <option value="Belgium">Belgium</option>
+                                  <option value="Belize">Belize</option>
+                                  <option value="Benin">Benin</option>
+                                  <option value="Bermuda">Bermuda</option>
+                                  <option value="Bhutan">Bhutan</option>
+                                  <option value="Bolivia">Bolivia</option>
+                                  <option value="Bonaire">Bonaire</option>
+                                  <option value="Bosnia & Herzegovina">Bosnia & Herzegovina</option>
+                                  <option value="Botswana">Botswana</option>
+                                  <option value="Brazil">Brazil</option>
+                                  <option value="British Indian Ocean Ter">British Indian Ocean Ter</option>
+                                  <option value="Brunei">Brunei</option>
+                                  <option value="Bulgaria">Bulgaria</option>
+                                  <option value="Burkina Faso">Burkina Faso</option>
+                                  <option value="Burundi">Burundi</option>
+                                  <option value="Cambodia">Cambodia</option>
+                                  <option value="Cameroon">Cameroon</option>
+                                  <option value="Canada">Canada</option>
+                                  <option value="Canary Islands">Canary Islands</option>
+                                  <option value="Cape Verde">Cape Verde</option>
+                                  <option value="Cayman Islands">Cayman Islands</option>
+                                  <option value="Central African Republic">Central African Republic</option>
+                                  <option value="Chad">Chad</option>
+                                  <option value="Channel Islands">Channel Islands</option>
+                                  <option value="Chile">Chile</option>
+                                  <option value="China">China</option>
+                                  <option value="Christmas Island">Christmas Island</option>
+                                  <option value="Cocos Island">Cocos Island</option>
+                                  <option value="Colombia">Colombia</option>
+                                  <option value="Comoros">Comoros</option>
+                                  <option value="Congo">Congo</option>
+                                  <option value="Cook Islands">Cook Islands</option>
+                                  <option value="Costa Rica">Costa Rica</option>
+                                  <option value="Cote DIvoire">Cote DIvoire</option>
+                                  <option value="Croatia">Croatia</option>
+                                  <option value="Cuba">Cuba</option>
+                                  <option value="Curaco">Curacao</option>
+                                  <option value="Cyprus">Cyprus</option>
+                                  <option value="Czech Republic">Czech Republic</option>
+                                  <option value="Denmark">Denmark</option>
+                                  <option value="Djibouti">Djibouti</option>
+                                  <option value="Dominica">Dominica</option>
+                                  <option value="Dominican Republic">Dominican Republic</option>
+                                  <option value="East Timor">East Timor</option>
+                                  <option value="Ecuador">Ecuador</option>
+                                  <option value="Egypt">Egypt</option>
+                                  <option value="El Salvador">El Salvador</option>
+                                  <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                  <option value="Eritrea">Eritrea</option>
+                                  <option value="Estonia">Estonia</option>
+                                  <option value="Ethiopia">Ethiopia</option>
+                                  <option value="Falkland Islands">Falkland Islands</option>
+                                  <option value="Faroe Islands">Faroe Islands</option>
+                                  <option value="Fiji">Fiji</option>
+                                  <option value="Finland">Finland</option>
+                                  <option value="France">France</option>
+                                  <option value="French Guiana">French Guiana</option>
+                                  <option value="French Polynesia">French Polynesia</option>
+                                  <option value="French Southern Ter">French Southern Ter</option>
+                                  <option value="Gabon">Gabon</option>
+                                  <option value="Gambia">Gambia</option>
+                                  <option value="Georgia">Georgia</option>
+                                  <option value="Germany">Germany</option>
+                                  <option value="Ghana">Ghana</option>
+                                  <option value="Gibraltar">Gibraltar</option>
+                                  <option value="Great Britain">Great Britain</option>
+                                  <option value="Greece">Greece</option>
+                                  <option value="Greenland">Greenland</option>
+                                  <option value="Grenada">Grenada</option>
+                                  <option value="Guadeloupe">Guadeloupe</option>
+                                  <option value="Guam">Guam</option>
+                                  <option value="Guatemala">Guatemala</option>
+                                  <option value="Guinea">Guinea</option>
+                                  <option value="Guyana">Guyana</option>
+                                  <option value="Haiti">Haiti</option>
+                                  <option value="Hawaii">Hawaii</option>
+                                  <option value="Honduras">Honduras</option>
+                                  <option value="Hong Kong">Hong Kong</option>
+                                  <option value="Hungary">Hungary</option>
+                                  <option value="Iceland">Iceland</option>
+                                  <option value="Indonesia">Indonesia</option>
+                                  <option value="India" selected>India</option>
+                                  <option value="Iran">Iran</option>
+                                  <option value="Iraq">Iraq</option>
+                                  <option value="Ireland">Ireland</option>
+                                  <option value="Isle of Man">Isle of Man</option>
+                                  <option value="Israel">Israel</option>
+                                  <option value="Italy">Italy</option>
+                                  <option value="Jamaica">Jamaica</option>
+                                  <option value="Japan">Japan</option>
+                                  <option value="Jordan">Jordan</option>
+                                  <option value="Kazakhstan">Kazakhstan</option>
+                                  <option value="Kenya">Kenya</option>
+                                  <option value="Kiribati">Kiribati</option>
+                                  <option value="Korea North">Korea North</option>
+                                  <option value="Korea Sout">Korea South</option>
+                                  <option value="Kuwait">Kuwait</option>
+                                  <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                  <option value="Laos">Laos</option>
+                                  <option value="Latvia">Latvia</option>
+                                  <option value="Lebanon">Lebanon</option>
+                                  <option value="Lesotho">Lesotho</option>
+                                  <option value="Liberia">Liberia</option>
+                                  <option value="Libya">Libya</option>
+                                  <option value="Liechtenstein">Liechtenstein</option>
+                                  <option value="Lithuania">Lithuania</option>
+                                  <option value="Luxembourg">Luxembourg</option>
+                                  <option value="Macau">Macau</option>
+                                  <option value="Macedonia">Macedonia</option>
+                                  <option value="Madagascar">Madagascar</option>
+                                  <option value="Malaysia">Malaysia</option>
+                                  <option value="Malawi">Malawi</option>
+                                  <option value="Maldives">Maldives</option>
+                                  <option value="Mali">Mali</option>
+                                  <option value="Malta">Malta</option>
+                                  <option value="Marshall Islands">Marshall Islands</option>
+                                  <option value="Martinique">Martinique</option>
+                                  <option value="Mauritania">Mauritania</option>
+                                  <option value="Mauritius">Mauritius</option>
+                                  <option value="Mayotte">Mayotte</option>
+                                  <option value="Mexico">Mexico</option>
+                                  <option value="Midway Islands">Midway Islands</option>
+                                  <option value="Moldova">Moldova</option>
+                                  <option value="Monaco">Monaco</option>
+                                  <option value="Mongolia">Mongolia</option>
+                                  <option value="Montserrat">Montserrat</option>
+                                  <option value="Morocco">Morocco</option>
+                                  <option value="Mozambique">Mozambique</option>
+                                  <option value="Myanmar">Myanmar</option>
+                                  <option value="Nambia">Nambia</option>
+                                  <option value="Nauru">Nauru</option>
+                                  <option value="Nepal">Nepal</option>
+                                  <option value="Netherland Antilles">Netherland Antilles</option>
+                                  <option value="Netherlands">Netherlands (Holland, Europe)</option>
+                                  <option value="Nevis">Nevis</option>
+                                  <option value="New Caledonia">New Caledonia</option>
+                                  <option value="New Zealand">New Zealand</option>
+                                  <option value="Nicaragua">Nicaragua</option>
+                                  <option value="Niger">Niger</option>
+                                  <option value="Nigeria">Nigeria</option>
+                                  <option value="Niue">Niue</option>
+                                  <option value="Norfolk Island">Norfolk Island</option>
+                                  <option value="Norway">Norway</option>
+                                  <option value="Oman">Oman</option>
+                                  <option value="Pakistan">Pakistan</option>
+                                  <option value="Palau Island">Palau Island</option>
+                                  <option value="Palestine">Palestine</option>
+                                  <option value="Panama">Panama</option>
+                                  <option value="Papua New Guinea">Papua New Guinea</option>
+                                  <option value="Paraguay">Paraguay</option>
+                                  <option value="Peru">Peru</option>
+                                  <option value="Phillipines">Philippines</option>
+                                  <option value="Pitcairn Island">Pitcairn Island</option>
+                                  <option value="Poland">Poland</option>
+                                  <option value="Portugal">Portugal</option>
+                                  <option value="Puerto Rico">Puerto Rico</option>
+                                  <option value="Qatar">Qatar</option>
+                                  <option value="Republic of Montenegro">Republic of Montenegro</option>
+                                  <option value="Republic of Serbia">Republic of Serbia</option>
+                                  <option value="Reunion">Reunion</option>
+                                  <option value="Romania">Romania</option>
+                                  <option value="Russia">Russia</option>
+                                  <option value="Rwanda">Rwanda</option>
+                                  <option value="St Barthelemy">St Barthelemy</option>
+                                  <option value="St Eustatius">St Eustatius</option>
+                                  <option value="St Helena">St Helena</option>
+                                  <option value="St Kitts-Nevis">St Kitts-Nevis</option>
+                                  <option value="St Lucia">St Lucia</option>
+                                  <option value="St Maarten">St Maarten</option>
+                                  <option value="St Pierre & Miquelon">St Pierre & Miquelon</option>
+                                  <option value="St Vincent & Grenadines">St Vincent & Grenadines</option>
+                                  <option value="Saipan">Saipan</option>
+                                  <option value="Samoa">Samoa</option>
+                                  <option value="Samoa American">Samoa American</option>
+                                  <option value="San Marino">San Marino</option>
+                                  <option value="Sao Tome & Principe">Sao Tome & Principe</option>
+                                  <option value="Saudi Arabia">Saudi Arabia</option>
+                                  <option value="Senegal">Senegal</option>
+                                  <option value="Seychelles">Seychelles</option>
+                                  <option value="Sierra Leone">Sierra Leone</option>
+                                  <option value="Singapore">Singapore</option>
+                                  <option value="Slovakia">Slovakia</option>
+                                  <option value="Slovenia">Slovenia</option>
+                                  <option value="Solomon Islands">Solomon Islands</option>
+                                  <option value="Somalia">Somalia</option>
+                                  <option value="South Africa">South Africa</option>
+                                  <option value="Spain">Spain</option>
+                                  <option value="Sri Lanka">Sri Lanka</option>
+                                  <option value="Sudan">Sudan</option>
+                                  <option value="Suriname">Suriname</option>
+                                  <option value="Swaziland">Swaziland</option>
+                                  <option value="Sweden">Sweden</option>
+                                  <option value="Switzerland">Switzerland</option>
+                                  <option value="Syria">Syria</option>
+                                  <option value="Tahiti">Tahiti</option>
+                                  <option value="Taiwan">Taiwan</option>
+                                  <option value="Tajikistan">Tajikistan</option>
+                                  <option value="Tanzania">Tanzania</option>
+                                  <option value="Thailand">Thailand</option>
+                                  <option value="Togo">Togo</option>
+                                  <option value="Tokelau">Tokelau</option>
+                                  <option value="Tonga">Tonga</option>
+                                  <option value="Trinidad & Tobago">Trinidad & Tobago</option>
+                                  <option value="Tunisia">Tunisia</option>
+                                  <option value="Turkey">Turkey</option>
+                                  <option value="Turkmenistan">Turkmenistan</option>
+                                  <option value="Turks & Caicos Is">Turks & Caicos Is</option>
+                                  <option value="Tuvalu">Tuvalu</option>
+                                  <option value="Uganda">Uganda</option>
+                                  <option value="United Kingdom">United Kingdom</option>
+                                  <option value="Ukraine">Ukraine</option>
+                                  <option value="United Arab Erimates">United Arab Emirates</option>
+                                  <option value="United States of America">United States of America</option>
+                                  <option value="Uraguay">Uruguay</option>
+                                  <option value="Uzbekistan">Uzbekistan</option>
+                                  <option value="Vanuatu">Vanuatu</option>
+                                  <option value="Vatican City State">Vatican City State</option>
+                                  <option value="Venezuela">Venezuela</option>
+                                  <option value="Vietnam">Vietnam</option>
+                                  <option value="Virgin Islands (Brit)">Virgin Islands (Brit)</option>
+                                  <option value="Virgin Islands (USA)">Virgin Islands (USA)</option>
+                                  <option value="Wake Island">Wake Island</option>
+                                  <option value="Wallis & Futana Is">Wallis & Futana Is</option>
+                                  <option value="Yemen">Yemen</option>
+                                  <option value="Zaire">Zaire</option>
+                                  <option value="Zambia">Zambia</option>
+                                  <option value="Zimbabwe">Zimbabwe</option>
+                              </select>
+                              <label for="">Select Country</label>
+                              </div>
+                              <button class="btn" (click)="demandCountriesAddition()">Add Country</button>
+                              <!-- Pills display -->
+                              <div class="display-options-div">
+                              <span class="option-tags" *ngFor="let i of demandCountries">{{i}}</span>
+                              </div>
+                              <br>
+                            </div>
+                           
+                            <!-- Your expertise -->
+                            <div *ngIf="showYourExpertise">
+                              <h6>Share your expertise</h6>
+                              <div class="input-field ">
+                                <textarea id="textarea1" formControlName="expertiseInput" class="materialize-textarea"></textarea>
+                                <label for="textarea1">Your Expertise</label>
+                              </div>
+                            </div>
+                          </form>
+                        <button class="btn-large btn-style" (click)="getDataFromGeneratedForm()">Next</button>
+                      </div>
+                    </div>
+                   
+
+                  </div>
+                </div>
+
+              </div>
+
+              <div id="upload-data-excel-frame" *ngIf="step_2==2">
+                <h6>Upload Data via Excel</h6>
+                <br>
+                <div class="row">
+                  <form action="#" [formGroup]="uploadDataViaExcel">
+                    <div class="file-field input-field">
+                      <div class="btn">
+                        <span>Click here to upload file</span>
+                        <input type="file" formControlName="excelData" (change)="setFullExcelFile($event)">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text">
+                      </div>
+                    </div>
+                  </form>
+                <span [ngClass]="{'success':fileSize<35,'error':fileSize>35}">File Size: {{fileSize}}MB</span>
+                
+                  <br>
+                  <i>Note: The file size shouldn't exceed 35MB</i>
+                </div>
+                <div>
+                  <button id="step-2-uploadDataExcel-next" class="btn-large"
+                    [disabled]="uploadDataViaExcel.status!='VALID' && fileSize<35" (click)="getExcelUpload()">Next</button>
+                </div>
+              </div>
+              <!--Step 2 Upload Data via Excel Div Closing-->
+
+
+            </div>
+            <!--Main Step2 Closing-->
+
+            <div id="step3" *ngIf="step==3">
+              <h5>Publish your Data</h5>
+              <hr>
+              <!--Show table only when the form is filled-->
+              <div *ngIf="step_2==3">
+                <h6>Details you've provided</h6>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Data</th>
+                      <th>Value</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <tr>
+                      <td>Item/Service Name</td>
+                    <td>{{itemName}}</td>
+                    </tr>
+                    <!-- Industry Name -->
+                    <tr *ngIf="industryOfData">
+                      <td>
+                        Industry 
+                      </td>
+                      <td>
+                        {{industryOfData}}
+                      </td>
+                    </tr>
+
+                    <!-- CAS Code -->
+                    <tr *ngIf="CAS!=null">
+                      <td>CAS Code</td>
+                    <td>{{CAS}}</td>
+                    </tr>
+                    <!-- Cost Data -->
+                  <tr *ngIf="costData!=null">
+                    <td>Cost Data</td>
+                  <td>{{costData}}</td>
+                  </tr>
+
+                    <!-- Price Data -->
+                    <tr *ngIf="priceData!=null">
+                      <td>Price Data</td>
+                    <td>{{priceData}}</td>
+                    </tr>
+
+                    <tr *ngIf="marketSize!=null">
+                      <td>
+                        Market Size
+                      </td>
+                      <td>
+                        {{marketSize}}
+                      </td>
+                    </tr>
+                    <tr *ngIf="manufacturingCompanies.length>0">
+                      <td>
+                        Manufacturing Companies
+                      </td>
+                      <td>
+                        <p *ngFor="let i of manufacturingCompanies">
+                          {{i}}
+                          </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="manufacturingCountries.length>0">
+                      <td>Manufacturing Countries</td>
+                      <td>
+                        <p *ngFor="let i of manufacturingCountries">
+                          {{i}}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="demandCountries.length>0">
+                      <td>
+                      Demand Countries
+                      </td>
+                      <td>
+                        <p *ngFor="let i of demandCountries">
+                          {{i}}
+                        </p>
+                      </td>
+                    </tr>
+                    <tr *ngIf="expertise!=null">
+                      <td>
+                        Your Expertise
+                      </td>
+                      <td>
+                        {{expertise}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Show File Data that the user uploads -->
+              <div *ngIf="step_2==2">
+                <h6>You've decided to upload a file which contains data</h6>
+                <p><i>The file will be audited by our team, then the data will be published</i></p>
+                <p><i>You will be notified about the status of the data</i></p>
+                 <br>
+              <span>File Name : </span><span>{{excelData}}</span>
+                <table>
+                  <thead> 
+                    <tr><th>
+                      Data Name
+                    </th>
+                  <th>
+                    Value
+                  </th>
+                  </tr>
+                  </thead> 
+                  <tbody>
+                    <tr>
+                      <td>Item/Service Name</td>
+                    <td>{{itemName}}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Industry
+                      </td>
+                      <td>
+                        {{industryOfData}}
+                      </td>
+                    </tr>
+                    <tr *ngIf="CAS!=null">
+                      <td>
+                        CAS Code
+                      </td>
+                      <td>
+                        {{CAS}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Description
+                      </td>
+                      <td>
+                        {{descriptionOfData}}
+                      </td>
+                    </tr>
+                    <tr *ngIf="itemGrade!=null">
+                      <td>
+                        Item Grade
+                      </td>
+                      <td>
+                        {{itemGrade}}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            <!-- TODO: Set Price -->
+            <h6 style="margin-top: 2rem;">Set the final price</h6>
+            <form [formGroup]="Price" >
+              <div class="row">
+                <div class="input-feild col s9">
+                  <label>Set Price</label>
+                  <input type="number" name="" id="" formControlName="setPrice">
+                </div>
+                <div class="input-feild col s2">
+                  <label>Set Currency</label>
+                  <select name="" id="" formControlName="setCurrency">
+                    <option value="USD">USD</option>
+                    <option value="EURO">EURO</option>
+                    <option value="IND">Rupees(IND)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-top: 2rem;">
+                <button class="btn-large" style="float: right;" id="final-upload" (click)="sendToServer()" >
+                  Upload
+                </button>
+              </div>
+              
+            </form>
+
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

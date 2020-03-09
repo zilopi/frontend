@@ -1,0 +1,33 @@
+<div class="result" >
+    <div class="result-heading row">
+      <div class="col s12">
+        <a href="" class="title">{{data.title}}</a>
+        
+      <span class="metadata"> &bull; {{data.data_of_industry}}</span>
+      <span class="metadata"> &bull; {{data.information_type}} &bull; </span>
+
+      
+      <span class="price"> {{data.price}}$ </span>
+      <span style="float: right;
+      font-size: 25px;
+      margin-right: 0.1rem;
+      margin-left: 0.1rem;"> &bull; </span>
+      <ngb-rating [max]=5 [rate]=1 style="color: #08264D;font-size: 25px;float:right" [readonly]="true"></ngb-rating>
+      </div>
+      <div class="col s12" style="border-bottom : 1px solid lightgrey;padding-bottom : 0.2%;padding-top:1.2%">
+      <span class="date">{{data.upload_date | date : "MMMM d, y"}}</span><img class="typeIcons"src="../../../assets/pdf.svg" alt=""><img class="typeIcons"src="../../../assets/excel.svg" alt=""><img class="typeIcons"src="../../../assets/doc.svg" alt=""><img class="typeIcons"src="../../../assets/png.svg" alt="">
+      </div>
+    </div>
+    <div class="result-subheading">
+      <div class=" row search-content">
+        <!-- Description of data -->
+        <div class="col s9">
+        <p class="content">{{data.description}}</p >
+        </div>
+        <div class="col s3">
+          <a class="waves-effect waves-light btn buy-buttons" (click)="downloadNow()"><i class="material-icons left">file_download</i>Download Now</a>
+          <a class="waves-effect waves-light btn buy-buttons" (click)="viewDetails()"><i class="material-icons left">error_outline</i>View details</a>                                </div>
+      </div>
+    </div>
+    
+</div>

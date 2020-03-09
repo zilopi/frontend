@@ -1,0 +1,127 @@
+<div id="page-root" class="">
+
+  <div class="row">
+    <!-- Left Hand Pane -->
+    <div class="col s3">
+
+      <div class="card" id="user-profile-display">
+        <div id="profile-image-container">
+          <img src="../../../../assets/avatar.jpg" class="circle responsive-img" alt="profile-page" id="profile-image">
+
+        </div>
+        <div class="card-title">
+          <!-- Display name Here -->
+          <h5>{{firstName+" "+lastName}}</h5>
+        </div>
+
+        <div id="user-email-display">
+
+         {{email}}
+
+        </div>
+
+        <div id="user-phone-display">
+          {{phone}}
+        </div>
+        <hr>
+        <div id="options-pane">
+            <button class="options-pane-button btn-large hover" [routerLink]="['addData']"><i class="material-icons left">show_chart</i>Upload Dataset</button>
+
+            <button class="options-pane-button btn-large hover"><i class="material-icons left">account_circle</i>Account Settings</button>
+            <button class="options-pane-button btn-large hover" [routerLink]="['mydata']"><i class="material-icons left">data_usage</i>My Data</button>
+            <button class="options-pane-button btn-large hover"><i class="material-icons left">share</i>Refer a colleague</button>   
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right hand pane -->
+    <div class="col s8 ">
+      <div class="row">
+        <div class="col s12">
+          <div class="card" id="welcome-banner">
+            <h5>Welcome to your Dashboard!</h5>
+          </div>
+        </div>
+        
+      </div>
+
+      <!-- About me container -->
+      <div class="row">
+        <div class="col s12">
+          <div class="card" id="about-me">
+            <div class="section-heading-container">
+              <i class="material-icons section-icon">assignment_ind</i> <span class="section-heading">About Me</span>
+                <button style="float:right;color:brown;text-transform:uppercase" (click)="editAbout()" *ngIf="editAboutParagraph==false">edit</button>
+                <button style="float:right;color:brown;text-transform:uppercase" (click)="saveAbout()" *ngIf="editAboutParagraph==true">Save</button>
+            </div>
+            <hr>
+            <div>
+              <p [contentEditable]="editAboutParagraph" [ngClass]="{'editAboutIndicator':editAboutParagraph==true}" [innerText]="AboutMe" (keyup)="updateAboutMe($event.target.innerText)">No description Provided</p>
+            </div>
+
+            <hr>
+            <div class="row" style="margin-top:1rem">
+              <div class="col s3" style="text-align: center;">
+                  <p style="font-size: x-large;font-weight: bold;">Rating</p>
+                  <p style="font-size: 30px;">{{rating}}</p>
+              </div>
+              <div class="col s6" style="text-align: center; border-left: 1px solid lightgrey; border-right: 1px solid lightgrey;">
+                  <p style="font-size: x-large;font-weight: bold;">Industries you associate with</p>
+                  <p style="font-size: 15px;" *ngFor = "let i of industryArray"> &bull; {{i}}</p>
+              </div>
+              <div class="col s3" style="text-align:center">
+                  <p style="font-size: x-large;font-weight: bold;">Country</p>
+                  <p style="font-size: 30px;">{{country}}</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card" id="earning-summary">
+            <div class="section-heading-container">
+              <i class="material-icons section-icon">attach_money</i> <span class="section-heading">Your Earning Summary</span>
+
+            </div>
+            <hr>
+            <div id="earnings-summary-container">
+
+              <table style="text-align: center;">
+                <tr>
+                  <td>
+                    <h5>Total Earnings</h5>
+                  </td>
+                  <td>
+                    <h5>10$</h5>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                   <h5>Total Downloads</h5>
+                  </td>
+                  <td>
+                 
+                    <h5>10,000</h5>
+                  </td>
+                </tr>
+              </table>
+
+              
+            </div>
+            <div class="chart-container">
+                <div id="chartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+            </div>
+            <hr>
+            <div class="chart-container"></div>
+            <div id="chartContainer2" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+#main-card{
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 1.5rem;
+    padding: 2%;
+}
+#data-head{
+    border-bottom:1px solid grey;
+}
+.price{
+    color:green;
+    font-size: 60px;
+}
+#date{
+    font-style: italic;
+}
+#rating{
+    font-size: 45px;
+    /* margin-top: 0.25rem; */
+    position: relative;
+    top: -8px;
+}
+#snapshot-container{
+    min-height: 10rem;
+    background-color: grey;
+}
+#suggestions-container{
+    min-height: 30rem;
+    background:grey;
+}
+#data-provided-container{
+    padding-top: 1rem;
+}
+.details-table{
+    padding-top: 1rem;
+}
+#description-container{
+    padding-top: 1rem;
+}
+#snapshot{
+    padding-top: 1rem;
+}
