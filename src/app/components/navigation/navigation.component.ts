@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { EventManager } from '@angular/platform-browser';
-
+import * as $ from 'jquery';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
@@ -21,6 +21,27 @@ export class NavigationComponent implements OnInit {
     });
     }
   ngOnInit() {
+
+
+  }
+  showIndustriesControl = false;
+  showIndustries(){
+    this.showIndustriesControl = true;
+  }
+  closeShowIndustries(){
+    this.showIndustriesControl = false;
+
+  }
+
+
+  showDropDownControl = false;
+  showDropDown(){
+    this.showDropDownControl = true;
+    this.showIndustriesControl = false;
+  }
+  closeDropDown(){
+    this.showDropDownControl = false;
+    
   }
   logout(){
     sessionStorage.clear();

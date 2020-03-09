@@ -13,7 +13,7 @@
       <ul id="nav-mobile" class=" hide-on-med-and-down right">
         <span>
         <li><a *ngIf="!currentRoute.includes('landing-page')" [routerLink]="['landing-page']">Home</a></li>
-        <li><a>Industry</a></li>
+        <li (mouseenter)="showIndustries()"><a>Industry</a></li>
         <li><a>Product Offering</a></li>
         <li><a>About Us</a></li>
       </span>
@@ -25,8 +25,24 @@
 
      
         <!-- <li style="color: yellow;"> | </li> -->
-        <li *ngIf="getAuthStatus()==false"><a class="dropdown-trigger" href="#!" data-target="dropdown1">Login<i
-              class="material-icons right">arrow_drop_down</i></a></li>
+        <li *ngIf="getAuthStatus()==false" id="login-dropdown" (mouseenter)="showDropDown()" (mouseleave)="closeDropDown()" >
+          <a  href="#!" >Login<i
+              class="material-icons right">arrow_drop_down</i></a>
+           
+            <!-- Login dropdowns root -->
+              <div id="login-dropdowns-root" *ngIf="showDropDownControl">
+
+              <div class="login-dropdowns">
+                <a href="#!" [routerLink]="['/login/client']" (click)="showDropDownControl=false" *ngIf="!currentRoute.includes('login/client')">Customer</a>
+              </div>
+              <div class="login-dropdowns">
+                <a href="#!" [routerLink]="['/login/partner']" (click)="showDropDownControl=false" *ngIf="!currentRoute.includes('login/partner')">Partner</a>
+              </div>
+
+
+            </div>
+           
+            </li>
               
           <li *ngIf="getAuthStatus()" ><a href="" (click)="logout()">Logout</a></li>
           <li *ngIf="getAuthStatus()"><a href="" class="btn z-depth-2 tooltipped" data-position="left" data-tooltip='You are logged in' style=" background: content-box;
@@ -35,11 +51,78 @@
         <li *ngIf="!currentRoute.includes('user') && !currentRoute.includes('partner-account') && getAuthStatus()==false"><a [routerLink]="['/user/register-client']">Create Free Account</a></li>
   
       </ul>
-      <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#!" [routerLink]="['/login/partner']">Partner</a></li>
-        <li><a href="#!" [routerLink]="['/login/client']">Customer</a></li>
-  
-      </ul>
+      
+    </div>
+    
+    <div id="industries-container"  class="accent-background" *ngIf="showIndustriesControl"
+     (mouseleave) = "closeShowIndustries()"
+     >
+        <h4 style="text-align: center; color: white; text-transform: uppercase;font-size: 25px;">Industries that we provide data for</h4>
+
+        <div class="accent-background" id="industry-topics">
+          <a href="" class="btn">Argriculture and Allied Industries</a>
+          <a href="" class="btn">Automobiles</a>
+          <a href="" class="btn">Auto Components</a>
+          <a href="" class="btn">Aviation</a>
+          <a href="" class="btn">Banking</a>
+          <a href="" class="btn">Cement</a>
+          <a href="" class="btn">Consumer Durable</a>
+          <a href="" class="btn">E Commerce</a>
+          <a href="" class="btn">Education and Training</a>
+          <a href="" class="btn">Engineering and Capital Goods </a>
+          <a href="" class="btn">Financial Services</a>
+          <a href="" class="btn">FMCG</a>
+          <a href="" class="btn">Gems and Jewellery</a>
+          <a href="" class="btn">HealthCare</a>
+          <a href="" class="btn">Infrastructure</a>
+          <a href="" class="btn">Insurance</a>
+          <a href="" class="btn">IT & ITES</a>
+          <a href="" class="btn">Manufacturing</a>
+          <a href="" class="btn">Media and entertainment</a>
+          <a href="" class="btn">Metals and mining</a>
+          <a href="" class="btn">Oil and gas</a>
+          <a href="" class="btn">Pharmaceuticals</a>
+          <a href="" class="btn">Ports</a>
+          <a href="" class="btn">Power</a>
+          <a href="" class="btn">Railways</a>
+          <a href="" class="btn">real estate</a>
+          <a href="" class="btn">renewable energy</a>
+          <a href="" class="btn">retail</a>
+          <a href="" class="btn">roads</a>
+          <a href="" class="btn">Science and technology</a>
+          <a href="" class="btn">services</a>
+          <a href="" class="btn">steel</a>
+          <a href="" class="btn">telecommunications</a>
+          <a href="" class="btn">textiles</a>
+          <a href="" class="btn">tourism and hospitality</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        </div>
+         
+        
     </div>
   
   

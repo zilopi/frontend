@@ -11,6 +11,9 @@
     color:#08264D !important;
 }
 .accent-background{
-    color:#08264D !important;
+    background-color:#08264D !important;
 
+}
+.nav-wrapper{
+    box-shadow: 0px 3px 20px black;
 }

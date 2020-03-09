@@ -5,3 +5,58 @@ nav{
     background-color: #08264D;
     color: black;
 }
+@keyframes height{
+    from{
+        height: 0%
+    }
+    to{
+        height : 100%
+    }
+}
+#login-dropdowns-root{
+    background:white;
+    color:black;
+    border-bottom: 1px solid grey;
+    animation: height 0.5s ease-in normal;
+    overflow: hidden;
+}
+
+.login-dropdowns{
+    color: black;
+    background-color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    border-bottom: 1px solid lightgrey;
+
+}
+.login-dropdowns > a{
+    color: black;
+}
+#industries-container{
+height: 15rem;
+background-color: blue;
+margin-top: -1.5rem;
+padding-top: 1rem;
+
+
+}
+#industries-container > a {
+    margin: 1px;
+    display: inline-block;
+}
+#industry-topics > a{
+margin:5px;
+margin: 5px;
+background: transparent;
+border: 1px solid grey;
+border-radius: 10px;
+}
+#industry-topics > a:hover{
+    box-shadow: 2px 2px 2px black;
+}
+
+#industry-topics{
+    padding-bottom: 1rem;
+}
+

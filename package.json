@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "~9.0.5",
     "@angular/router": "~9.0.5",
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
+    "@types/jquery": "^3.3.33",
     "jquery": "^3.4.1",
     "materialize": "^1.0.0",
     "materialize-css": "^1.0.0",

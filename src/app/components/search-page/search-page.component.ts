@@ -150,6 +150,21 @@ export class SearchPageComponent implements OnInit, OnChanges {
       selectLocationFocus: new FormControl('unfocused', [])
     });
     // subscriptions
+
+
+    this.sortControl.get('sortType').valueChanges.subscribe(val=>{
+      if(val == 'recent'){
+        let convertedDateToTimeStampArray = this.allResults.map((element,index,array)=>{
+          element['timestamp'] = (new Date(element.upload_date)).getTime();
+          return element;
+        })
+        convertedDateToTimeStampArray.sort( function(a,b){
+          return (b['timestamp'] - a['timestamp'])
+        })
+        this.updateResultArrays(this.filterArray(this.determineLocationFocusOfArray(convertedDateToTimeStampArray)));
+      }
+
+    })
     this.locationFocusControl.get('selectLocationFocus').valueChanges.subscribe((val: string) => {
 
       // In case of unfocused
@@ -304,7 +319,8 @@ export class SearchPageComponent implements OnInit, OnChanges {
     });
   }
 
-  determineLocationFocus() {
+  //Function called by template
+  determineLocationFocus() :Result[]{
     let locationFocus = this.locationFocusControl.get('selectLocationFocus').value.toLowerCase().replace(/ +/g, ""); 
     if (locationFocus== 'unfocused' ){
       return this.allResults;
@@ -317,9 +333,61 @@ export class SearchPageComponent implements OnInit, OnChanges {
       });
       return locationFocusedResult;
     }
- 
-
   }
+
+  //general purpose array functions
+  determineLocationFocusOfArray(array:Result[]) :Result[]{
+    let locationFocus = this.locationFocusControl.get('selectLocationFocus').value.toLowerCase().replace(/ +/g, ""); 
+    if (locationFocus== 'unfocused' ){
+      return array;
+    }else{
+      let locationFocusedResult:Result[] = array.filter((data:Result)=>{
+
+        if(data.location_focus.toLowerCase().replace(/ +/g, "") == locationFocus ){
+          return data;
+        }
+      });
+      return locationFocusedResult;
+    }
+  }
+  filterArray(data:Result[]):Result[]{
+    const industry = this.filterIndustry.value;
+    const typeOfData = this.filterInformationType.value;
+    const formatOfData = this.filterInformationFormat.value;
+   
+    let filters = [];
+
+
+    //Check for industry
+    for (var key in industry) {
+      if (industry.hasOwnProperty(key)) {
+           if(industry[key]==true){
+             filters.push(key.toLowerCase())
+           }
+      }
+    }
+    //Check for type of data
+    for (var key in typeOfData) {
+      if (typeOfData.hasOwnProperty(key)) {
+           if(typeOfData[key]==true){
+             filters.push(key.toLowerCase())
+           }
+      }
+    }
+    //TODO: Format of data
+    // console.log(filters);
+    let finalResult = data.filter((value:Result)=>{
+      console.log(value);
+      if(filters.includes(value.information_type.toLowerCase().replace(/ +/g, "")) 
+      &&
+         filters.includes(value.data_of_industry.toLowerCase().replace(/ +/g, ""))){
+        return value;
+      }
+    })
+    return finalResult;
+  }
+
+
   filter() {
     const industry = this.filterIndustry.value;
     const typeOfData = this.filterInformationType.value;
@@ -364,6 +432,8 @@ export class SearchPageComponent implements OnInit, OnChanges {
 
     this.updateResultArrays(finalResult);
   }
+
+
   resetFilters(){
     this.filterIndustry.reset();
     this.filterInformationFormat.reset();

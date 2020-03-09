@@ -32,11 +32,11 @@ export class LandingPageComponent implements OnInit {
   
   search(){
     this.searchInit = true;
-    setTimeout(()=>{
-      this.searchInit = false;
-    },2000);
+    
     let query = this.searchFrom.get('search').value;
+    
     this.router.navigate(['search/'+query]);
+    // this.searchInit = false;
     // this.searchInit = false;
   }
 
