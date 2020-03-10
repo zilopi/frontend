@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { fetchPartnerFile } from 'src/app/resources';
 import { FetchFileService } from './fetchFile.service';
+import { PartnerData } from './data.schema';
 
 @Component({
     selector :'app-partner-data',
@@ -10,18 +11,38 @@ import { FetchFileService } from './fetchFile.service';
 })
 export class PartnerDataResultComponent implements OnInit{
 
-    @Input() price;
-    @Input() downloadURI;
-    @Input() title;
-    @Input() description;
-    @Input() rating;
-    @Input() downloads;
-    @Input() mime
+    price;
+    downloadURI;
+    title;
+    description;
+    rating;
+    downloads;
+    mime
+
+    @Input() PartnerData: PartnerData;
     value:string;
     constructor(private Http:HttpClient,private fetchFileService:FetchFileService){
             
     }
     ngOnInit(){
+        this.price = this.PartnerData.price;;
+        this.downloadURI = this.PartnerData.url;
+        this.description = this.PartnerData.description;
+    
+        let totalCompoundedRating = Number(this.PartnerData.total_compounded_rating);
+        let totalRatings = 5*Number(this.PartnerData.total_numberof_ratings);
+        this.title = this.PartnerData.title;
+        
+        if(totalRatings != 0 ){
+            this.rating = 5* (totalCompoundedRating/totalRatings);
+        }else{
+            this.rating = 0;
+        }
+       
+        this.downloads = this.PartnerData.downloads
+        this.mime = this.PartnerData.mime
+
+
         console.log(this.downloadURI);
     }
     fetchFile(){

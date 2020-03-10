@@ -4,7 +4,7 @@ import { DataStoreService } from '../data-store.service';
 import { Result } from '../result';
 import { FormGroup, FormControl } from '@angular/forms';
 import { FeedBackUploadService } from 'src/app/services/feedback-upload-service/feedback-upload-service';
-import { timingSafeEqual } from 'crypto';
+// import { timingSafeEqual } from 'crypto';
 
 @Component({
     selector: 'app-search-view-details',

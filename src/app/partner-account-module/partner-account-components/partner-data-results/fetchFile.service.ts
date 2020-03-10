@@ -6,6 +6,8 @@ import { HttpClient } from '@angular/common/http';
     providedIn :'root'
 })
 export class FetchFileService{
+/** This service is responsible for fetching the uploaded file from S3  */
+
     constructor(private http :HttpClient){
 
     }

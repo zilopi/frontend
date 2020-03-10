@@ -27,7 +27,7 @@
           <div *ngIf="data.length==0" style="text-align: center;" >
             <h5>No data uploaded</h5>
           </div>
-          <app-partner-data *ngFor="let i of data" [rating]=i.data_rating [description]=i.description [title]=i.title [price]=i.price [downloads]=i.downloads [downloadURI]=i.url [mime]=i.mime>
+          <app-partner-data *ngFor="let i of data" [PartnerData]=i>
 
           </app-partner-data>
         </div>
