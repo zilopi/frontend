@@ -17,7 +17,8 @@ export class PartnerDataResultComponent implements OnInit{
     description;
     rating;
     downloads;
-    mime
+    mime;
+    extension
 
     @Input() PartnerData: PartnerData;
     value:string;
@@ -41,6 +42,7 @@ export class PartnerDataResultComponent implements OnInit{
        
         this.downloads = this.PartnerData.downloads
         this.mime = this.PartnerData.mime
+        this.extension = this.PartnerData.extension;
 
 
         console.log(this.downloadURI);
@@ -55,13 +57,13 @@ export class PartnerDataResultComponent implements OnInit{
         }
         ).subscribe((data:string)=>{
 
+            /**This gets the signed url required for download of the file */
             this.value = data;
-            // window.location.href = this.value;
+
+            /**This is the internal code require to dispose the file in download form */
             this.showFile(this.value);
         })
-        // this.Http.get(uri).subscribe((data)=>{
-        //     console.log(data);
-        // })
+       
     }
     public showFile(value): void {
         this.fetchFileService.fetchFile(value)
@@ -83,10 +85,15 @@ export class PartnerDataResultComponent implements OnInit{
     
                 var link = document.createElement('a');
                 link.href = data;
-                // link.innerText = this.title;
-                const extension = this.mime.split('/')[1]
+
+                // if the mime type is of application,then the extension is added via the database column
+                if(this.mime.includes('application')){
+                    link.download = this.title+"."+this.extension;
+                }else{
+                    link.download =  this.title;
+                }
                 
-                link.download =  this.title+" "+extension;
+            
                 // this is necessary as link.click() does not work on the latest firefox
                 link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     

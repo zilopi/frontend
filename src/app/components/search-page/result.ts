@@ -23,5 +23,6 @@ export interface Result {
         email:string,
         phone_number:Number,
         country:string
-    }
+    },
+    extension:string
 }

@@ -18,6 +18,8 @@ export class SearchItem implements OnInit{
     // @Input() totalNumberOfRatings
     // @Input() totalCompoundedRating
     
+
+    //The data is passed in by the parent as a Result object
     @Input() data: Result;
     
     @Output() download = new EventEmitter<{}>();

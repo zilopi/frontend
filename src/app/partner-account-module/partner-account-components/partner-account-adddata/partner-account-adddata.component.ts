@@ -376,11 +376,20 @@ export class PartnerAccountAddDataComponent implements AfterViewChecked, OnChang
         formData.append("LocationFocus",this.selectIndustry.get('setLocationFocus').value);
         formData.append("TypeOfData",this.selectIndustry.get('setTypeOfData').value);
 
+
         // Upload file via excel
         this.showUpload = true;
         if (this.step_2 == 2) {
+            console.log(this.fullExcelFile[0]);
             formData.append('DataFile', this.fullExcelFile[0]);
-            console.log(formData);
+
+            let fileArray = this.fullExcelFile[0].name.split(".");
+            let fileExtension = fileArray[fileArray.length -1];
+
+            console.log(fileExtension);
+            formData.append('Extension',fileExtension);
+
+            // console.log(formData);
             this.uploadService.uploadExcelFile(formData).subscribe(
                 (event) => {
 

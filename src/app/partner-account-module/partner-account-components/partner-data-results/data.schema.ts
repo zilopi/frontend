@@ -8,5 +8,6 @@ export interface PartnerData{
     total_numberof_ratings: Number,
     total_compounded_rating: Number,
     downloads:Number,
-    mime: string
+    mime: string,
+    extension:string
 }
