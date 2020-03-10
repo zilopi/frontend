@@ -30,7 +30,7 @@ export class SearchItem implements OnInit{
 
     }
     downloadNow(){
-        this.download.emit({'uuid':this.data.uuid});
+        this.download.emit(this.data);
     }
     viewDetails(){
         this.view.emit(this.data);
