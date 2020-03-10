@@ -1,11 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { EventManager } from '@angular/platform-browser';
-import * as $ from 'jquery';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',
-  styleUrls: ['./navigation.component.css']
+  styleUrls: ['./navigation.component.css'],
+  animations :[
+    trigger('dropDown',[
+      state('true', style({
+       height : '100%'
+      })),
+      state('false',style({
+        height :'0',
+        overflow:'hidden'
+      })),
+      transition('true => false',[
+        animate('0.5s')
+      ]),
+      transition('false => true',[
+        animate('0.5s')
+      ]),
+      
+    ])
+  ]
 })
 export class NavigationComponent implements OnInit {
 
@@ -31,6 +55,14 @@ export class NavigationComponent implements OnInit {
   closeShowIndustries(){
     this.showIndustriesControl = false;
 
+  }
+
+  showProfileDropDownControl =false;
+  showProfileDropDown(){
+    this.showProfileDropDownControl = true;
+  }
+  closeProfileDropDown(){
+    this.showProfileDropDownControl = false;
   }
 
 

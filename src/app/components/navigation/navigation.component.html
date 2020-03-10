@@ -26,11 +26,11 @@
      
         <!-- <li style="color: yellow;"> | </li> -->
         <li *ngIf="getAuthStatus()==false" id="login-dropdown" (mouseenter)="showDropDown()" (mouseleave)="closeDropDown()" >
-          <a  href="#!" >Login<i
+          <a  >Login<i
               class="material-icons right">arrow_drop_down</i></a>
            
             <!-- Login dropdowns root -->
-              <div id="login-dropdowns-root" *ngIf="showDropDownControl">
+              <div id="login-dropdowns-root" *ngIf="true" [@dropDown]=" showDropDownControl ? 'true' : 'false'">
 
               <div class="login-dropdowns">
                 <a href="#!" [routerLink]="['/login/client']" (click)="showDropDownControl=false" *ngIf="!currentRoute.includes('login/client')">Customer</a>
@@ -45,8 +45,36 @@
             </li>
               
           <li *ngIf="getAuthStatus()" ><a href="" (click)="logout()">Logout</a></li>
-          <li *ngIf="getAuthStatus()"><a href="" class="btn z-depth-2 tooltipped" data-position="left" data-tooltip='You are logged in' style=" background: content-box;
-            border-bottom: 1px solid yellow;"><i class="material-icons left">account_circle</i>{{getName()}}</a></li>
+
+          <li *ngIf="getAuthStatus()" (mouseenter)="showProfileDropDown()" (mouseleave)="closeProfileDropDown()"><a href="" class="btn z-depth-2 tooltipped" data-position="left" data-tooltip='You are logged in' style=" background: content-box;
+            border-bottom: 1px solid yellow;"><i class="material-icons left">account_circle</i>{{getName()}}</a>
+            
+          <div>
+            <div class="login-dropdowns-root" [@dropDown]="showProfileDropDownControl ? 'true' : 'false'">
+              <div class="login-dropdowns">
+                Profile
+              </div>
+              <div class="login-dropdowns">
+                Invite Friends
+              </div>
+              <div class="login-dropdowns">
+                Invite Friends
+              </div>
+              <div class="login-dropdowns">
+                Account Settings
+              </div>
+              <div class="login-dropdowns">
+                Purchased
+              </div>
+              <div class="login-dropdowns">
+                My Wallet
+              </div>
+              <div class="login-dropdowns">
+                Reports
+              </div>
+            </div>
+          </div>
+        </li>
           
         <li *ngIf="!currentRoute.includes('user') && !currentRoute.includes('partner-account') && getAuthStatus()==false"><a [routerLink]="['/user/register-client']">Create Free Account</a></li>
   

@@ -1,129 +1,170 @@
 <div class="page-root">
-    <div class="card" id="main-card">
+  <div class="card" id="main-card">
 
-        <!-- Header of data -->
-        <div id="data-head" class="row">
-            <div class="col s8">
-                <div class="row" >
-                    <div class="col s12" style="border-bottom:1px solid black">
-                        <h4 style="font-weight: 600;
-                        font-size: 4rem;">{{ViewData.title}}</h4>
-                        <!-- <h4>Dummy title</h4> -->
-                        <h6 id="date">{{ViewData.upload_date | date : "MMMM d, y"}}</h6>
-                        <!-- <h6>12th Feb 2020</h6> -->
-                    </div>
-                    <div class="col s12">
-                        <div id="description-container">
-                            <h5>Description</h5>
-                            <hr>
-                            <p>{{ViewData.description}}</p>
-    
-                        </div>
-                        
-                        <div class="details-table">
-                            <h5>Details</h5>
-                            <hr>
-                            <table class="table">
-                                
-                                <tbody>
-                                    <tr>
-                                        <td> Country</td><td>{{ViewData.location_focus}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Downloads</td>
-                                        <td>{{ViewData.downloads}}</td>
-                                    </tr>
-    
-                                    <tr>
-                                        <td>Type of Information</td>
-                                        <td>{{ViewData.information_type}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Information Format</td>
-                                        <td>{{ViewData.mime}}</td>
-                                    </tr>
-                                    <tr>
-    
-                                        <td>Industry</td>
-                                        <td>{{ViewData.data_of_industry}}</td>
-                                    </tr>
-                                    
-                                </tbody>
-    
-                            </table>
-                        </div>
-                        
+    <div id="rateModal" *ngIf="showFeedBackModal">
 
-                    </div>
-                    <div class="col s12" >
-                        <div class="row">
-                            <div class="col s12">
-
-                                <div id="snapshot">
-                                    <h5>Snapshot of the data</h5>
-                                    <hr>
-                                    <div id="snapshot-container">
-    
-                                    </div>
-                                </div>
-                                
-                               
-                                <div id="data-provided-container">
-                                    <h5>Data Provided By</h5>
-                                    <hr>
-                                    <!-- <h6>{{ViewData.uploaded_by.first_name}} {{ViewData.uploaded_by.last_name}}</h6>
-                                    <h6>{{ViewData.uploaded_by.email}} | {{ViewData.uploaded_by.phone_number}}</h6> -->
-                                    <h6 style="font-size:2rem">{{ViewData.uploaded_by.first_name}} {{ViewData.uploaded_by.last_name}}</h6>
-                                    
-                                    <h6>Contact</h6>
-                                    <a class="btn ui-flat-button"><i class="material-icons left">email</i>{{ViewData.uploaded_by.email}}</a>
-                                    &nbsp;
-                                    <a  class="btn ui-flat-button"><i class="material-icons left">phone</i>{{ViewData.uploaded_by.phone_number}}</a>
-                                </div>
-                                
-                            </div>
-                        
-                        </div>
-                    </div>
-                </div>
+        <div id="rateModalContainer">
+            <div id="rateModalHeadingContainer" style="border-bottom: 1px solid grey; padding:2%">
+                <span style="font-size: 35px;">Your feedback is valuable!</span>
+                <button class="btn ui-flat-button right" (click)="showFeedBackModal = false">close</button>
             </div>
-            <div class="col s4">
-                <div style="border-bottom: 1px solid black;
+            <div id="rateModalContentContainer">
+                <h5>How would you rate this dataset?</h5>
+                    <ngb-rating [max]=5 [(rate)] = "feedbackRating" id="rating-bar" (hower)="feedbackRating=$event"></ngb-rating>
+                    <div style="font-size: 90px;font-weight:500;padding:1%">
+                        {{feedbackRating}}/5
+                    </div>
+                    <div>
+                        <h5>Any feedback?</h5>
+                        <form  [formGroup]="feedback">
+                            <div class="row">
+                                <div class="col s12">
+                                  <div class="row">
+                                    <div class="input-field col s12">
+                                      <textarea id="textarea1" class="materialize-textarea" formControlName="feedbackInput"></textarea>
+                                      <label for="textarea1">Write your feedback</label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </form>
+                        <button class="btn ui-flat-button" style="width: 100%;" (click)="submitFeedBack()">Submit Feedback and Rating</button>
+                        <br>
+                        <h6 style="text-align: center;" *ngIf="showSubmitting">Submitting..</h6>
+                      </div>
+            </div>
+        </div>
+    </div>
+    <!-- Header of data -->
+    <div id="data-head" class="row">
+      <div class="col s8">
+        <div class="row">
+          <div class="col s12" style="border-bottom:1px solid black">
+            <h4 style="font-weight: 600;
+                        font-size: 4rem;">{{ViewData.title}}</h4>
+            <!-- <h4>Dummy title</h4> -->
+            <h6 id="date">{{ViewData.upload_date | date : "MMMM d, y"}}</h6>
+            <!-- <h6>12th Feb 2020</h6> -->
+          </div>
+          <div class="col s12">
+            <div id="description-container">
+              <h5>Description</h5>
+              <hr>
+              <p>{{ViewData.description}}</p>
+
+            </div>
+
+            <div class="details-table">
+              <h5>Details</h5>
+              <hr>
+              <table class="table">
+
+                <tbody>
+                  <tr>
+                    <td> Country</td>
+                    <td>{{ViewData.location_focus}}</td>
+                  </tr>
+                  <tr>
+                    <td>Downloads</td>
+                    <td>{{ViewData.downloads}}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Type of Information</td>
+                    <td>{{ViewData.information_type}}</td>
+                  </tr>
+                  <tr>
+                    <td>Information Format</td>
+                    <td>{{ViewData.mime}}</td>
+                  </tr>
+                  <tr>
+
+                    <td>Industry</td>
+                    <td>{{ViewData.data_of_industry}}</td>
+                  </tr>
+
+                </tbody>
+
+              </table>
+            </div>
+
+
+          </div>
+          <div class="col s12">
+            <div class="row">
+              <div class="col s12">
+
+                <div id="snapshot">
+                  <h5>Snapshot of the data</h5>
+                  <hr>
+                  <div id="snapshot-container">
+
+                  </div>
+                </div>
+
+
+                <div id="data-provided-container">
+                  <h5>Data Provided By</h5>
+                  <hr>
+                  <!-- <h6>{{ViewData.uploaded_by.first_name}} {{ViewData.uploaded_by.last_name}}</h6>
+                                    <h6>{{ViewData.uploaded_by.email}} | {{ViewData.uploaded_by.phone_number}}</h6> -->
+                  <h6 style="font-size:2rem">{{ViewData.uploaded_by.first_name}} {{ViewData.uploaded_by.last_name}}</h6>
+
+                  <h6>Contact</h6>
+                  <a class="btn ui-flat-button"><i
+                      class="material-icons left">email</i>{{ViewData.uploaded_by.email}}</a>
+                  &nbsp;
+                  <a class="btn ui-flat-button"><i
+                      class="material-icons left">phone</i>{{ViewData.uploaded_by.phone_number}}</a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col s4">
+        <div style="border-bottom: 1px solid black;
                 padding-bottom: 1rem;
                 padding-top: 1.5rem;">
-                    <span id="rating">
-                        <ngb-rating [max]=5 [rate]=1 [readonly]=true></ngb-rating>
-                    </span>
-                    &nbsp;
-                    <span class="price">
-                       <!-- &bull; {{ViewData.price}}$ -->
-                       &bull; {{ViewData.price}}$
-    
-                    </span>
-                </div>
-              
-                <div class="row">
-                    <div class=" col s12" style="padding:1rem">
-                        <a class="btn-large ui-flat-button" style="width: 100%;"><i class="material-icons left">add_shopping_cart</i>Add to cart</a>
+          <span id="rating">
+            <ngb-rating [max]=5 [rate]=rating [readonly]=true></ngb-rating>
+          </span>
+          &nbsp;
+          <span class="price">
+            <!-- &bull; {{ViewData.price}}$ -->
+            &bull; {{ViewData.price}}$
 
-                        <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;"><i class="material-icons left">shop</i>Buy</a>
-
-                    </div>
-                    <div class="col s12">
-                        <div style="text-align:center">
-                            <h5>Suggestions</h5>
-                            <div id="suggestions-container">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>     
-              
-          
+          </span>
         </div>
-        
+
+        <div class="row">
+          <div class=" col s12" style="padding:1rem">
+          
+            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;"><i
+                class="material-icons left">shop</i>Download</a>
+            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;" (click)="showFeedBackModal = true">
+                <i
+                class="material-icons left" >thumbs_up_down</i>
+                Rate and Review
+            </a>
+          </div>
+          <div class="col s12">
+            <div style="text-align:center">
+              <h5>Suggestions</h5>
+              <div id="suggestions-container">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
 
     </div>
+
+
+  </div>
 </div>

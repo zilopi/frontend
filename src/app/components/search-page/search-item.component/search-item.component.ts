@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
 import { Result } from '../result';
 
 @Component({
@@ -6,7 +6,7 @@ import { Result } from '../result';
     templateUrl:'search-item.component.html',
     styleUrls:['search-item.component.css']
 })
-export class SearchItem{
+export class SearchItem implements OnInit{
 
     // @Input() title;
     // @Input() dataOfIndustry;
@@ -23,6 +23,7 @@ export class SearchItem{
     @Output() download = new EventEmitter<{}>();
     @Output() view = new EventEmitter<{}>();
 
+    rating:Number;
     constructor(){
 
     }
@@ -31,6 +32,10 @@ export class SearchItem{
     }
     viewDetails(){
         this.view.emit(this.data);
+    }
+    ngOnInit(){
+        this.rating  = 5*(Number(this.data.total_compounded_rating)/(Number(this.data.total_numberof_ratings)*5));
+        
     }
 
 

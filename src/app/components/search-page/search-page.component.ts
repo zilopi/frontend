@@ -111,11 +111,11 @@ export class SearchPageComponent implements OnInit, OnChanges {
     this.filterIndustry = new FormGroup({
       selectAllIndustry: new FormControl(true, []),
 
-      automobile: new FormControl(false, []),
+      automobiles: new FormControl(false, []),
+      aviation: new FormControl(false, []),
+      banking: new FormControl(false, []),
       chemicals: new FormControl(false, []),
-      aeronautics: new FormControl(false, []),
-      logistics: new FormControl(false, []),
-      agriculture: new FormControl(false, [])
+      agricultureAndAlliedIndustries: new FormControl(false, [])
 
     });
     this.sortControl = new FormGroup({
@@ -230,18 +230,18 @@ export class SearchPageComponent implements OnInit, OnChanges {
       console.log(value);
       if (value == true) {
         this.filterIndustry.get('chemicals').patchValue(true);
-        this.filterIndustry.get('aeronautics').patchValue(true);
-        this.filterIndustry.get('automobile').patchValue(true);
-        this.filterIndustry.get('logistics').patchValue(true);
-        this.filterIndustry.get('agriculture').patchValue(true);
+        this.filterIndustry.get('aviation').patchValue(true);
+        this.filterIndustry.get('banking').patchValue(true);
+        this.filterIndustry.get('automobiles').patchValue(true);
+        this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
 
       } else {
-        this.filterIndustry.get('agriculture').patchValue(false);
+        this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(false);
 
         this.filterIndustry.get('chemicals').patchValue(false);
-        this.filterIndustry.get('aeronautics').patchValue(false);
-        this.filterIndustry.get('automobile').patchValue(false);
-        this.filterIndustry.get('logistics').patchValue(false);
+        this.filterIndustry.get('aviation').patchValue(false);
+        this.filterIndustry.get('banking').patchValue(false);
+        this.filterIndustry.get('automobiles').patchValue(false);
       }
     });
 
@@ -362,7 +362,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
     for (var key in industry) {
       if (industry.hasOwnProperty(key)) {
            if(industry[key]==true){
-             filters.push(key.toLowerCase())
+             filters.push(key.toLowerCase().replace(/ +/g, ""))
            }
       }
     }
@@ -370,7 +370,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
     for (var key in typeOfData) {
       if (typeOfData.hasOwnProperty(key)) {
            if(typeOfData[key]==true){
-             filters.push(key.toLowerCase())
+             filters.push(key.toLowerCase().replace(/ +/g, ""))
            }
       }
     }
@@ -406,7 +406,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
     for (var key in industry) {
       if (industry.hasOwnProperty(key)) {
            if(industry[key]==true){
-             filters.push(key.toLowerCase())
+             filters.push(key.toLowerCase().replace(/ +/g, ""))
            }
       }
     }
@@ -414,7 +414,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
     for (var key in typeOfData) {
       if (typeOfData.hasOwnProperty(key)) {
            if(typeOfData[key]==true){
-             filters.push(key.toLowerCase())
+             filters.push(key.toLowerCase().replace(/ +/g, ""))
            }
       }
     }

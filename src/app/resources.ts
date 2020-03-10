@@ -12,7 +12,7 @@ export const fetchPartnerFile = 'http://localhost/partner-fetch-personal.php'
 export const registerClientLink = 'http://localhost/client-register.php';
 export const loginClient = 'http://localhost/client-login.php';
 export const clientAboutMeUpdate = 'http://localhost/client-update-aboutme.php';
-
+export const feedbackUpload = 'http://localhost/update-rating.php';
 // Deploy Environment
 // export const registerPartnerLink = "partner-register.php";
 // export const loginPartner = "partner-login.php";
@@ -25,7 +25,7 @@ export const clientAboutMeUpdate = 'http://localhost/client-update-aboutme.php';
 // export const registerClientLink = 'client-register.php';
 // export const loginClient = 'client-login.php';
 // export const clientAboutMeUpdate = 'client-update-aboutme.php';
-
+// export const feedbackUpload = '';
 
 export const countries = [{ name: 'Afganistan' },
 { name: 'Albania' },

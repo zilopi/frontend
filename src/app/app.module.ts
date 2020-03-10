@@ -21,7 +21,6 @@ import { LoginService } from './services/login-service/login-service';
 import { PartnerDataUploadService } from './services/upload-partner-data-service/upload-partner-data-service';
 import { UpdateAboutMeService } from './services/account-service/aboutMeUpdate-service/aboutMeUpdate-service';
 import { SearchPageComponent } from './components/search-page/search-page.component';
-import { BarRatingModule } from './rating';
 import { SearchService } from './services/search-service/search.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { CacheRouteReuseStratergy } from './services/component-reuse-handler/PageReuse';

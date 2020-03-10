@@ -3,9 +3,43 @@
     margin-right: 2rem;
     margin-top: 1.5rem;
     padding: 2%;
+    position: relative;
 }
 #data-head{
     border-bottom:1px solid grey;
+}
+#rateModal{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255, 255,255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    margin-top: -2%;
+    margin-left: -2%;
+}
+#rateModalContainer{
+    background-color: white;
+    width: 50%;
+    display:block;
+    /* justify-content: space-between; */
+    border-bottom: 1px solid black;
+    padding: 1%;
+    border: 1px solid grey;
+    border-radius: 10px;
+    z-index: 10;
+    height : 60%
+}
+#rateModalContentContainer{
+    padding: 2%;
+    text-align: center;
+
+}
+#rating-bar{
+    color: yellow;
+    font-size: 50px;
 }
 .price{
     color:green;
