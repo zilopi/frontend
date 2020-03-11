@@ -9,6 +9,8 @@ import { DataStoreService } from './data-store.service';
 import { HttpClient } from '@angular/common/http';
 import { FetchFileService } from 'src/app/partner-account-module/partner-account-components/partner-data-results/fetchFile.service';
 import { fetchPartnerFile } from 'src/app/resources';
+import { filter } from 'rxjs/operators';
+
 
 
 @Component({
@@ -16,7 +18,14 @@ import { fetchPartnerFile } from 'src/app/resources';
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.css']
 })
-export class SearchPageComponent implements OnInit, OnChanges {
+export class SearchPageComponent implements OnInit {
+
+  constructor(private router: Router, private route: ActivatedRoute,
+              private searchService: SearchService, private dataStore: DataStoreService,
+              private Http: HttpClient, private fetchFileService: FetchFileService) {
+
+
+  }
 
   search: FormGroup;
   sortControl: FormGroup;
@@ -25,7 +34,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
   filterInformationFormat: FormGroup;
   locationFocusControl: FormGroup;
 
-  //Control to show the modal
+  // Control to show the modal
   showModal = false;
 
   pageNumber = 1;
@@ -45,15 +54,17 @@ export class SearchPageComponent implements OnInit, OnChanges {
 
 
   @ViewChild('searchInput', { static: true }) searchInput;
-  @ViewChild('content',{static:true}) modal;
+  @ViewChild('content', { static: true }) modal;
 
-  constructor(private router: Router, private route: ActivatedRoute, private searchService: SearchService,private dataStore:DataStoreService,private Http:HttpClient,private fetchFileService:FetchFileService) {
+  closeResult: string;
+
+  /** If these are true, then all of them in a category is shown */
+  showAllIndustries = true;
+  showAllInformationType = true;
+  showAllInformationFormat = true;
 
 
-  }
-  
-    
-  
+
 
   nextPage() {
     window.scrollTo(0, 0);
@@ -76,17 +87,16 @@ export class SearchPageComponent implements OnInit, OnChanges {
     }
 
   }
-
   ngOnInit() {
 
     /**  Initial loading when redirected from the landing page */
     this.showLoading = true;
 
-    let preloadedData:Result[];
+    let preloadedData: Result[];
     // fetch the data from the resolver
     preloadedData = this.route.snapshot.data.results;
 
-    //Set the data to the datastore
+    // Set the data to the datastore
     this.dataStore.setStoreResult(preloadedData);
 
     // Pagenate the data
@@ -114,15 +124,15 @@ export class SearchPageComponent implements OnInit, OnChanges {
     this.filterIndustry = new FormGroup({
       selectAllIndustry: new FormControl(true, []),
 
-      automobiles: new FormControl(false, []),
-      aviation: new FormControl(false, []),
-      banking: new FormControl(false, []),
-      chemicals: new FormControl(false, []),
-      agricultureAndAlliedIndustries: new FormControl(false, [])
+      automobiles: new FormControl(true, []),
+      aviation: new FormControl(true, []),
+      banking: new FormControl(true, []),
+      chemicals: new FormControl(true, []),
+      agricultureAndAlliedIndustries: new FormControl(true, [])
 
     });
     this.sortControl = new FormGroup({
-      sortType: new FormControl("relevance", [])
+      sortType: new FormControl('relevance', [])
     });
     this.filterInformationType = new FormGroup({
       showAll: new FormControl(true, []),
@@ -133,8 +143,8 @@ export class SearchPageComponent implements OnInit, OnChanges {
 
       demand: new FormControl(false, []),
 
-      marketValue : new FormControl(false, []),
-      uncategorized : new FormControl(false, [])
+      marketValue: new FormControl(false, []),
+      uncategorized: new FormControl(false, [])
 
     });
     this.filterInformationFormat = new FormGroup({
@@ -155,19 +165,22 @@ export class SearchPageComponent implements OnInit, OnChanges {
     // subscriptions
 
 
-    this.sortControl.get('sortType').valueChanges.subscribe(val=>{
-      if(val == 'recent'){
-        let convertedDateToTimeStampArray = this.allResults.map((element,index,array)=>{
+    // ** Sorts according to the timestamp  */
+    this.sortControl.get('sortType').valueChanges.subscribe(val => {
+      if (val == 'recent') {
+        const convertedDateToTimeStampArray = this.allResults.map((element, index, array) => {
+          // tslint:disable-next-line: no-string-literal
           element['timestamp'] = (new Date(element.upload_date)).getTime();
           return element;
-        })
-        convertedDateToTimeStampArray.sort( function(a,b){
-          return (b['timestamp'] - a['timestamp'])
-        })
-        this.updateResultArrays(this.filterArray(this.determineLocationFocusOfArray(convertedDateToTimeStampArray)));
+        });
+        convertedDateToTimeStampArray.sort(function(a, b) {
+          // tslint:disable-next-line: no-string-literal
+          return (b['timestamp'] - a['timestamp']);
+        });
+        this.updateResultArrays(convertedDateToTimeStampArray);
       }
 
-    })
+    });
     this.locationFocusControl.get('selectLocationFocus').valueChanges.subscribe((val: string) => {
 
       // In case of unfocused
@@ -177,28 +190,34 @@ export class SearchPageComponent implements OnInit, OnChanges {
       } else {
 
 
-        // console.log("location focus "+val);
+       console.log('location focus set to  ' + val + ' focusing locations for');
+       if (val != null) {
 
-        const locationFocusing = this.allResults.filter((element) => {
-          // console.log("Location focus "+val + " Element location focus "+element.location_focus);
-          if (val.toLowerCase().replace(/ +/g, '') == element.location_focus.toLowerCase().replace(/ +/g, '')) {
-            console.log(element);
-            return element;
+          const locationFocusing = this.allResults.filter((element) => {
 
-          }
-        });
-        this.updateResultArrays(locationFocusing);
+            if (val.toLowerCase().replace(/ +/g, '') == element.location_focus.toLowerCase().replace(/ +/g, '')) {
+              console.log(element);
+              return element;
+
+            }
+          });
+
+          this.updateResultArrays(locationFocusing);
+
+        }
       }
 
     });
 
     this.filterInformationFormat.get('showAllFormats').valueChanges.subscribe(val => {
       if (val == true) {
+        this.showAllInformationFormat = true;
         this.filterInformationFormat.get('word').patchValue(true);
         this.filterInformationFormat.get('excel').patchValue(true);
         this.filterInformationFormat.get('pdf').patchValue(true);
         this.filterInformationFormat.get('image').patchValue(true);
       } else {
+        this.showAllInformationFormat = true;
         this.filterInformationFormat.get('word').patchValue(false);
         this.filterInformationFormat.get('excel').patchValue(false);
         this.filterInformationFormat.get('pdf').patchValue(false);
@@ -208,7 +227,9 @@ export class SearchPageComponent implements OnInit, OnChanges {
     });
 
     this.filterInformationType.get('showAll').valueChanges.subscribe(val => {
+      console.log(`changed showAl filter information type to ${val}`);
       if (val == true) {
+        this.showAllInformationType = true;
         this.filterInformationType.get('marketSize').patchValue(true);
         this.filterInformationType.get('price').patchValue(true);
         this.filterInformationType.get('costOfProduction').patchValue(true);
@@ -218,6 +239,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
 
 
       } else {
+        this.showAllInformationType = false;
         this.filterInformationType.get('marketSize').patchValue(false);
         this.filterInformationType.get('price').patchValue(false);
         this.filterInformationType.get('costOfProduction').patchValue(false);
@@ -230,8 +252,10 @@ export class SearchPageComponent implements OnInit, OnChanges {
 
 
     this.filterIndustry.get('selectAllIndustry').valueChanges.subscribe(value => {
+
       console.log(value);
       if (value == true) {
+        this.showAllIndustries = true;
         this.filterIndustry.get('chemicals').patchValue(true);
         this.filterIndustry.get('aviation').patchValue(true);
         this.filterIndustry.get('banking').patchValue(true);
@@ -239,6 +263,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
         this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
 
       } else {
+        this.showAllIndustries = false;
         this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(false);
 
         this.filterIndustry.get('chemicals').patchValue(false);
@@ -253,15 +278,16 @@ export class SearchPageComponent implements OnInit, OnChanges {
     this.filterIndustry.get('selectAllIndustry').patchValue(true);
     this.filterInformationType.get('showAll').patchValue(true);
 
-
+ 
     refreshScripts();
     this.showLoading = false;
-  }
-  ngOnChanges() {
-
+    this.showAllIndustries = true;
   }
 
+ 
 
+
+  /**Pagenates the results and updates the main array from which the template renders the results */
   updateResultArrays(data: Result[]) {
     // this.allResults = data;
     this.numberOfResults = data.length;
@@ -293,6 +319,7 @@ export class SearchPageComponent implements OnInit, OnChanges {
     }
   }
 
+  /**Gets the query from the user and updates the layout */
   searchQuery() {
     this.showLoading = true;
     const q = this.searchInput.nativeElement.value;
@@ -310,9 +337,13 @@ export class SearchPageComponent implements OnInit, OnChanges {
     this.filterInformationFormat.reset();
     this.allResults = [];
     this.pagenatedResults = [];
-    
+    this.filterInformationFormat.get('showAllFormats').patchValue(true);
+    this.filterIndustry.get('selectAllIndustry').patchValue(true);
+    this.filterInformationType.get('showAll').patchValue(true);
+
   }
 
+  /**Async implementation for the search */
   searchPromise(query: string): Promise<[]> {
     return new Promise((resolve, reject) => {
       this.searchService.search(query).subscribe((data: any) => {
@@ -322,206 +353,135 @@ export class SearchPageComponent implements OnInit, OnChanges {
     });
   }
 
-  //Function called by template
-  determineLocationFocus() :Result[]{
-    let locationFocus = this.locationFocusControl.get('selectLocationFocus').value.toLowerCase().replace(/ +/g, ""); 
-    if (locationFocus== 'unfocused' ){
-      return this.allResults;
-    }else{
-      let locationFocusedResult = this.allResults.filter((data:Result)=>{
+  /**Listen for download event */
+  listenForDownload($event) {
 
-        if(data.location_focus.toLowerCase().replace(/ +/g, "") == locationFocus ){
-          return data;
-        }
-      });
-      return locationFocusedResult;
-    }
-  }
-
-  //general purpose array functions
-  determineLocationFocusOfArray(array:Result[]) :Result[]{
-    let locationFocus = this.locationFocusControl.get('selectLocationFocus').value.toLowerCase().replace(/ +/g, ""); 
-    if (locationFocus== 'unfocused' ){
-      return array;
-    }else{
-      let locationFocusedResult:Result[] = array.filter((data:Result)=>{
-
-        if(data.location_focus.toLowerCase().replace(/ +/g, "") == locationFocus ){
-          return data;
-        }
-      });
-      return locationFocusedResult;
-    }
-  }
-  filterArray(data:Result[]):Result[]{
-    const industry = this.filterIndustry.value;
-    const typeOfData = this.filterInformationType.value;
-    const formatOfData = this.filterInformationFormat.value;
-   
-    let filters = [];
-
-
-    //Check for industry
-    for (var key in industry) {
-      if (industry.hasOwnProperty(key)) {
-           if(industry[key]==true){
-             filters.push(key.toLowerCase().replace(/ +/g, ""))
-           }
-      }
-    }
-    //Check for type of data
-    for (var key in typeOfData) {
-      if (typeOfData.hasOwnProperty(key)) {
-           if(typeOfData[key]==true){
-             filters.push(key.toLowerCase().replace(/ +/g, ""))
-           }
-      }
-    }
-    //TODO: Format of data
-    // console.log(filters);
-    let finalResult = data.filter((value:Result)=>{
-      console.log(value);
-      if(filters.includes(value.information_type.toLowerCase().replace(/ +/g, "")) 
-      &&
-         filters.includes(value.data_of_industry.toLowerCase().replace(/ +/g, ""))){
-        return value;
-      }
-    })
-    return finalResult;
-  }
-
-
-  filter() {
-    const industry = this.filterIndustry.value;
-    const typeOfData = this.filterInformationType.value;
-    const formatOfData = this.filterInformationFormat.value;
-    let locationFocusedResult = this.determineLocationFocus();
-
-    let filters = [];
-
-    // console.log(locationFocusedResult);
-    // console.log(industry);
-    // console.log(typeOfData);
-    // console.log(formatOfData);
-
-
-    //Check for industry
-    for (var key in industry) {
-      if (industry.hasOwnProperty(key)) {
-           if(industry[key]==true){
-             filters.push(key.toLowerCase().replace(/ +/g, ""))
-           }
-      }
-    }
-    //Check for type of data
-    for (var key in typeOfData) {
-      if (typeOfData.hasOwnProperty(key)) {
-           if(typeOfData[key]==true){
-             filters.push(key.toLowerCase().replace(/ +/g, ""))
-           }
-      }
-    }
-    //TODO: Format of data
-    // console.log(filters);
-    let finalResult = locationFocusedResult.filter((value:Result)=>{
-      console.log(value);
-      if(filters.includes(value.information_type.toLowerCase().replace(/ +/g, "")) 
-      &&
-         filters.includes(value.data_of_industry.toLowerCase().replace(/ +/g, ""))){
-        return value;
-      }
-    })
-
-
-    this.updateResultArrays(finalResult);
-  }
-
-
-  resetFilters(){
-    this.filterIndustry.reset();
-    this.filterInformationFormat.reset();
-    this.filterInformationType.reset();
-    let locationFocused = this.determineLocationFocus();
-    this.updateResultArrays(locationFocused);
-  }
-
-  closeResult: string;
-  listenForDownload($event){
-  
-    if(sessionStorage.getItem('id')==null || sessionStorage.getItem('id')==undefined){
-      this.showModal = true
+    if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined) {
+      this.showModal = true;
       // alert("Open modal");
 
-    }else{
+    } else {
       // alert("Download")
-      this.fetchFile($event)
+      this.fetchFile($event);
     }
   }
-  listenForView($event){
+  listenForView($event) {
     this.dataStore.setData($event);
     this.dataStore.setStoreResult(this.allResults);
-    this.router.navigate(['/view'])
+    this.router.navigate(['/view']);
   }
 
-  fetchFile(Result:Result){
+  fetchFile(Result: Result) {
     const file = new FormData;
-    file.append('mime',Result.mime);
-    file.append('uri',Result.url)
-    
-    this.Http.post(fetchPartnerFile,file,{
-        responseType:'text'
+    file.append('mime', Result.mime);
+    file.append('uri', Result.url);
+
+    this.Http.post(fetchPartnerFile, file, {
+      responseType: 'text'
     }
-    ).subscribe((data:string)=>{
+    ).subscribe((data: string) => {
 
-        /**This gets the signed url required for download of the file */
-         ;
+      /**This gets the signed url required for download of the file */
 
-        /**This is the internal code require to dispose the file in download form */
-        this.showFile(data,Result);
-    })
-   
-}
-public showFile(value,Result:Result): void {
+
+      /**This is the internal code require to dispose the file in download form */
+      this.showFile(data, Result);
+    });
+
+  }
+  public showFile(value, Result: Result): void {
     this.fetchFileService.fetchFile(value)
-        .subscribe(x => {
-            // It is necessary to create a new blob object with mime-type explicitly set
-            // otherwise only Chrome works like it should
-            var newBlob = new Blob([x], { type: Result.mime });
+      .subscribe(x => {
+        // It is necessary to create a new blob object with mime-type explicitly set
+        // otherwise only Chrome works like it should
+        const newBlob = new Blob([x], { type: Result.mime });
 
-            // IE doesn't allow using a blob object directly as link href
-            // instead it is necessary to use msSaveOrOpenBlob
-            if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-                window.navigator.msSaveOrOpenBlob(newBlob);
-                return;
-            }
+        // IE doesn't allow using a blob object directly as link href
+        // instead it is necessary to use msSaveOrOpenBlob
+        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+          window.navigator.msSaveOrOpenBlob(newBlob);
+          return;
+        }
 
-            // For other browsers: 
-            // Create a link pointing to the ObjectURL containing the blob.
-            const data = window.URL.createObjectURL(newBlob);
+        // For other browsers:
+        // Create a link pointing to the ObjectURL containing the blob.
+        const data = window.URL.createObjectURL(newBlob);
 
-            var link = document.createElement('a');
-            link.href = data;
+        const link = document.createElement('a');
+        link.href = data;
 
-            // if the mime type is of application,then the extension is added via the database column
-            if(Result.mime.includes('application')){
-                link.download = Result.title+"."+Result.extension;
-            }else{
-                link.download =  Result.title;
-            }
-            
-        
-            // this is necessary as link.click() does not work on the latest firefox
-            link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        // if the mime type is of application,then the extension is added via the database column
+        if (Result.mime.includes('application')) {
+          link.download = Result.title + '.' + Result.extension;
+        } else {
+          link.download = Result.title;
+        }
 
-            setTimeout(function () {
-                // For Firefox it is necessary to delay revoking the ObjectURL
-                window.URL.revokeObjectURL(data);
-                link.remove();
-            }, 100);
-        });
-}
 
-  
+        // this is necessary as link.click() does not work on the latest firefox
+        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+
+        setTimeout(function() {
+          // For Firefox it is necessary to delay revoking the ObjectURL
+          window.URL.revokeObjectURL(data);
+          link.remove();
+        }, 100);
+      });
+  }
+
+
+
+  //Filter called by the template
+  callFilter(){
+    this.locationFocusControl.get('selectLocationFocus').patchValue('Unfocused');
+    this.sortControl.get('sortType').patchValue('Relevance');
+    this.updateResultArrays(this.filter(this.allResults));
+
+  }
+
+  //General purpose function
+  filter(data:Result[]):Result[]{
+    console.log(this.showAllIndustries , this.showAllInformationType)
+
+    // If both the show all controls are true,then dont filter anything
+    if(this.showAllIndustries == true && this.showAllInformationType == true){
+      
+      return this.allResults;
+    }else{
+      let industries = this.filterIndustry.value;
+      let informationType = this.filterInformationType.value;
+
+      let filters = [];
+      let industryKeys = Object.keys(industries);
+      let informationTypeKeys = Object.keys(informationType);
+
+      for( var i of industryKeys){
+        if(industries[i] == true){
+          filters.push(i.toLowerCase().replace(/ /g, ""))
+        }
+      }
+      for(var i of informationTypeKeys){
+        if(informationTypeKeys[i] == true){
+          filters.push(i.toLowerCase().replace(/ /g, ""));
+        }
+      }
+      console.log(filters);
+
+      let filteredResults = data.filter((element)=>{
+        if(this.showAllIndustries==false && this.showAllInformationType == true){
+          if(filters.includes(element.information_type.toLowerCase().replace(/ /g, ""))){
+            return element;
+          }
+        }else if(this.showAllIndustries == true && this.showAllInformationType == false){
+          if(filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))){
+            return element;
+          }
+        }
+      })
+
+      return filteredResults;
+    }
+  }
 }
 
 

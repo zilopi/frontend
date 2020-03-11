@@ -117,7 +117,7 @@
                   <div class="switch inline-switch" >
                     <label>
                       Off
-                      <input type="checkbox" formControlName="selectAllIndustry">
+                      <input type="checkbox" formControlName="selectAllIndustry" >
                       <span class="lever"></span>
                       On
                     </label>
@@ -125,31 +125,31 @@
                 </div>
                 <div class="align-left">
                   <label>
-                    <input type="checkbox" class="filled-in" checked="checked" formControlName="chemicals" />
+                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="chemicals" />
                     <span>Chemicals</span>
                   </label>
                 </div>
                 <div class="align-left">
                   <label>
-                    <input type="checkbox" class="filled-in" checked="checked" formControlName="banking" />
+                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="banking" />
                     <span>Banking</span>
                   </label>
                 </div>
                 <div class="align-left">
                   <label>
-                    <input type="checkbox" class="filled-in" checked="checked" formControlName="aviation" />
+                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="aviation" />
                     <span>Aviation</span>
                   </label>
                 </div>
                 <div class="align-left">
                   <label>
-                    <input type="checkbox" class="filled-in" checked="checked" formControlName="automobiles" />
+                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="automobiles" />
                     <span>Automobiles</span>
                   </label>
                 </div>
                 <div class="align-left">
                   <label>
-                    <input type="checkbox" class="filled-in" checked="checked" formControlName="agricultureAndAlliedIndustries" />
+                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="agricultureAndAlliedIndustries" />
                     <span>Agriculture And Allied Industries</span>
                   </label>
                 </div>
@@ -255,10 +255,10 @@
             </form>
           </div>
           <div style="margin-top: 1rem; text-align: center;">
-            <button class="btn red" (click)="resetFilters()" style="width: 100%;">Reset Filters</button>
+            <button class="btn red"  style="width: 100%;">Reset Filters</button>
           <br>
-            <button class="btn green" (click)="filter()" style="width: 100%;margin-top:
-            1rem">Set Filters</button>
+            <button class="btn green"  style="width: 100%;margin-top:
+            1rem" (click)="callFilter()">Set Filters</button>
           </div>
         </div>
         <!-- Right hand side content -->

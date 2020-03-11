@@ -44,19 +44,17 @@ export class NavigationComponent implements OnInit {
       }
     });
     }
+ 
   ngOnInit() {
-
-
-  }
-  showIndustriesControl = false;
-  showIndustries(){
-    this.showIndustriesControl = true;
-  }
-  closeShowIndustries(){
-    this.showIndustriesControl = false;
+    
 
   }
+ //For industry
+ 
 
+
+ 
+ //For Profile
   showProfileDropDownControl =false;
   showProfileDropDown(){
     this.showProfileDropDownControl = true;
@@ -66,10 +64,11 @@ export class NavigationComponent implements OnInit {
   }
 
 
+  // for logins
   showDropDownControl = false;
   showDropDown(){
     this.showDropDownControl = true;
-    this.showIndustriesControl = false;
+
   }
   closeDropDown(){
     this.showDropDownControl = false;

@@ -1,5 +1,5 @@
 <div class="navbar-fixed">
-  <nav>
+    <nav>
     <div class="nav-wrapper">
       <div  style="border-right:1px solid lightgrey">
         <a href="#" [routerLink]="['landing-page']" class="brand-logo"><img src="../../../assets/vectorpaint.svg" alt="" style="width: 8vw;
@@ -13,7 +13,7 @@
       <ul id="nav-mobile" class=" hide-on-med-and-down right">
         <span>
         <li><a *ngIf="!currentRoute.includes('landing-page')" [routerLink]="['landing-page']">Home</a></li>
-        <li (mouseenter)="showIndustries()"><a>Industry</a></li>
+        <li class="industryDropDown"><a>Industry</a></li>
         <li><a>Product Offering</a></li>
         <li><a>About Us</a></li>
       </span>
@@ -82,9 +82,7 @@
       
     </div>
     
-    <div id="industries-container"  class="accent-background" *ngIf="showIndustriesControl"
-     (mouseleave) = "closeShowIndustries()"
-     >
+    <div id="industries-container"  class="accent-background industryDropDown" *ngIf='false' >
         <h4 style="text-align: center; color: white; text-transform: uppercase;font-size: 25px;">Industries that we provide data for</h4>
 
         <div class="accent-background" id="industry-topics">
