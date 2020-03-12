@@ -17,7 +17,7 @@ export class ClientAccountDashboardComponent implements OnInit{
 
     //Client Attributes
     id;
-    firstName; lastName; AboutMe:String; ; Country ; Industry; Phone ; Email
+    firstName; lastName; AboutMe:String; ; Country ; Industry; Phone ; Email; Wallet
     
     constructor(private aboutMeUpdater: UpdateAboutMeService){
 
@@ -30,7 +30,7 @@ export class ClientAccountDashboardComponent implements OnInit{
         this.Email = sessionStorage.getItem('Email');
         this.AboutMe  = sessionStorage.getItem("AboutMe");
         this.id = sessionStorage.getItem('id');
-
+        this.Wallet = sessionStorage.getItem('Wallet');
         refreshScripts();
     }
 

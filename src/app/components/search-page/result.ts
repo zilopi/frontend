@@ -6,7 +6,7 @@ export interface Result {
     keywords: string;
     information_type: string;
     data_rating: string;
-    price: string;
+    price: Number;
     currency: string;
     code_index: string;
     uuid: string;

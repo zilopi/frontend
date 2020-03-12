@@ -48,6 +48,10 @@
   border:1px solid grey;
 
 }
+.download-modal-price{
+  font-size: 25px;
+  color: green;
+}
 #search-container {
   background-color: #F5F8FB;
     border-bottom: 1px solid lightgrey;

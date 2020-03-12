@@ -47,7 +47,7 @@ export class UserComponent implements OnInit {
         sessionStorage.setItem('Phone',data.phone_number);
         sessionStorage.setItem('AboutMe' , data.about_me);
         sessionStorage.setItem('AccountType',"Client");
-
+        sessionStorage.setItem('Wallet',data.wallet_balance);
         this.router.navigate(['landing-page']);
       }else{
         this.displayError = true;

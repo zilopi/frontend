@@ -54,6 +54,8 @@ children: [
 {
   path: 'client-account',
   loadChildren : './client-account-module/client-account.module#ClientAccountModule'
+  // src/app/client-account-module/client-account.module.ts
+  // loadChildren : 'src/app/client-account-module/client-account.module#ClientAccountModule'
 },
 
 // {

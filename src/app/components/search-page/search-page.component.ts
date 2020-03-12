@@ -9,7 +9,7 @@ import { DataStoreService } from './data-store.service';
 import { HttpClient } from '@angular/common/http';
 import { FetchFileService } from 'src/app/partner-account-module/partner-account-components/partner-data-results/fetchFile.service';
 import { fetchPartnerFile } from 'src/app/resources';
-import { filter } from 'rxjs/operators';
+
 
 
 
@@ -52,6 +52,12 @@ export class SearchPageComponent implements OnInit {
   // Contains all the data that is received from the server
   allResults: Result[] = [];
 
+  //
+  showBuyModal = false;
+  showPurchaseModal = true;
+  showCompletedPurchaseModal = false;
+
+  datasetForDownload:Result = null
 
   @ViewChild('searchInput', { static: true }) searchInput;
   @ViewChild('content', { static: true }) modal;
@@ -63,6 +69,14 @@ export class SearchPageComponent implements OnInit {
   showAllInformationType = true;
   showAllInformationFormat = true;
 
+  closeTransaction(){
+    this.showPurchaseModal = true;
+    this.showCompletedPurchaseModal =false;
+    this.showBuyModal = false;
+    this.datasetForDownload = null;
+  }
+  //Current wallet amount'
+  walletAmount:Number;
 
 
 
@@ -89,6 +103,8 @@ export class SearchPageComponent implements OnInit {
   }
   ngOnInit() {
 
+
+
     /**  Initial loading when redirected from the landing page */
     this.showLoading = true;
 
@@ -106,6 +122,8 @@ export class SearchPageComponent implements OnInit {
     this.allResults = preloadedData;
 
 
+    //Set the wallet amount
+    this.walletAmount = Number(sessionStorage.getItem('Wallet'));
 
     console.log(this.results);
     if (this.results.length == 0) {
@@ -136,15 +154,15 @@ export class SearchPageComponent implements OnInit {
     });
     this.filterInformationType = new FormGroup({
       showAll: new FormControl(true, []),
-      marketSize: new FormControl(false, []),
-      price: new FormControl(false, []),
+      marketSize: new FormControl(true, []),
+      price: new FormControl(true, []),
 
-      costOfProduction: new FormControl(false, []),
+      costOfProduction: new FormControl(true, []),
 
-      demand: new FormControl(false, []),
+      demand: new FormControl(true, []),
 
-      marketValue: new FormControl(false, []),
-      uncategorized: new FormControl(false, [])
+      marketValue: new FormControl(true, []),
+      uncategorized: new FormControl(true, [])
 
     });
     this.filterInformationFormat = new FormGroup({
@@ -226,52 +244,63 @@ export class SearchPageComponent implements OnInit {
       }
     });
 
-    this.filterInformationType.get('showAll').valueChanges.subscribe(val => {
-      console.log(`changed showAl filter information type to ${val}`);
-      if (val == true) {
-        this.showAllInformationType = true;
-        this.filterInformationType.get('marketSize').patchValue(true);
-        this.filterInformationType.get('price').patchValue(true);
-        this.filterInformationType.get('costOfProduction').patchValue(true);
-        this.filterInformationType.get('demand').patchValue(true);
-        this.filterInformationType.get('marketValue').patchValue(true);
-        this.filterInformationType.get('uncategorized').patchValue(true);
+   
 
 
-      } else {
-        this.showAllInformationType = false;
-        this.filterInformationType.get('marketSize').patchValue(false);
-        this.filterInformationType.get('price').patchValue(false);
-        this.filterInformationType.get('costOfProduction').patchValue(false);
-        this.filterInformationType.get('demand').patchValue(false);
-        this.filterInformationType.get('marketValue').patchValue(false);
-        this.filterInformationType.get('uncategorized').patchValue(false);
+    // Add listeners to the checkboxes
+    let industryCheckboxes = document.querySelectorAll('.value-input-industry');
+    industryCheckboxes.forEach((e, i, a)=>{
+      // Get the current value of the checkbox
+      e.addEventListener('change',(x)=>{
+        let value = this.filterIndustry.get(e.getAttribute('formControlName')).value;
+        
+        if(value == false) {
+          this.showAllIndustries = false;
+          this.filterIndustry.get('selectAllIndustry').patchValue(false);
+        } else if(value == true) {
+          // if this checkbox becomes true, check if all  of the checkbox are true or not, if they are then set the showAllIndustries control
+          // to true as well
+            let setAllIndustryControlToTrue = true;
+            for(let i = 0 ; i < industryCheckboxes.length ; i ++) {
+                let formControlName = industryCheckboxes[i].getAttribute('formControlName');
+                let formControlValue = this.filterIndustry.get(formControlName).value;
+                if(formControlValue == false) {
+                  setAllIndustryControlToTrue = false;
+                  break
+                }
+            }
+            this.showAllIndustries = setAllIndustryControlToTrue;
+            this.filterIndustry.get('selectAllIndustry').patchValue(setAllIndustryControlToTrue);
+        }
+      })
+    })
 
-      }
-    });
-
-
-    this.filterIndustry.get('selectAllIndustry').valueChanges.subscribe(value => {
-
-      console.log(value);
-      if (value == true) {
-        this.showAllIndustries = true;
-        this.filterIndustry.get('chemicals').patchValue(true);
-        this.filterIndustry.get('aviation').patchValue(true);
-        this.filterIndustry.get('banking').patchValue(true);
-        this.filterIndustry.get('automobiles').patchValue(true);
-        this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
-
-      } else {
-        this.showAllIndustries = false;
-        this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(false);
-
-        this.filterIndustry.get('chemicals').patchValue(false);
-        this.filterIndustry.get('aviation').patchValue(false);
-        this.filterIndustry.get('banking').patchValue(false);
-        this.filterIndustry.get('automobiles').patchValue(false);
-      }
-    });
+    let informationTypeCheckboxes = document.querySelectorAll('.value-input-type');
+    informationTypeCheckboxes.forEach((e, i, a)=>{
+      // Get the current value of the checkbox
+      e.addEventListener('change',(x)=>{
+        let value = this.filterInformationType.get(e.getAttribute('formControlName')).value;
+        
+        if(value == false) {
+          this.showAllInformationType = false;
+          this.filterInformationType.get('showAll').patchValue(false);
+        } else if(value == true) {
+          // if this checkbox becomes true, check if all  of the checkbox are true or not, if they are then set the showAllIndustries control
+          // to true as well
+            let setAllControlToTrue = true;
+            for(let i = 0 ; i < informationTypeCheckboxes.length ; i ++) {
+                let formControlName = informationTypeCheckboxes[i].getAttribute('formControlName');
+                let formControlValue = this.filterInformationType.get(formControlName).value;
+                if(formControlValue == false) {
+                  setAllControlToTrue = false;
+                  break;
+                }
+            }
+            this.showAllInformationType = setAllControlToTrue;
+            this.filterInformationType.get('showAll').patchValue(setAllControlToTrue);
+        }
+      })
+    })
 
     // Set initial values of the show all controls to true
     this.filterInformationFormat.get('showAllFormats').patchValue(true);
@@ -282,8 +311,52 @@ export class SearchPageComponent implements OnInit {
     refreshScripts();
     this.showLoading = false;
     this.showAllIndustries = true;
+    this.showAllInformationType = true;
   }
 
+  // Toggle the industries via a function not through subscription
+  toggleIndustries() {
+    this.showAllIndustries = !this.showAllIndustries;
+    if (this.showAllIndustries == true) {
+      // this.showAllIndustries = true;
+      this.filterIndustry.get('chemicals').patchValue(true);
+      this.filterIndustry.get('aviation').patchValue(true);
+      this.filterIndustry.get('banking').patchValue(true);
+      this.filterIndustry.get('automobiles').patchValue(true);
+      this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
+
+    } else {
+      // this.showAllIndustries = false;
+      this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(false);
+      this.filterIndustry.get('chemicals').patchValue(false);
+      this.filterIndustry.get('aviation').patchValue(false);
+      this.filterIndustry.get('banking').patchValue(false);
+      this.filterIndustry.get('automobiles').patchValue(false);
+    }
+  }
+  toggleInformationType(){
+    this.showAllInformationType = !this.showAllInformationType;
+    if (this.showAllInformationType == true) {
+      // this.showAllInformationType = true;
+      this.filterInformationType.get('marketSize').patchValue(true);
+      this.filterInformationType.get('price').patchValue(true);
+      this.filterInformationType.get('costOfProduction').patchValue(true);
+      this.filterInformationType.get('demand').patchValue(true);
+      this.filterInformationType.get('marketValue').patchValue(true);
+      this.filterInformationType.get('uncategorized').patchValue(true);
+
+
+    } else {
+      // this.showAllInformationType = false;
+      this.filterInformationType.get('marketSize').patchValue(false);
+      this.filterInformationType.get('price').patchValue(false);
+      this.filterInformationType.get('costOfProduction').patchValue(false);
+      this.filterInformationType.get('demand').patchValue(false);
+      this.filterInformationType.get('marketValue').patchValue(false);
+      this.filterInformationType.get('uncategorized').patchValue(false);
+
+    }
+  }
  
 
 
@@ -353,7 +426,10 @@ export class SearchPageComponent implements OnInit {
     });
   }
 
-  /**Listen for download event */
+  /**Listen for download event from the search result
+   * Show the required modals
+  */
+  
   listenForDownload($event) {
 
     if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined) {
@@ -362,13 +438,29 @@ export class SearchPageComponent implements OnInit {
 
     } else {
       // alert("Download")
-      this.fetchFile($event);
+      this.datasetForDownload = $event;
+      this.showBuyModal = true;
+      // this.fetchFile($event);
     }
   }
+
+  /** Listen for the view event from the search result */
   listenForView($event) {
     this.dataStore.setData($event);
     this.dataStore.setStoreResult(this.allResults);
     this.router.navigate(['/view']);
+  }
+  
+  //Convert the values for template
+  convertValueToString(walletAmount,price):string{
+    return (Number(walletAmount)-Number(price)).toString();
+  }
+
+  /**initiaite the download from the buy modal */
+  initiateDownload(){
+    this.showCompletedPurchaseModal= true;
+    this.showPurchaseModal = false;
+    this.fetchFile(this.datasetForDownload);
   }
 
   fetchFile(Result: Result) {
@@ -431,23 +523,24 @@ export class SearchPageComponent implements OnInit {
 
 
 
-  //Filter called by the template
-  callFilter(){
+  // Filter called by the template
+  callFilter() {
     this.locationFocusControl.get('selectLocationFocus').patchValue('Unfocused');
     this.sortControl.get('sortType').patchValue('Relevance');
     this.updateResultArrays(this.filter(this.allResults));
 
   }
 
-  //General purpose function
-  filter(data:Result[]):Result[]{
+  // General purpose function
+  filter(data:Result[]):Result[] {
+    console.log("Filters")
     console.log(this.showAllIndustries , this.showAllInformationType)
 
     // If both the show all controls are true,then dont filter anything
-    if(this.showAllIndustries == true && this.showAllInformationType == true){
+    if(this.showAllIndustries == true && this.showAllInformationType == true) {
       
       return this.allResults;
-    }else{
+    } else {
       let industries = this.filterIndustry.value;
       let informationType = this.filterInformationType.value;
 
@@ -455,25 +548,28 @@ export class SearchPageComponent implements OnInit {
       let industryKeys = Object.keys(industries);
       let informationTypeKeys = Object.keys(informationType);
 
-      for( var i of industryKeys){
-        if(industries[i] == true){
+      for( var i of industryKeys) {
+        if(industries[i] == true) {
+          console.log("pushing industry "+i)
           filters.push(i.toLowerCase().replace(/ /g, ""))
         }
       }
-      for(var i of informationTypeKeys){
-        if(informationTypeKeys[i] == true){
+      for(var i of informationTypeKeys) {
+        if(informationType[i] == true) {
+          console.log("pushing information type "+i)
+
           filters.push(i.toLowerCase().replace(/ /g, ""));
         }
       }
       console.log(filters);
 
       let filteredResults = data.filter((element)=>{
-        if(this.showAllIndustries==false && this.showAllInformationType == true){
-          if(filters.includes(element.information_type.toLowerCase().replace(/ /g, ""))){
+        if(this.showAllIndustries==false && this.showAllInformationType == true) {
+          if(filters.includes(element.information_type.toLowerCase().replace(/ /g, ""))) {
             return element;
           }
-        }else if(this.showAllIndustries == true && this.showAllInformationType == false){
-          if(filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))){
+        } else if(this.showAllIndustries == true && this.showAllInformationType == false) {
+          if(filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))) {
             return element;
           }
         }

@@ -28,6 +28,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { SearchItem } from './components/search-page/search-item.component/search-item.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ViewSearchDetailsComponent } from './components/search-page/view-details.component/view-details.component';
+import { ClientAccountModule } from './client-account-module/client-account.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ViewSearchDetailsComponent } from './components/search-page/view-detail
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    PartnerAccountModule.forRoot()
+    PartnerAccountModule.forRoot(),
+    ClientAccountModule,
   ],
   providers: [{
     provide: RouteReuseStrategy,

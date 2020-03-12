@@ -51,6 +51,7 @@ export class PartnerComponent implements OnInit {
         sessionStorage.setItem('Rating',data.rating);
         sessionStorage.setItem('Industry',data.industry);
         sessionStorage.setItem('AccountType',"Partner");
+    
         // this.dataService.setPartnerId(data.id);
 
         //Navigate to the dashboard

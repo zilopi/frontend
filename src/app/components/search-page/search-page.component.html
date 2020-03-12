@@ -1,5 +1,5 @@
-<div id="page-root" >
-  
+<div id="page-root">
+
 
 
   <div class="card" id="main-card">
@@ -8,7 +8,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h4>You are not Logged in</h4>
-          <a  (click)="showModal =false"><i class="material-icons close-modal ">close</i></a>
+          <a (click)="showModal =false"><i class="material-icons close-modal ">close</i></a>
         </div>
         <div style="text-align: center;" class="modal-data">
           <p style="font-size: large;">You should be logged in to download this data</p>
@@ -18,16 +18,106 @@
           <br>
           <hr>
           <p style="font-size: large;">Not a part of us?</p>
-            <div>
-              <button class="btn-large ui-flat-button" [routerLink]="['/user/register-client']">Join as a Client</button>
-            </div>
+          <div>
+            <button class="btn-large ui-flat-button" [routerLink]="['/user/register-client']">Join as a Client</button>
+          </div>
         </div>
       </div>
+
+
     </div>
 
+
+
+    <div class="modal-holder" *ngIf="showBuyModal">
+      <div class="modal-content" *ngIf="showPurchaseModal">
+        <div class="modal-header">
+          <h4>Download Dataset</h4>
+          <a><i class="material-icons close-modal " (click)="showBuyModal=false">close</i></a>
+        </div>
+        <div class="modal-data">
+          <h5>You'll be downloading the following dataset</h5>
+          <div class="row" style="padding-top: 1rem">
+            <div class="col s8" style="border-right: 1px solid gainsboro">
+              <h6 style="font-size: 2rem;
+              font-weight: 400;">{{datasetForDownload.title}}</h6>
+              <span>Date &bull; </span><span>{{datasetForDownload.data_of_industry}} &bull; </span> <span>
+                {{datasetForDownload.information_type}}</span>
+              <p>{{datasetForDownload.description}}</p>
+              <ngb-rating [max]=5 [rate]=1 style="font-size: 3rem;
+              color: yellow;" [readonly]=true></ngb-rating>
+            </div>
+            <div class="col s4">
+              <div class="row">
+                <div class="col s8">
+                  Available Wallet Balance
+                </div>
+                <div class="col s4">
+                  <span class="download-modal-price">{{walletAmount}}$</span>
+                </div>
+              </div>
+              <div class="row" style="padding-left:1%">
+                <div class="col s8">
+                  Price
+                </div>
+                <div class="col s4">
+                  <span class="download-modal-price">{{datasetForDownload.price}}$</span>
+
+                </div>
+              </div>
+              <div class="row" style="    padding-top: 5%;
+              border-top: 1px solid grey;">
+                <div class="col s8">
+                  Final Wallet Balance
+                </div>
+                <div class="col s4">
+                  <span
+                    class="download-modal-price">{{convertValueToString(walletAmount,datasetForDownload.price)}}$</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <button class="btn-large ui-flat-button" style="width: 100%;" (click)="showBuyModal=false">Cancel</button>
+
+            </div>
+            <div class="col s6">
+              <button class="btn-large ui-flat-button" style="width: 100%;" (click)="initiateDownload()">Buy</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-content" *ngIf="showCompletedPurchaseModal">
+        <div class="modal-header">
+          <h4>Purchase Successful
+             </h4>
+             <a><i class="material-icons close-modal " (click)="closeTransaction()">close</i></a>
+
+        </div>
+        <div class="modal-data">
+          <h6>Your DataSet will be visible in your dashboard shortly</h6>
+          <br>
+          <span>Updated Wallet Balance :</span>
+          <span class="download-modal-price">{{convertValueToString(walletAmount,datasetForDownload.price)}}</span>
+          <div class="row">
+            <button class="col s6 btn-large ui-flat-button" style="margin:0.5%"(click)="closeTransaction()">
+              Close
+            </button>
+            <button class="col s6 ui-flat-button btn-large" style="margin:0.5%">
+              Show My Downloads
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
     <div id="search-container">
       <div id="search-form" class="z-depth-2">
-        <input type="text" name="" id="" placeholder="Search Here" id="search-input" #searchInput >
+        <input type="text" name="" id="" placeholder="Search Here" id="search-input" #searchInput>
         <button id="search-submit" (click)="searchQuery()">Search</button>
       </div>
       <div class="" style="padding-top:1rem">
@@ -43,8 +133,8 @@
                       <div class="input-feild">
                         <label for="">Sort By</label>
                         <select name="" id="" formControlName="sortType">
-                          <option value="relevance" >Relevance</option>
-                          <option value="recent" >Recent</option>
+                          <option value="relevance">Relevance</option>
+                          <option value="recent">Recent</option>
                         </select>
                       </div>
                     </form>
@@ -77,7 +167,7 @@
 
               </div>
 
-             
+
             </div>
           </div>
 
@@ -93,9 +183,11 @@
           <div class="spinner-layer spinner-blue-only">
             <div class="circle-clipper left">
               <div class="circle"></div>
-            </div><div class="gap-patch">
+            </div>
+            <div class="gap-patch">
               <div class="circle"></div>
-            </div><div class="circle-clipper right">
+            </div>
+            <div class="circle-clipper right">
               <div class="circle"></div>
             </div>
           </div>
@@ -105,178 +197,193 @@
         <!-- Left Hand Side Controls -->
         <div class="col s3 filters-container " style="border-right: 1px solid grey;">
           <div>
-           
+
           </div>
           <div class="search-filter-categories" style="border-top: none;">
-            <div class="filter-headings" >
+            <div class="filter-headings">
               <h6>Industry</h6>
             </div>
-              <form action="" [formGroup]="filterIndustry">
-                <div style="padding-bottom: 1rem;">
-                  <span>Show all industries</span>
-                  <div class="switch inline-switch" >
-                    <label>
-                      Off
-                      <input type="checkbox" formControlName="selectAllIndustry" >
-                      <span class="lever"></span>
-                      On
-                    </label>
-                  </div>
-                </div>
-                <div class="align-left">
+            <form action="" [formGroup]="filterIndustry">
+              <div style="padding-bottom: 1rem;">
+                <span>Show all industries</span>
+                <div class="switch inline-switch">
                   <label>
-                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="chemicals" />
-                    <span>Chemicals</span>
+                    Off
+                    <input type="checkbox" formControlName="selectAllIndustry" (click)="toggleIndustries()">
+                    <span class="lever"></span>
+                    On
                   </label>
                 </div>
-                <div class="align-left">
-                  <label>
-                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="banking" />
-                    <span>Banking</span>
-                  </label>
-                </div>
-                <div class="align-left">
-                  <label>
-                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="aviation" />
-                    <span>Aviation</span>
-                  </label>
-                </div>
-                <div class="align-left">
-                  <label>
-                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="automobiles" />
-                    <span>Automobiles</span>
-                  </label>
-                </div>
-                <div class="align-left">
-                  <label>
-                    <input type="checkbox" class="filled-in value-input-industry" checked="checked" formControlName="agricultureAndAlliedIndustries" />
-                    <span>Agriculture And Allied Industries</span>
-                  </label>
-                </div>
-              </form>
-            
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in value-input-industry" checked="checked"
+                    formControlName="chemicals" />
+                  <span>Chemicals</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in value-input-industry" checked="checked"
+                    formControlName="banking" />
+                  <span>Banking</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in value-input-industry" checked="checked"
+                    formControlName="aviation" />
+                  <span>Aviation</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in value-input-industry" checked="checked"
+                    formControlName="automobiles" />
+                  <span>Automobiles</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in value-input-industry" checked="checked"
+                    formControlName="agricultureAndAlliedIndustries" />
+                  <span>Agriculture And Allied Industries</span>
+                </label>
+              </div>
+            </form>
+
           </div>
 
           <div class="search-filter-categories">
-              <div class="filter-headings">
-                    <h6>Information Type</h6>
-              </div>
-              <form action="" [formGroup]="filterInformationType">
-                <div style="padding-bottom:1rem">
-                  <span>Show all </span>
-                  <div class="switch inline-switch" >
-                    <label>
-                      Off
-                      <input type="checkbox" formControlName="showAll">
-                      <span class="lever"></span>
-                      On
-                    </label>
-                  </div>
+            <div class="filter-headings">
+              <h6>Information Type</h6>
+            </div>
+            <form action="" [formGroup]="filterInformationType">
+              <div style="padding-bottom:1rem">
+                <span>Show all </span>
+                <div class="switch inline-switch">
+                  <label>
+                    Off
+                    <input type="checkbox" formControlName="showAll" (click)="toggleInformationType()">
+                    <span class="lever"></span>
+                    On
+                  </label>
                 </div>
-                <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="marketSize" />
-                      <span>Market Size</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="price" />
-                      <span>Price</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="costOfProduction" />
-                      <span>Cost Of Production</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="demand" />
-                      <span>Demand</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="false" formControlName="marketValue" />
-                      <span>Market value</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="uncategorized" />
-                      <span>Uncategorized</span>
-                    </label>
-                  </div>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="marketSize"
+                    class="value-input-type filled-in" />
+                  <span>Market Size</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="price" class="value-input-type filled-in" />
+                  <span>Price</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="costOfProduction"
+                    class="value-input-type filled-in" />
+                  <span>Cost Of Production</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="demand"
+                    class="value-input-type filled-in" />
+                  <span>Demand</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="marketValue"
+                    class="value-input-type filled-in" />
+                  <span>Market value</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" checked="checked" formControlName="uncategorized"
+                    class="value-input-type filled-in" />
+                  <span>Uncategorized</span>
+                </label>
+              </div>
 
-              </form>
+            </form>
           </div>
           <div class="search-filter-categories">
-              <div class="filter-headings">
-                    <h6>Information Format</h6>
-              </div>
-              <form action="" [formGroup]="filterInformationFormat">
-                <div style="padding-bottom: 1rem;">
-                  <span>Show all Formats</span>
-                  <div class="switch inline-switch" >
-                    <label>
-                      Off
-                      <input type="checkbox" formControlName="showAllFormats">
-                      <span class="lever"></span>
-                      On
-                    </label>
-                  </div>
+            <div class="filter-headings">
+              <h6>Information Format</h6>
+            </div>
+            <form action="" [formGroup]="filterInformationFormat">
+              <div style="padding-bottom: 1rem;">
+                <span>Show all Formats</span>
+                <div class="switch inline-switch">
+                  <label>
+                    Off
+                    <input type="checkbox" formControlName="showAllFormats">
+                    <span class="lever"></span>
+                    On
+                  </label>
                 </div>
-                <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="word" />
-                      <span>Word</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="excel" />
-                      <span>Excel</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="pdf" />
-                      <span>PDF</span>
-                    </label>
-                  </div>
-                  <div class="align-left">
-                    <label>
-                      <input type="checkbox" class="filled-in" checked="checked" formControlName="image" />
-                      <span>Image</span>
-                    </label>
-                  </div>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in" checked="checked" formControlName="word" />
+                  <span>Word</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in" checked="checked" formControlName="excel" />
+                  <span>Excel</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in" checked="checked" formControlName="pdf" />
+                  <span>PDF</span>
+                </label>
+              </div>
+              <div class="align-left">
+                <label>
+                  <input type="checkbox" class="filled-in" checked="checked" formControlName="image" />
+                  <span>Image</span>
+                </label>
+              </div>
             </form>
           </div>
           <div style="margin-top: 1rem; text-align: center;">
-            <button class="btn red"  style="width: 100%;">Reset Filters</button>
-          <br>
-            <button class="btn green"  style="width: 100%;margin-top:
+            <button class="btn red" style="width: 100%;">Reset Filters</button>
+            <br>
+            <button class="btn green" style="width: 100%;margin-top:
             1rem" (click)="callFilter()">Set Filters</button>
           </div>
         </div>
         <!-- Right hand side content -->
-         <!-- Search Results Display Container -->
-         <div class="col s9" style="padding-top: 0.9rem; padding-bottom: 1rem;">
+        <!-- Search Results Display Container -->
+        <div class="col s9" style="padding-top: 0.9rem; padding-bottom: 1rem;">
           <div style="border-bottom:1px solid lightgrey;padding-top: 0.7rem;">
-              <span style="display: inline-block;font-size: 25px;font-weight: 700;text-transform: uppercase;">Results</span>
-              
+            <span
+              style="display: inline-block;font-size: 25px;font-weight: 700;text-transform: uppercase;">Results</span>
 
-              <div style="display: inline-block;float:right;margin-top: 0rem;" *ngIf="results.length!=0">
-                <span ><i>{{numberOfResults}} Results &bull; </i></span>
-                <span style="margin-right: 1rem;">Showing page {{pageNumber}} of {{pagenatedResults.length>0? pagenatedResults.length: 1 }}</span>
-                <button class="btn" style="margin-right: 0.5rem;"  [ngClass]="{'disabled':pageNumber==1}" (click)="prevPage()"><i class="material-icons " >arrow_back</i></button>
-                <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()" [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length ==0}"><i class="material-icons ">arrow_forward</i></button>
-                
-               
-              </div>
-              
+
+            <div style="display: inline-block;float:right;margin-top: 0rem;" *ngIf="results.length!=0">
+              <span><i>{{numberOfResults}} Results &bull; </i></span>
+              <span style="margin-right: 1rem;">Showing page {{pageNumber}} of
+                {{pagenatedResults.length>0? pagenatedResults.length: 1 }}</span>
+              <button class="btn" style="margin-right: 0.5rem;" [ngClass]="{'disabled':pageNumber==1}"
+                (click)="prevPage()"><i class="material-icons ">arrow_back</i></button>
+              <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()"
+                [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length ==0}"><i
+                  class="material-icons ">arrow_forward</i></button>
+
+
+            </div>
+
           </div>
 
           <!--Show no results available-->
@@ -286,22 +393,22 @@
           </div>
           <!--Search Results Container-->
           <div id="resuls-display" *ngIf="results.length!=0">
-              <app-search-result *ngFor = " let i of results"
-              [data]=i
-              (download) = "listenForDownload($event)"
-              (view) = listenForView($event)
-              >
+            <app-search-result *ngFor=" let i of results" [data]=i (download)="listenForDownload($event)"
+              (view)=listenForView($event)>
 
-              </app-search-result>
-              <div style="display: flex;justify-content: center;margin-top: 1rem;">
-                <button class="btn" style="margin-right: 0.5rem;"  [ngClass]="{'disabled':pageNumber==1}" (click)="prevPage()"><i class="material-icons " >arrow_back</i></button>
-                  <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()" [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length == 0}"><i class="material-icons ">arrow_forward</i></button>
-                
-              </div>
+            </app-search-result>
+            <div style="display: flex;justify-content: center;margin-top: 1rem;">
+              <button class="btn" style="margin-right: 0.5rem;" [ngClass]="{'disabled':pageNumber==1}"
+                (click)="prevPage()"><i class="material-icons ">arrow_back</i></button>
+              <button class="btn" style="margin-left:0.5rem ;" (click)="nextPage()"
+                [ngClass]="{'disabled':pageNumber==pagenatedResults.length || pagenatedResults.length == 0}"><i
+                  class="material-icons ">arrow_forward</i></button>
+
+            </div>
 
           </div>
 
-      </div>
+        </div>
       </div>
     </div>
   </div>
