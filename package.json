@@ -23,7 +23,6 @@
     "@ng-bootstrap/ng-bootstrap": "^6.0.0",
     "@types/jquery": "^3.3.33",
     "jquery": "^3.4.1",
-    "materialize": "^1.0.0",
     "materialize-css": "^1.0.0",
     "popper": "^1.0.1",
     "rxjs": "~6.5.4",

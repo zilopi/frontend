@@ -9,6 +9,7 @@ import { DataStoreService } from './data-store.service';
 import { HttpClient } from '@angular/common/http';
 import { FetchFileService } from 'src/app/partner-account-module/partner-account-components/partner-data-results/fetchFile.service';
 import { fetchPartnerFile } from 'src/app/resources';
+import { UpdateWalletAndTransact } from 'src/app/services/update-client-wallet-service/updateWallet.service';
 
 
 
@@ -22,7 +23,8 @@ export class SearchPageComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute,
               private searchService: SearchService, private dataStore: DataStoreService,
-              private Http: HttpClient, private fetchFileService: FetchFileService) {
+              private Http: HttpClient, private fetchFileService: FetchFileService,
+              private transactionService:UpdateWalletAndTransact) {
 
 
   }
@@ -430,6 +432,14 @@ export class SearchPageComponent implements OnInit {
    * Show the required modals
   */
   
+
+  //TODO: The final wallet price is reduced twice, fix that
+ showLowBalanceModal = false;
+ closeLowBalanceModal(){
+   this.showBuyModal = false;
+   this.showPurchaseModal = true;
+   this.showLowBalanceModal = false;
+ }
   listenForDownload($event) {
 
     if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined) {
@@ -439,7 +449,20 @@ export class SearchPageComponent implements OnInit {
     } else {
       // alert("Download")
       this.datasetForDownload = $event;
+      if(this.checkBalance()==true){
+
+        //If the balance is low then show the low balance modal
       this.showBuyModal = true;
+      this.showCompletedPurchaseModal = false;
+      this.showPurchaseModal = false;
+      this.showLowBalanceModal = true;
+
+
+    }else{
+      //if the balance is optimal then show the regular buy modal
+      this.showBuyModal = true;
+      this.showPurchaseModal = true;
+    }
       // this.fetchFile($event);
     }
   }
@@ -458,9 +481,28 @@ export class SearchPageComponent implements OnInit {
 
   /**initiaite the download from the buy modal */
   initiateDownload(){
-    this.showCompletedPurchaseModal= true;
-    this.showPurchaseModal = false;
-    this.fetchFile(this.datasetForDownload);
+  
+    // this.fetchFile(this.datasetForDownload);
+    this.transactionService.transaction(sessionStorage.getItem('id'),this.datasetForDownload.id,sessionStorage.getItem('Wallet'),this.datasetForDownload.price).subscribe(data=>{
+      if(data['status']=='ok'){
+      this.showCompletedPurchaseModal= true;
+      this.showPurchaseModal = false;
+      let updatedBalance = parseInt(sessionStorage.getItem('Wallet')) - Number(this.datasetForDownload.price);
+      sessionStorage.setItem('Wallet',updatedBalance.toString());
+      this.walletAmount = updatedBalance;
+      this.fetchFile(this.datasetForDownload);
+    }else if(data['status']=='balance'){
+      //TODO: Show modal that there is not enough balance
+    }
+      // this.datasetForDownload = null;
+    })
+  }
+  checkBalance():Boolean{
+    if((Number(this.walletAmount) - Number(this.datasetForDownload.price))<0){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   fetchFile(Result: Result) {

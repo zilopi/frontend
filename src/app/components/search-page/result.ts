@@ -1,4 +1,5 @@
 export interface Result {
+    id:Number,
     description: string;
     title: string;
     data_of_industry: string;

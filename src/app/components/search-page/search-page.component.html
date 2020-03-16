@@ -94,26 +94,64 @@
       <div class="modal-content" *ngIf="showCompletedPurchaseModal">
         <div class="modal-header">
           <h4>Purchase Successful
-             </h4>
-             <a><i class="material-icons close-modal " (click)="closeTransaction()">close</i></a>
+          </h4>
+          <a><i class="material-icons close-modal " (click)="closeTransaction()">close</i></a>
 
         </div>
         <div class="modal-data">
-          <h6>Your DataSet will be visible in your dashboard shortly</h6>
+          <h5>Your DataSet will be visible in your dashboard shortly</h5>
+          <h6>Your Data will start in some time</h6>
+
           <br>
-          <span>Updated Wallet Balance :</span>
-          <span class="download-modal-price">{{convertValueToString(walletAmount,datasetForDownload.price)}}</span>
-          <div class="row">
-            <button class="col s6 btn-large ui-flat-button" style="margin:0.5%"(click)="closeTransaction()">
+          <table>
+            <tr>
+              <td>Updated Wallet Balance</td>
+              <td class="download-modal-price">
+                {{convertValueToString(walletAmount,datasetForDownload.price)}}$
+              </td>
+            </tr>
+          </table>
+
+          <div style="margin-top:1rem">
+            <button class="btn-large ui-flat-button" (click)="closeTransaction()">
               Close
             </button>
-            <button class="col s6 ui-flat-button btn-large" style="margin:0.5%">
-              Show My Downloads
-            </button>
+            &nbsp;
+            <button class="btn-large ui-flat-button">Show My Downloads</button>
+
           </div>
         </div>
       </div>
+
+      <div class="modal-content" *ngIf="showLowBalanceModal">
+        <div class="modal-header">
+          <h4>Not enough balance</h4>
+          <a href="">
+            <i class="material-icons close-modal" (click)="closeLowBalanceModal()">close</i>
+          </a>
+        </div>
+        <div class="modal-data" >
+         <div style="text-align: center;">
+          <h6>You dont have enough balance to buy this dataset</h6>
+          <br>
+         </div>
+         <table>
+           <tr>
+             <td>Your balance</td>
+             <td class="download-modal-price" style="color: red !important;">{{walletAmount}}$</td>
+           </tr>
+           <tr>
+             <td>Price</td>
+             <td class="download-modal-price">{{datasetForDownload.price}}$</td>
+           </tr>
+
+         </table>
+          
+        </div>
     
+      </div>
+
+
     </div>
     <div id="search-container">
       <div id="search-form" class="z-depth-2">

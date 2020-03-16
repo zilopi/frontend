@@ -18,30 +18,7 @@ padding-top: 25px;
     </div>
   
     <div style="background:white;padding:1%;margin-top: -20px;border-bottom-left-radius: 11px;border-bottom-right-radius: 11px;" class="z-depth-4" id="content-container">
-        <div id="success-modal" *ngIf="accountCreated">
-
-            <div id="success-modal-container" class="z-depth-2">
-                <h4 style="color:green;">Success!</h4>
-                <h6>Your account has been created!</h6>
-                <br>
-                <p>You will be navigated to the client login page in 5 seconds</p>
-                <p>Or <a href="">Click here</a> to navigate instantly</p>
-            </div>
-        </div>
-
-            <div class="loading" *ngIf="loading">
-                <div class="preloader-wrapper big active">
-                    <div class="spinner-layer spinner-blue-only">
-                      <div class="circle-clipper left">
-                        <div class="circle"></div>
-                      </div><div class="gap-patch">
-                        <div class="circle"></div>
-                      </div><div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                    </div>
-                  </div>
-            </div>
+       
 
         <div class="row">
             <form action="" class="col s12" [formGroup]="clientFrom">

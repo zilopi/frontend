@@ -10,6 +10,7 @@ import { AuthGuard } from './services/account-service/authorization-service/auth
 import { SearchPageComponent } from './components/search-page/search-page.component';
 import { SearchResolver } from './components/search-page/resolve-data';
 import { ViewSearchDetailsComponent } from './components/search-page/view-details.component/view-details.component';
+import { RegisterComponent } from './components/register-accounts/register-accounts.component';
 
 
 
@@ -23,14 +24,6 @@ const routes: Routes = [
     path:'landing-page',
     component: LandingPageComponent
   },
-
-{
-  path: 'user/register-client',
-  component: ClientRegistrationComponent
-}, {
-  path: 'user/register-partner',
-  component: PartnerRegistrationComponent
-},
 
 {path: 'login',
 component: RootComponent,
@@ -73,6 +66,10 @@ children: [
   {
     path:'view',
     component:ViewSearchDetailsComponent
+  },
+  {
+    path:'register',
+    component:RegisterComponent
   }
 
 ];

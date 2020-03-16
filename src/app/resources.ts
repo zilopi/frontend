@@ -13,6 +13,7 @@ export const registerClientLink = 'http://localhost/client-register.php';
 export const loginClient = 'http://localhost/client-login.php';
 export const clientAboutMeUpdate = 'http://localhost/client-update-aboutme.php';
 export const feedbackUpload = 'http://localhost/update-rating.php';
+export const transaction = 'http://localhost/update-client-wallet.php';
 // Deploy Environment
 // export const registerPartnerLink = "partner-register.php";
 // export const loginPartner = "partner-login.php";

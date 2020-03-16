@@ -29,6 +29,8 @@ import { SearchItem } from './components/search-page/search-item.component/searc
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ViewSearchDetailsComponent } from './components/search-page/view-details.component/view-details.component';
 import { ClientAccountModule } from './client-account-module/client-account.module';
+import { UpdateWalletAndTransact } from './services/update-client-wallet-service/updateWallet.service';
+import { RegisterComponent } from './components/register-accounts/register-accounts.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { ClientAccountModule } from './client-account-module/client-account.modu
     PartnerComponent,
     SearchItem,
     SearchPageComponent,
-    ViewSearchDetailsComponent
+    ViewSearchDetailsComponent,
+    RegisterComponent
    
   ],
   imports: [
@@ -64,7 +67,8 @@ import { ClientAccountModule } from './client-account-module/client-account.modu
     provide:APP_BASE_HREF,
     useValue :"/"
   },
-    SearchService,LoginService,RegistrationService,AccountService,AuthGuard,PartnerDataUploadService,UpdateAboutMeService],
+    UpdateWalletAndTransact,
+    SearchService,LoginService,RegistrationService,AccountService,AuthGuard,PartnerDataUploadService,UpdateAboutMeService,UpdateWalletAndTransact],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
