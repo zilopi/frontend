@@ -15,7 +15,7 @@
         <div class="row" class="form-container">
           <div id="test1" class="col s12">
             <div id="success-modal" *ngIf="accountCreated">
-
+            <!-- <div id="success-modal" *ngIf="true"> -->
               <div id="success-modal-container" class="z-depth-2">
                 <h4 style="color:green;">Success!</h4>
                 <h6>Your account has been created!</h6>
@@ -381,110 +381,128 @@
             </div>
 
           </div>
-          <div id="test2" class="col s12">  
-              <div class="row">
-                <div class="col s8" style="padding-left: 2%;padding-right:2%;">
-                    <h4>Fill your Details</h4>
-                    <form action="" class="col s12" [formGroup]="partnerForm">
-                        <div class="col s12">
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input type="text" name="" id="" formControlName="firstName">
-                                    <label for=""> First Name</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input type="text" name="" id="" formControlName="lastName">
-                                    <label for=""> Last Name</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s6">
-                                    <input type="password" name="" id="" formControlName="password">
-                                    <label for=""> Enter Your Password</label>
-                                </div>
-                                <div class="input-field col s6">
-                                    <input type="password" name="" id="" formControlName="confirmPassword" (keyup)="checkPassword()" [ngClass]="{'error':matchPasswordPartner!=null&&matchPasswordPartner==false,'okay':matchPasswordPartner!=null&&matchPasswordPartner==true}">
-                                    <label for=""> Confirm Password</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input type="email" name="" id="" formControlName="email" >
-                                    <label for="">Your Email Address</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <input type="number" name="" id="" formControlName="phoneNumber">
-                                    <label for="">Your Phone Number</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <select formControlName = "country">
-                                        <option value='{{i.name}}' *ngFor="let i of country">
-                                            {{i.name}}
-                                        </option>
-                                     </select>
-                                    <label>Choose Your Country</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12"><input type="text" name="" id="" formControlName="industry" style="width: 90%;"><label for="">Your Industry</label>
-                                    <button class="btn" style="margin-left: 2rem;" (click)="addToIndustries($event)">Add</button>
-                                </div>
-                                <div class="col s12" *ngIf="industries.length>0" style="padding-bottom:1rem">
-                                    <h6 style="padding-bottom:1rem">Industries Selected</h6>
-                                <span *ngFor="let i of industries" class="option-tags"> {{i}}</span>
-                                </div>
-                                
-                                <div class="input-field col s12"><input type="number" name="" id="" formControlName="yearsOfExperience" value="0"><label for="">Years of Experience</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12"><input type="text" name="" id="" formControlName="linkedInProfile"><label for="">Your LinkedIn Profile Url</label>
-                                </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea formControlName="aboutMe" class="materialize-textarea"></textarea>
-                                    <label for="textarea1">Something about you?</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="alreadyExists!=null&&alreadyExists==true">
-                            <div class="col s12" style="color: red;border:1px solid red;padding:1rem;text-align: center;border-radius:10px"> 
-                            <p>This email id is already associated with an account</p>
-                            <p>Use another email account</p>
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="createdAccount!=null&&createdAccount==true">
-                            <div class="col s12" style="color: black;border:1px solid green;padding:1rem;text-align: center;border-radius:10px;background-color: green;"> 
-                            <p>Your Account has been created, Redirecting to Partner Login page in 5 seconds. </p>
-                            <a href="" [routerLink]="['/login/partner']">
-                                Or click here to navigate instanty
-                            </a>
-                         
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col s4 offset-s4">
-                                <button class="btn"style="width: 100%;" [disabled]="partnerForm.status!='VALID'&&matchPasswordPartner==false" (click)="register()"> Register</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col s4" style="padding-top: 3rem;">
-                    <h6>Welcome to Zilopi family </h6>
-                    <ul>
-                      <li>Put your knowledge/data to use to earn extra income. Upload any business data related to your industry.  </li>
-                      <li>Set reasonable price for your data, you will get straight 60% of total value for each paid download.</li>
-                      <li>Top downloads get featured at the top in searches.</li>
-                    </ul>
-                </div>
+          <div id="test2" class="col s12">
+
+            <div  class="partner-register-overlay" *ngIf="alreadyExists!=null&&alreadyExists==true">
+            <!-- <div class="partner-register-overlay"> -->
+
+              <div class="card" style="padding: 2%;">
+                <h6>This email id or phone-number is already associated with an account</h6>
+                <p style="text-align:center">Use another email account</p>
               </div>
+            </div>
+           
+            <div id="success-modal" *ngIf="createdAccount!=null&&createdAccount==true">
+              <div id="success-modal-container" class="z-depth-2">
+                <h4 style="color:green;">Success!</h4>
+                <h6>Your account has been created!</h6>
+                <br>
+                <p>You will be navigated to the partner login page in 5 seconds</p>
+                <p>Or <a href="" [routerLink]="['/login/partner']">Click here</a> to navigate instantly</p>
+              </div>
+            </div>
+
+
+            <div class="row">
+
+
+
+              <div class="col s8" style="padding-left: 2%;padding-right:2%;">
+                <h4>Fill your Details</h4>
+                <form action="" class="col s12" [formGroup]="partnerForm">
+                  <div class="col s12">
+                    <div class="row">
+                      <div class="input-field col s6">
+                        <input type="text" name="" id="" formControlName="firstName">
+                        <label for=""> First Name</label>
+                      </div>
+                      <div class="input-field col s6">
+                        <input type="text" name="" id="" formControlName="lastName">
+                        <label for=""> Last Name</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s6">
+                        <input type="password" name="" id="" formControlName="password">
+                        <label for=""> Enter Your Password</label>
+                      </div>
+                      <div class="input-field col s6">
+                        <input type="password" name="" id="" formControlName="confirmPassword" (keyup)="checkPassword()"
+                          [ngClass]="{'error':matchPasswordPartner!=null&&matchPasswordPartner==false,'okay':matchPasswordPartner!=null&&matchPasswordPartner==true}">
+                        <label for=""> Confirm Password</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input type="email" name="" id="" formControlName="email">
+                        <label for="">Your Email Address</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <input type="number" name="" id="" formControlName="phoneNumber">
+                        <label for="">Your Phone Number</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <select formControlName="country">
+                          <option value='{{i.name}}' *ngFor="let i of country">
+                            {{i.name}}
+                          </option>
+                        </select>
+                        <label>Choose Your Country</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12"><input type="text" name="" id="" formControlName="industry"
+                          style="width: 90%;"><label for="">Your Industry</label>
+                        <button class="btn" style="margin-left: 2rem;" (click)="addToIndustries($event)">Add</button>
+                      </div>
+                      <div class="col s12" *ngIf="industries.length>0" style="padding-bottom:1rem">
+                        <h6 style="padding-bottom:1rem">Industries Selected</h6>
+                        <span *ngFor="let i of industries" class="option-tags"> {{i}}</span>
+                      </div>
+
+                      <div class="input-field col s12"><input type="number" name="" id=""
+                          formControlName="yearsOfExperience" value="0"><label for="">Years of Experience</label>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12"><input type="text" name="" id=""
+                          formControlName="linkedInProfile"><label for="">Your LinkedIn Profile Url</label>
+                      </div>
+
+                    </div>
+                    <div class="row">
+                      <div class="input-field col s12">
+                        <textarea formControlName="aboutMe" class="materialize-textarea"></textarea>
+                        <label for="textarea1">Something about you?</label>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col s4 offset-s4">
+                      <button class="btn" style="width: 100%;"
+                        [disabled]="partnerForm.status!='VALID'&&matchPasswordPartner==false" (click)="register()">
+                        Register</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="col s4" style="padding-top: 3rem;">
+                <h6>Welcome to Zilopi family </h6>
+                <ul>
+                  <li>Put your knowledge/data to use to earn extra income. Upload any business data related to your
+                    industry. </li>
+                  <li>Set reasonable price for your data, you will get straight 60% of total value for each paid
+                    download.</li>
+                  <li>Top downloads get featured at the top in searches.</li>
+                </ul>
+              </div>
+            </div>
 
           </div>
 
