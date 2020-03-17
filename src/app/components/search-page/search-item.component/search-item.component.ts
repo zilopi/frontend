@@ -24,6 +24,8 @@ export class SearchItem implements OnInit{
     
     @Output() download = new EventEmitter<{}>();
     @Output() view = new EventEmitter<{}>();
+    @Output() downloadDirectEvent = new EventEmitter<Result>();
+
 
     rating:Number;
     constructor(){
@@ -36,8 +38,12 @@ export class SearchItem implements OnInit{
         this.view.emit(this.data);
     }
     ngOnInit(){
+        console.log()
         this.rating  = 5*(Number(this.data.total_compounded_rating)/(Number(this.data.total_numberof_ratings)*5));
         
+    }
+    downloadDirect(){
+        this.downloadDirectEvent.emit(this.data);
     }
 
 

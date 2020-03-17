@@ -1,0 +1,15 @@
+.ui-flat-button{
+    width: 100%;
+}
+.result{
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    padding: 1.5%;
+    margin-top:5px;
+}
+ngb-rating{
+    color: yellow;
+    font-size: 45px;
+    float: right;
+    margin-right: 2rem;
+}

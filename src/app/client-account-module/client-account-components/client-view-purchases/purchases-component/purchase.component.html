@@ -1,0 +1,37 @@
+<div class="result">
+    <div class="heading-result">
+        <span style="font-size: 40px;font-weight: 500;">{{data.title}}</span>
+        &bull;     <span> {{data.transaction_timestamp | date:'dd-MM-yyyy'}}</span>
+        <ngb-rating [rate]=getRating() [max]="5" [readonly]=true></ngb-rating>
+      </div>
+      <div class="container-result">
+        <div class="row">
+            <div class="col s10">
+                <p>{{data.description}}</p>
+                <table>
+                    <tr>
+                        <td>Location Focus</td>
+                        <td>{{data.location_focus}}</td>
+                    </tr>
+                    <tr>
+                        <td>Data of industry</td>
+                        <td>{{data.data_of_industry}}</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice number</td>
+                        <td>{{data.transcation_id}}</td>
+                    </tr>
+                </table>
+            </div>  
+            <div class="col s2">
+                <button class="btn-large ui-flat-button" (click)="fetchFile()">
+                    Download 
+                </button> 
+                &nbsp;
+                <button class="btn-large ui-flat-button" (click)="rateData()">
+                    Review and Rate
+                </button>  
+            </div>
+        </div>
+      </div>
+</div>

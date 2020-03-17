@@ -1,0 +1,65 @@
+<div id="page-root">
+    <div class="card">
+      <div class="modal-rating" id="modal-rating" *ngIf="showRatingModal">
+        <div class="modal-rating-content card" id="modal-rating-content">
+          <div class="modal-heading">
+            <h4>Rate and Feedback</h4>
+          </div>
+          <div class="modal-content">
+            <br>
+            <ngb-rating [(rate)]=rating [max]=5>
+
+            </ngb-rating>
+            <div>
+              <span  style="font-size: 35px;font-weight: 500;">
+                {{rating}}/5
+                            </span>
+            </div>
+
+            <h6>On a scale of 1 to 5, how would you rate this dataset?</h6>
+            <br>
+            <div class="row">
+              <form class="col s12">
+                <div class="row">
+                  <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea"></textarea>
+                    <label for="textarea1">Any feedback?</label>
+                  </div>
+                </div>
+              </form>
+              <p *ngIf="submitting">Submitting..</p>
+            </div>
+            <div>
+              <button class="ui-flat-button btn-large" style="width: 100%;" (click)="submitRating()">Submit</button>
+              &nbsp;
+              <button class="ui-flat-button btn" style="width: 100%;" (click)="closeRatingModal()">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div class="heading">
+            <h3>Your Purchases</h3>
+        </div>
+        <div class="purchases-container">
+            <div class="loading" *ngIf="showLoader">
+                <div class="preloader-wrapper big active">
+                  <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                      <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                      <div class="circle"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <app-client-purchase-component *ngFor = "let i of purchases" [data]=i (rate)="rateData($event)">
+
+              </app-client-purchase-component>
+        </div>
+    </div>
+</div>

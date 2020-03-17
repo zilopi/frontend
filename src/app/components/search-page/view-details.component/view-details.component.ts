@@ -7,6 +7,7 @@ import { FeedBackUploadService } from 'src/app/services/feedback-upload-service/
 import { HttpClient } from '@angular/common/http';
 import { FetchFileService } from 'src/app/partner-account-module/partner-account-components/partner-data-results/fetchFile.service';
 import { fetchPartnerFile } from 'src/app/resources';
+import { UpdateWalletAndTransact } from 'src/app/services/update-client-wallet-service/updateWallet.service';
 // import { timingSafeEqual } from 'crypto';
 
 @Component({
@@ -18,24 +19,33 @@ export class ViewSearchDetailsComponent implements OnInit {
     ViewData: Result;
     feedback: FormGroup;
     showFeedBackModal = false;
+    showLoginModal = false;
+
     rating:Number;
-    constructor(private route: ActivatedRoute, private dataStore: DataStoreService, private feedbackUploadService: FeedBackUploadService,private Http:HttpClient,private fetchFileService:FetchFileService) {
+    constructor(private route: ActivatedRoute, private dataStore: DataStoreService,
+         private feedbackUploadService: FeedBackUploadService,
+         private Http: HttpClient,private fetchFileService : FetchFileService
+        ,private transactionService:UpdateWalletAndTransact) {
 
     }
     feedbackRating = 1;
-
+    showBuyModal = false;
+    showPurchaseModal = true;
+    showCompletedPurchaseModal = false;
+    walletAmount:Number = 0;
     ngOnInit() {
         console.log(this.route.snapshot.queryParams);
         this.dataStore.getDataAsObservable().subscribe(data => {
             this.ViewData = data;
+            console.log(data);
         });
 
         this.feedback = new FormGroup({
             feedbackInput: new FormControl('', [])
         });
         this.rating = ( 5 * (Number(this.ViewData.total_compounded_rating) / (Number(this.ViewData.total_numberof_ratings) * 5)));
-
-
+        
+        this.walletAmount = Number(sessionStorage.getItem('Wallet'));
 
     }
     showSubmitting = false;
@@ -58,6 +68,30 @@ export class ViewSearchDetailsComponent implements OnInit {
         this.rating = ( 5 * (Number(this.ViewData.total_compounded_rating) / (Number(this.ViewData.total_numberof_ratings) * 5)));
     }
 
+    //Function callded
+    initiateDownload(){
+  
+        // this.fetchFile(this.datasetForDownload);
+        this.transactionService.transaction(sessionStorage.getItem('id'),this.ViewData.id,sessionStorage.getItem('Wallet'),this.ViewData.price).subscribe(data=>{
+          if(data['status']=='ok'){
+          this.showCompletedPurchaseModal= true;
+          this.showPurchaseModal = false;
+          let updatedBalance = parseInt(sessionStorage.getItem('Wallet')) - Number(this.ViewData.price);
+          sessionStorage.setItem('Wallet',updatedBalance.toString());
+          this.walletAmount = updatedBalance;
+          this.fetchFile();
+          this.ViewData.purchased = true;
+        }else if(data['status']=='balance'){
+          //TODO: Show modal that there is not enough balance
+        }
+          // this.datasetForDownload = null;
+        })
+      }
+
+    //Convert the wallet amount to string
+    convertValueToString(walletAmount,price):string{
+        return (Number(walletAmount)-Number(price)).toString();
+      }
     download(){
         //This will contain the login and the other authentication required
 
@@ -81,6 +115,14 @@ export class ViewSearchDetailsComponent implements OnInit {
             this.showFile(data);
         })
        
+    }
+    purchase(){
+        //check if logged in and is a client
+        if(sessionStorage.getItem('id')==null||sessionStorage.getItem('id')==undefined||sessionStorage.getItem('Wallet')==null||sessionStorage.getItem('Wallet')==undefined){
+            this.showLoginModal = true;
+        }else{
+            this.showBuyModal = true;
+        }
     }
     public showFile(value): void {
         this.fetchFileService.fetchFile(value)

@@ -151,3 +151,21 @@ margin-right: 0.5rem;
     background-color: #08264D !important;
     border-bottom : 1px solid yellow
   }
+  #recent-purchase-container{
+      position: relative;
+  }
+  .loading{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: -webkit-box;
+    display: flex;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    z-index: 12;
+    background-color: rgb(255, 255, 255,0.5);
+  }
+  #purchases{
+      position: relative;
+  }

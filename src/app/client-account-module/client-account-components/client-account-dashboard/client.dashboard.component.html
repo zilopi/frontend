@@ -31,7 +31,7 @@
               <button class="options-pane-button btn-large hover" [routerLink]="['addData']"><i class="material-icons left">cloud_download</i>Your Subscriptions</button>
   
               <button class="options-pane-button btn-large hover"><i class="material-icons left">account_circle</i>Account Settings</button>
-              <button class="options-pane-button btn-large hover" [routerLink]="['mydata']"><i class="material-icons left">data_usage</i>My Data</button>
+              <button class="options-pane-button btn-large hover" [routerLink]="['view-purchases']"><i class="material-icons left">data_usage</i>My Purchased Data</button>
               <button class="options-pane-button btn-large hover"><i class="material-icons left">share</i>Refer a colleague</button>   
           </div>
   
@@ -75,7 +75,22 @@
 
         </div>
 
-        <div class="row">
+        <div class="row" id="purchases">
+          <div class="loading" *ngIf="loadPurchase">
+            <div class="preloader-wrapper big active">
+              <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                  <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                  <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                  <div class="circle"></div>
+                </div>
+              </div>
+            </div>
+          </div>
             <div class="col s12">
                 <div class="card card-padding"  id="recent-purchase-card">
                     <div class="section-heading-container">
@@ -85,19 +100,22 @@
 
                     <div id="recent-purchase-container">
                 
+            
+
+
                       <!-- //TODO: Recent purchases created by the user -->
-                        <div class="recent-purchase">
+                        <div class="recent-purchase" *ngFor="let i of purchases">
                             <div class="recent-purchase-header-container">
                                 <div class="row">
                                     <div class="col s9">
-                                        <span class="recent-purchase-header">Data of wine in ukraine</span>
+                                        <span class="recent-purchase-header">{{i.title}}</span>
                                         <span> &bull; </span>
-                                        <span class="recent-purchase-date">15th Jan 2020</span>
+                                        <span class="recent-purchase-date">{{i.transaction_timestamp | date :'MM-dd-yyyy'}}</span>
                                     </div>
                                     <div class="col s3">
                                         <span class="recent-purchase-actions">
                                     
-                                            <span class="price">15$</span>
+                                            <span class="price">{{i.price}}$</span>
                                        
                                             <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Download">cloud_download</i>
                                             <!-- <a class="btn tooltipped" >Hover me!</a> -->
@@ -109,7 +127,7 @@
                                     <div class="col s12" style="border-top: 1px solid lightgrey;margin-top: 0.5rem;"
                                     ></div>
                                     <div class="col s9" >
-                                      <p>This dataset contains the facts and figures related to the working of wine in Ukraine</p>
+                                      <p>{{i.description}}</p>
                                     </div>
                                 </div>
                              
@@ -117,98 +135,10 @@
                             </div>
                         </div>
 
-                        <div class="recent-purchase">
-                          <div class="recent-purchase-header-container">
-                              <div class="row">
-                                  <div class="col s9">
-                                      <span class="recent-purchase-header">Data of wine in ukraine</span>
-                                      <span> &bull; </span>
-                                      <span class="recent-purchase-date">15th Jan 2020</span>
-                                  </div>
-                                  <div class="col s3">
-                                      <span class="recent-purchase-actions">
-                                  
-                                          <span class="recent-purchase-price">15$</span>
-                                     
-                                          <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Download">cloud_download</i>
-                                          <!-- <a class="btn tooltipped" >Hover me!</a> -->
-                                          <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Show Information">info</i>
+                      
 
-                                      </span>
-                                      
-                                  </div>
-                                  <div class="col s12" style="border-top: 1px solid lightgrey;margin-top: 0.5rem;"
-                                  ></div>
-                                  <div class="col s9" >
-                                    <p>This dataset contains the facts and figures related to the working of wine in Ukraine</p>
-                                  </div>
-                              </div>
-                           
-                              
-                          </div>
-                      </div>
 
-                      <div class="recent-purchase">
-                        <div class="recent-purchase-header-container">
-                            <div class="row">
-                                <div class="col s9">
-                                    <span class="recent-purchase-header">Data of wine in ukraine</span>
-                                    <span> &bull; </span>
-                                    <span class="recent-purchase-date">15th Jan 2020</span>
-                                </div>
-                                <div class="col s3">
-                                    <span class="recent-purchase-actions">
-                                
-                                        <span class="price">15$</span>
-                                   
-                                        <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Download">cloud_download</i>
-                                        <!-- <a class="btn tooltipped" >Hover me!</a> -->
-                                        <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Show Information">info</i>
-
-                                    </span>
-                                    
-                                </div>
-                                <div class="col s12" style="border-top: 1px solid lightgrey;margin-top: 0.5rem;"
-                                ></div>
-                                <div class="col s9" >
-                                  <p>This dataset contains the facts and figures related to the working of wine in Ukraine</p>
-                                </div>
-                            </div>
-                         
-                            
-                        </div>
-                    </div>
-
-                    <div class="recent-purchase">
-                      <div class="recent-purchase-header-container">
-                          <div class="row">
-                              <div class="col s9">
-                                  <span class="recent-purchase-header">Data of wine in ukraine</span>
-                                  <span> &bull; </span>
-                                  <span class="recent-purchase-date">15th Jan 2020</span>
-                              </div>
-                              <div class="col s3">
-                                  <span class="recent-purchase-actions">
-                              
-                                      <span class="price">15$</span>
-                                 
-                                      <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Download">cloud_download</i>
-                                      <!-- <a class="btn tooltipped" >Hover me!</a> -->
-                                      <i class="material-icons tooltipped" data-position="bottom" data-tooltip="Show Information">info</i>
-
-                                  </span>
-                                  
-                              </div>
-                              <div class="col s12" style="border-top: 1px solid lightgrey;margin-top: 0.5rem;"
-                              ></div>
-                              <div class="col s9" >
-                                <p>This dataset contains the facts and figures related to the working of wine in Ukraine</p>
-                              </div>
-                          </div>
-                       
-                          
-                      </div>
-                  </div>
+               
                     </div>
 
                 </div>

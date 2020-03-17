@@ -20,6 +20,15 @@ nav{
     /* animation: height 0.5s ease-in normal; */
     overflow: hidden;
 }
+.login-dropdowns:hover{
+    color: white;
+    background: #08264D;
+    cursor: pointer;
+}
+nav ul a:hover{
+color: white !important;
+}
+
 
 .login-dropdowns{
     color: black;

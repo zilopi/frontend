@@ -47,7 +47,7 @@ export class RegisterComponent implements OnInit{
         industry: new FormControl(null, [Validators.required]),
         yearsOfExperience: new FormControl(null, [Validators.required]),
         linkedInProfile: new FormControl(null, [Validators.required]),
-        phoneNumber: new FormControl(null, [Validators.required, Validators.min(10)]),
+        phoneNumber: new FormControl(null, [Validators.required]),
         password : new FormControl(null, [Validators.required]),
         confirmPassword : new FormControl(null, [Validators.required]),
         aboutMe: new FormControl(null,[])

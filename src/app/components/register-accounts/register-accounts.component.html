@@ -486,7 +486,7 @@
                   <div class="row">
                     <div class="col s4 offset-s4">
                       <button class="btn" style="width: 100%;"
-                        [disabled]="partnerForm.status!='VALID'&&matchPasswordPartner==false" (click)="register()">
+                        [disabled]="partnerForm.status!='VALID' || matchPasswordPartner == false" (click)="register()">
                         Register</button>
                     </div>
                   </div>

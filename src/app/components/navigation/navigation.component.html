@@ -50,16 +50,15 @@
             border-bottom: 1px solid yellow;"><i class="material-icons left">account_circle</i>{{getName()}}</a>
             
           <div>
-            <div class="login-dropdowns-root" [@dropDown]="showProfileDropDownControl ? 'true' : 'false'">
-              <div class="login-dropdowns">
-                Profile
+            <div class="login-dropdowns-root" [@dropDown]="showProfileDropDownControl ? 'true' : 'false'" *ngIf="getAccountType()=='Client'">
+              <!-- <div class="login-dropdowns-root"> -->
+              <div class="login-dropdowns" [routerLink]="['client-account']">
+                Profile/Dashboard
               </div>
               <div class="login-dropdowns">
                 Invite Friends
               </div>
-              <div class="login-dropdowns">
-                Invite Friends
-              </div>
+  
               <div class="login-dropdowns">
                 Account Settings
               </div>
@@ -70,9 +69,25 @@
                 My Wallet
               </div>
               <div class="login-dropdowns">
-                Reports
+                My Reports
               </div>
             </div>
+            <div class="login-dropdowns-root" [@dropDown]="showProfileDropDownControl ? 'true' : 'false'" *ngIf="getAccountType()=='Partner'">
+              <div class="login-dropdowns" [routerLink]="['partner-account']">
+                Profile/Dashboard
+              </div>
+              <div class="login-dropdowns">
+                Invite Friends
+              </div>
+  
+              <div class="login-dropdowns">
+                Account Settings
+              </div>
+              <div class="login-dropdowns">
+                My Reports
+              </div>
+            </div>
+
           </div>
         </li>
           

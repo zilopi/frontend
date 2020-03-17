@@ -442,7 +442,7 @@ export class SearchPageComponent implements OnInit {
  }
   listenForDownload($event) {
 
-    if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined) {
+    if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined || sessionStorage.getItem('AccountType')=='Partner') {
       this.showModal = true;
       // alert("Open modal");
 
@@ -491,6 +491,7 @@ export class SearchPageComponent implements OnInit {
       sessionStorage.setItem('Wallet',updatedBalance.toString());
       this.walletAmount = updatedBalance;
       this.fetchFile(this.datasetForDownload);
+      this.datasetForDownload.purchased = true;
     }else if(data['status']=='balance'){
       //TODO: Show modal that there is not enough balance
     }
@@ -503,6 +504,9 @@ export class SearchPageComponent implements OnInit {
     }else{
       return false;
     }
+  }
+  directDownload($event:Result){
+    this.fetchFile($event)
   }
 
   fetchFile(Result: Result) {

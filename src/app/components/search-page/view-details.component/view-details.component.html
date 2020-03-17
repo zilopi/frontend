@@ -35,6 +35,154 @@
             </div>
         </div>
     </div>
+
+    <div class="modal-holder" *ngIf="showLoginModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>You are not Logged in</h4>
+          <a (click)="showLoginModal =false"><i class="material-icons close-modal ">close</i></a>
+        </div>
+        <div style="text-align: center;" class="modal-data">
+          <p style="font-size: large;">You should be logged in to download this data</p>
+          <div>
+            <button class="btn-large ui-flat-button" [routerLink]="['/login/client']">Login As Client</button>
+          </div>
+          <br>
+          <hr>
+          <p style="font-size: large;">Not a part of us?</p>
+          <div>
+            <button class="btn-large ui-flat-button" [routerLink]="['/user/register-client']">Join as a Client</button>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="modal-holder" *ngIf="showBuyModal">
+      <div class="modal-content" *ngIf="showPurchaseModal">
+        <div class="modal-header">
+          <h4>Download Dataset</h4>
+          <a><i class="material-icons close-modal " (click)="showBuyModal=false">close</i></a>
+        </div>
+        <div class="modal-data">
+          <h5>You'll be downloading the following dataset</h5>
+          <div class="row" style="padding-top: 1rem">
+            <div class="col s8" style="border-right: 1px solid gainsboro">
+              <h6 style="font-size: 2rem;
+              font-weight: 400;">{{ViewData.title}}</h6>
+              <span>Date &bull; </span><span>{{ViewData.data_of_industry}} &bull; </span> <span>
+                {{ViewData.information_type}}</span>
+              <p>{{ViewData.description}}</p>
+              <ngb-rating [max]=5 [rate]=1 style="font-size: 3rem;
+              color: yellow;" [readonly]=true></ngb-rating>
+            </div>
+            <div class="col s4">
+              <div class="row">
+                <div class="col s8">
+                  Available Wallet Balance
+                </div>
+                <div class="col s4">
+                  <span class="download-modal-price">{{walletAmount}}$</span>
+                </div>
+              </div>
+              <div class="row" style="padding-left:1%">
+                <div class="col s8">
+                  Price
+                </div>
+                <div class="col s4">
+                  <span class="download-modal-price">{{ViewData.price}}$</span>
+
+                </div>
+              </div>
+              <div class="row" style="    padding-top: 5%;
+              border-top: 1px solid grey;">
+                <div class="col s8">
+                  Final Wallet Balance
+                </div>
+                <div class="col s4">
+                  <span
+                    class="download-modal-price">{{convertValueToString(walletAmount,ViewData.price)}}$</span>
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6">
+              <button class="btn-large ui-flat-button" style="width: 100%;" (click)="showBuyModal=false">Cancel</button>
+
+            </div>
+            <div class="col s6">
+              <button class="btn-large ui-flat-button" style="width: 100%;" (click)="initiateDownload()">Buy</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-content" *ngIf="showCompletedPurchaseModal">
+        <div class="modal-header">
+          <h4>Purchase Successful
+          </h4>
+          <a><i class="material-icons close-modal " (click)="closeTransaction()">close</i></a>
+
+        </div>
+        <div class="modal-data">
+          <h5>Your DataSet will be visible in your dashboard shortly</h5>
+          <h6>Your Data will start in some time</h6>
+
+          <br>
+          <table>
+            <tr>
+              <td>Updated Wallet Balance</td>
+              <td class="download-modal-price">
+                {{convertValueToString(walletAmount,ViewData.price)}}$
+              </td>
+            </tr>
+          </table>
+
+          <div style="margin-top:1rem">
+            <button class="btn-large ui-flat-button" (click)="closeTransaction()">
+              Close
+            </button>
+            &nbsp;
+            <button class="btn-large ui-flat-button">Show My Downloads</button>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-content" *ngIf="showLowBalanceModal">
+        <div class="modal-header">
+          <h4>Not enough balance</h4>
+          <a href="">
+            <i class="material-icons close-modal" (click)="closeLowBalanceModal()">close</i>
+          </a>
+        </div>
+        <div class="modal-data" >
+         <div style="text-align: center;">
+          <h6>You dont have enough balance to buy this dataset</h6>
+          <br>
+         </div>
+         <table>
+           <tr>
+             <td>Your balance</td>
+             <td class="download-modal-price" style="color: red !important;">{{walletAmount}}$</td>
+           </tr>
+           <tr>
+             <td>Price</td>
+             <td class="download-modal-price">{{datasetForDownload.price}}$</td>
+           </tr>
+
+         </table>
+          
+        </div>
+    
+      </div>
+
+
+    </div>
+
     <!-- Header of data -->
     <div id="data-head" class="row">
       <div class="col s8">
@@ -115,7 +263,7 @@
                       class="material-icons left">email</i>{{ViewData.uploaded_by.email}}</a>
                   &nbsp;
                   <a class="btn ui-flat-button"><i
-                      class="material-icons left">phone</i>{{ViewData.uploaded_by.phone_number}}</a>
+                      class="material-icons left">phone</i>{{ViewData.uploaded_by.phone}}</a>
                 </div>
 
               </div>
@@ -142,13 +290,14 @@
         <div class="row">
           <div class=" col s12" style="padding:1rem">
           
-            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;" (click)="download()"><i
+            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;" (click)="download()" *ngIf="ViewData.purchased"><i
                 class="material-icons left">shop</i>Download</a>
-            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;" (click)="showFeedBackModal = true">
+            <a class="btn-large ui-flat-button" style="width: 100%;margin-top: 0.5rem;" (click)="showFeedBackModal = true" *ngIf="ViewData.purchased">
                 <i
                 class="material-icons left" >thumbs_up_down</i>
                 Rate and Review
             </a>
+            <a  class="btn-large ui-flat-button" *ngIf="!ViewData.purchased" style="width: 100%;" (click)="purchase()"> <i class="material-icons left">account_balance_wallet</i>Purchase</a>
           </div>
           <div class="col s12">
             <div style="text-align:center">

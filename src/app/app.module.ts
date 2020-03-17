@@ -24,7 +24,7 @@ import { SearchPageComponent } from './components/search-page/search-page.compon
 import { SearchService } from './services/search-service/search.service';
 import { RouteReuseStrategy } from '@angular/router';
 import { CacheRouteReuseStratergy } from './services/component-reuse-handler/PageReuse';
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { SearchItem } from './components/search-page/search-item.component/search-item.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ViewSearchDetailsComponent } from './components/search-page/view-details.component/view-details.component';
@@ -49,7 +49,7 @@ import { RegisterComponent } from './components/register-accounts/register-accou
    
   ],
   imports: [
-   
+   CommonModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,

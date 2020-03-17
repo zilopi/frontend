@@ -25,7 +25,10 @@
         <p class="content">{{data.description}}</p >
         </div>
         <div class="col s3">
-          <a class="waves-effect waves-light btn buy-buttons" (click)="downloadNow()"><i class="material-icons left">file_download</i>Download Now</a>
+          <a class="waves-effect waves-light btn buy-buttons" (click)="downloadNow()" *ngIf="!data.purchased"><i class="material-icons left">file_download</i>Purchase Now</a>
+          <a class="waves-effect waves-light btn buy-buttons" (click)="downloadDirect()" *ngIf="data.purchased"><i class="material-icons left">file_download</i>Download</a>
+
+
           <a class="waves-effect waves-light btn buy-buttons" (click)="viewDetails()"><i class="material-icons left">error_outline</i>View details</a>                                </div>
       </div>
     </div>

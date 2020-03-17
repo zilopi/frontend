@@ -14,6 +14,7 @@ export class SearchService{
     search(query:any){
         let formdata = new FormData;
         formdata.append('query',query);
+        formdata.append('client_id',sessionStorage.getItem('id'));
         return this.http.post<Result[]>(search,formdata).pipe(delay(1000));
     }
 }

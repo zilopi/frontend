@@ -22,8 +22,9 @@ export interface Result {
         first_name :string,
         last_name : string,
         email:string,
-        phone_number:Number,
+        phone:Number,
         country:string
     },
-    extension:string
+    extension:string,
+    purchased:boolean
 }
