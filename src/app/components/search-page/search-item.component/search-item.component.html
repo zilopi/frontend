@@ -15,7 +15,14 @@
       <ngb-rating [max]=5 [rate]=rating style="color: #08264D;font-size: 25px;float:right" [readonly]="true"></ngb-rating>
       </div>
       <div class="col s12" style="border-bottom : 1px solid lightgrey;padding-bottom : 0.2%;padding-top:1.2%">
-      <span class="date">{{data.upload_date | date : "MMMM d, y"}}</span><img class="typeIcons"src="../../../assets/pdf.svg" alt=""><img class="typeIcons"src="../../../assets/excel.svg" alt=""><img class="typeIcons"src="../../../assets/doc.svg" alt=""><img class="typeIcons"src="../../../assets/png.svg" alt="">
+      <span class="date">{{data.upload_date | date : "MMMM d, y"}}
+
+      </span><img class="typeIcons"src="../../../assets/pdf.svg" alt="" *ngIf="fileType=='pdf'">
+             <img class="typeIcons"src="../../../assets/xls.svg" alt="" *ngIf="fileType=='xls'">
+             <img class="typeIcons"src="../../../assets/doc.svg" alt="" *ngIf="fileType=='doc'">
+             <img class="typeIcons"src="../../../assets/png.svg" alt="" *ngIf="fileType=='image'">
+             <img class="typeIcons"src="../../../assets/save-file.svg" alt="" *ngIf="fileType=='file'">
+             
       </div>
     </div>
     <div class="result-subheading">

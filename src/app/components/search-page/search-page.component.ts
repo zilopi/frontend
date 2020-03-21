@@ -24,7 +24,7 @@ export class SearchPageComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,
               private searchService: SearchService, private dataStore: DataStoreService,
               private Http: HttpClient, private fetchFileService: FetchFileService,
-              private transactionService:UpdateWalletAndTransact) {
+              private transactionService: UpdateWalletAndTransact) {
 
 
   }
@@ -54,12 +54,15 @@ export class SearchPageComponent implements OnInit {
   // Contains all the data that is received from the server
   allResults: Result[] = [];
 
-  //
+  //Modals for purchases
   showBuyModal = false;
   showPurchaseModal = true;
   showCompletedPurchaseModal = false;
 
-  datasetForDownload:Result = null
+   //Current wallet amount'
+   walletAmount: Number;
+
+  datasetForDownload: Result = null
 
   @ViewChild('searchInput', { static: true }) searchInput;
   @ViewChild('content', { static: true }) modal;
@@ -73,12 +76,11 @@ export class SearchPageComponent implements OnInit {
 
   closeTransaction(){
     this.showPurchaseModal = true;
-    this.showCompletedPurchaseModal =false;
+    this.showCompletedPurchaseModal = false;
     this.showBuyModal = false;
     this.datasetForDownload = null;
   }
-  //Current wallet amount'
-  walletAmount:Number;
+ 
 
 
 
@@ -112,7 +114,38 @@ export class SearchPageComponent implements OnInit {
 
     let preloadedData: Result[];
     // fetch the data from the resolver
-    preloadedData = this.route.snapshot.data.results;
+    preloadedData = this.route.snapshot.data.results.map((element) => {
+
+
+      //This function determines the filetype using the extension and mimetype
+      const type = element.mime.split('/')[0];
+      const extension = element.extension;
+
+      let fileType = '';
+      switch (type){
+        case 'application':
+          if (extension.includes('pdf')){
+            fileType = 'pdf';
+          } else if (extension.includes('doc')){
+            fileType = 'doc'
+          } else if (extension.includes('xl')){
+            fileType = 'excel';
+          } else {
+            fileType = 'file';
+          }
+          break;
+          case 'image':
+            fileType = 'image';
+            break;
+          default:
+            fileType = 'file';
+      }
+      element['fileType'] = fileType;
+      return element;
+    });
+
+   
+
 
     // Set the data to the datastore
     this.dataStore.setStoreResult(preloadedData);
@@ -127,7 +160,8 @@ export class SearchPageComponent implements OnInit {
     //Set the wallet amount
     this.walletAmount = Number(sessionStorage.getItem('Wallet'));
 
-    console.log(this.results);
+
+    // Check if the results are not zero
     if (this.results.length == 0) {
       this.showResults = false;
     } else {
@@ -169,12 +203,12 @@ export class SearchPageComponent implements OnInit {
     });
     this.filterInformationFormat = new FormGroup({
 
-      showAllFormats: new FormControl(false, []),
+      showAllFormats: new FormControl(true, []),
 
-      word: new FormControl(false, []),
-      excel: new FormControl(false, []),
-      pdf: new FormControl(false, []),
-      image: new FormControl(false, []),
+      word: new FormControl(true, []),
+      excel: new FormControl(true, []),
+      pdf: new FormControl(true, []),
+      image: new FormControl(true, []),
 
 
     });
@@ -182,9 +216,8 @@ export class SearchPageComponent implements OnInit {
     this.locationFocusControl = new FormGroup({
       selectLocationFocus: new FormControl('unfocused', [])
     });
+   
     // subscriptions
-
-
     // ** Sorts according to the timestamp  */
     this.sortControl.get('sortType').valueChanges.subscribe(val => {
       if (val == 'recent') {
@@ -197,7 +230,8 @@ export class SearchPageComponent implements OnInit {
           // tslint:disable-next-line: no-string-literal
           return (b['timestamp'] - a['timestamp']);
         });
-        this.updateResultArrays(convertedDateToTimeStampArray);
+        //filtered based on the filter that is being applied
+        this.updateResultArrays(this.filter(convertedDateToTimeStampArray));
       }
 
     });
@@ -221,29 +255,34 @@ export class SearchPageComponent implements OnInit {
 
             }
           });
-
-          this.updateResultArrays(locationFocusing);
+          console.log(locationFocusing)
+          //Focus location based on the filters
+          let filtered = this.filter(locationFocusing);
+          console.log(filtered);
+          this.updateResultArrays(filtered);
 
         }
       }
 
     });
 
-    this.filterInformationFormat.get('showAllFormats').valueChanges.subscribe(val => {
-      if (val == true) {
-        this.showAllInformationFormat = true;
-        this.filterInformationFormat.get('word').patchValue(true);
-        this.filterInformationFormat.get('excel').patchValue(true);
-        this.filterInformationFormat.get('pdf').patchValue(true);
-        this.filterInformationFormat.get('image').patchValue(true);
-      } else {
-        this.showAllInformationFormat = true;
-        this.filterInformationFormat.get('word').patchValue(false);
-        this.filterInformationFormat.get('excel').patchValue(false);
-        this.filterInformationFormat.get('pdf').patchValue(false);
-        this.filterInformationFormat.get('image').patchValue(false);
 
-      }
+    //TODO: Change this to the current system format
+    this.filterInformationFormat.get('showAllFormats').valueChanges.subscribe(val => {
+      // if (val == true) {
+      //   this.showAllInformationFormat = true;
+      //   this.filterInformationFormat.get('word').patchValue(true);
+      //   this.filterInformationFormat.get('excel').patchValue(true);
+      //   this.filterInformationFormat.get('pdf').patchValue(true);
+      //   this.filterInformationFormat.get('image').patchValue(true);
+      // } else {
+      //   this.showAllInformationFormat = true;
+      //   this.filterInformationFormat.get('word').patchValue(false);
+      //   this.filterInformationFormat.get('excel').patchValue(false);
+      //   this.filterInformationFormat.get('pdf').patchValue(false);
+      //   this.filterInformationFormat.get('image').patchValue(false);
+
+      // }
     });
 
    
@@ -251,22 +290,22 @@ export class SearchPageComponent implements OnInit {
 
     // Add listeners to the checkboxes
     let industryCheckboxes = document.querySelectorAll('.value-input-industry');
-    industryCheckboxes.forEach((e, i, a)=>{
+    industryCheckboxes.forEach((e, i, a) => {
       // Get the current value of the checkbox
-      e.addEventListener('change',(x)=>{
+      e.addEventListener('change', (x) => {
         let value = this.filterIndustry.get(e.getAttribute('formControlName')).value;
         
-        if(value == false) {
+        if (value == false) {
           this.showAllIndustries = false;
           this.filterIndustry.get('selectAllIndustry').patchValue(false);
-        } else if(value == true) {
+        } else if (value == true) {
           // if this checkbox becomes true, check if all  of the checkbox are true or not, if they are then set the showAllIndustries control
           // to true as well
             let setAllIndustryControlToTrue = true;
-            for(let i = 0 ; i < industryCheckboxes.length ; i ++) {
+            for (let i = 0 ; i < industryCheckboxes.length ; i ++) {
                 let formControlName = industryCheckboxes[i].getAttribute('formControlName');
                 let formControlValue = this.filterIndustry.get(formControlName).value;
-                if(formControlValue == false) {
+                if (formControlValue == false) {
                   setAllIndustryControlToTrue = false;
                   break
                 }
@@ -278,28 +317,52 @@ export class SearchPageComponent implements OnInit {
     })
 
     let informationTypeCheckboxes = document.querySelectorAll('.value-input-type');
-    informationTypeCheckboxes.forEach((e, i, a)=>{
+    informationTypeCheckboxes.forEach((e, i, a) => {
       // Get the current value of the checkbox
-      e.addEventListener('change',(x)=>{
+      e.addEventListener('change', (x) => {
         let value = this.filterInformationType.get(e.getAttribute('formControlName')).value;
         
-        if(value == false) {
+        if (value == false) {
           this.showAllInformationType = false;
           this.filterInformationType.get('showAll').patchValue(false);
-        } else if(value == true) {
+        } else if (value == true) {
           // if this checkbox becomes true, check if all  of the checkbox are true or not, if they are then set the showAllIndustries control
           // to true as well
             let setAllControlToTrue = true;
-            for(let i = 0 ; i < informationTypeCheckboxes.length ; i ++) {
+            for (let i = 0 ; i < informationTypeCheckboxes.length ; i ++) {
                 let formControlName = informationTypeCheckboxes[i].getAttribute('formControlName');
                 let formControlValue = this.filterInformationType.get(formControlName).value;
-                if(formControlValue == false) {
+                if (formControlValue == false) {
                   setAllControlToTrue = false;
                   break;
                 }
             }
             this.showAllInformationType = setAllControlToTrue;
             this.filterInformationType.get('showAll').patchValue(setAllControlToTrue);
+        }
+      })
+    })
+
+    let formatTypeCheckboxes = document.querySelectorAll('.value-input-format');
+    formatTypeCheckboxes.forEach((e,i,a)=>{
+      e.addEventListener('change',(x)=>{
+        const value = this.filterInformationFormat.get(e.getAttribute('formControlName')).value;
+        if(value == false){
+          this.showAllInformationFormat = true;
+          this.filterInformationFormat.get('showAllFormats').patchValue(false);
+        }else if( value == true){
+          let setAllControlToTrue = true;
+          for(let i = 0 ; i < formatTypeCheckboxes.length ; i ++){
+            let formControlName = formatTypeCheckboxes[i].getAttribute('formControlName');
+            let formControlValue = this.filterInformationFormat.get(formControlName).value;
+            if(formControlValue==false){
+              setAllControlToTrue = false;
+              break;
+            }
+          }
+
+          this.showAllInformationFormat = setAllControlToTrue;
+          this.filterInformationFormat.get('showAllFormats').patchValue(setAllControlToTrue);
         }
       })
     })
@@ -359,12 +422,29 @@ export class SearchPageComponent implements OnInit {
 
     }
   }
- 
+  toggleInformationFormat(){
+    this.showAllInformationFormat = !this.showAllInformationFormat;
+    if(this.showAllInformationFormat){
+           this.filterInformationFormat.get('word').patchValue(true);
+        this.filterInformationFormat.get('excel').patchValue(true);
+        this.filterInformationFormat.get('pdf').patchValue(true);
+        this.filterInformationFormat.get('image').patchValue(true);
+    }else{
+           this.filterInformationFormat.get('word').patchValue(false);
+        this.filterInformationFormat.get('excel').patchValue(false);
+        this.filterInformationFormat.get('pdf').patchValue(false);
+        this.filterInformationFormat.get('image').patchValue(false);
+    }
+  }
 
 
   /**Pagenates the results and updates the main array from which the template renders the results */
   updateResultArrays(data: Result[]) {
     // this.allResults = data;
+
+    if (data == null){
+      return;
+    }
     this.numberOfResults = data.length;
     if (data.length > 4) {
       const container = [];
@@ -406,17 +486,40 @@ export class SearchPageComponent implements OnInit {
       this.allResults = data;
     });
 
-    this.locationFocusControl.reset();
     this.filterIndustry.reset();
     this.filterInformationType.reset();
     this.filterInformationFormat.reset();
-    this.allResults = [];
-    this.pagenatedResults = [];
+    this.locationFocusControl.get('selectLocationFocus').patchValue('Unfocused');
+    this.sortControl.get('sortType').patchValue('Relevance');
+
+    //patch the value of show all controls
     this.filterInformationFormat.get('showAllFormats').patchValue(true);
     this.filterIndustry.get('selectAllIndustry').patchValue(true);
     this.filterInformationType.get('showAll').patchValue(true);
 
+    //Set the controlling parameters to true
+    this.showAllIndustries = true;
+    this.showAllInformationFormat = true;
+    this.showAllInformationType = true;
+
+    //Set the induvidual controls to true
+    this.filterIndustry.get('chemicals').patchValue(true);
+    this.filterIndustry.get('aviation').patchValue(true);
+    this.filterIndustry.get('banking').patchValue(true);
+    this.filterIndustry.get('automobiles').patchValue(true);
+    this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
+
+    this.filterInformationType.get('marketSize').patchValue(true);
+    this.filterInformationType.get('price').patchValue(true);
+    this.filterInformationType.get('costOfProduction').patchValue(true);
+    this.filterInformationType.get('demand').patchValue(true);
+    this.filterInformationType.get('marketValue').patchValue(true);
+    this.filterInformationType.get('uncategorized').patchValue(true);
+
+
   }
+
+
 
   /**Async implementation for the search */
   searchPromise(query: string): Promise<[]> {
@@ -442,14 +545,14 @@ export class SearchPageComponent implements OnInit {
  }
   listenForDownload($event) {
 
-    if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined || sessionStorage.getItem('AccountType')=='Partner') {
+    if (sessionStorage.getItem('id') == null || sessionStorage.getItem('id') == undefined || sessionStorage.getItem('AccountType') == 'Partner') {
       this.showModal = true;
       // alert("Open modal");
 
     } else {
       // alert("Download")
       this.datasetForDownload = $event;
-      if(this.checkBalance()==true){
+      if (this.checkBalance() == true){
 
         //If the balance is low then show the low balance modal
       this.showBuyModal = true;
@@ -475,37 +578,38 @@ export class SearchPageComponent implements OnInit {
   }
   
   //Convert the values for template
-  convertValueToString(walletAmount,price):string{
-    return (Number(walletAmount)-Number(price)).toString();
+  convertValueToString(walletAmount, price): string{
+    return (Number(walletAmount) - Number(price)).toString();
   }
 
   /**initiaite the download from the buy modal */
   initiateDownload(){
   
     // this.fetchFile(this.datasetForDownload);
-    this.transactionService.transaction(sessionStorage.getItem('id'),this.datasetForDownload.id,sessionStorage.getItem('Wallet'),this.datasetForDownload.price).subscribe(data=>{
-      if(data['status']=='ok'){
-      this.showCompletedPurchaseModal= true;
+    this.transactionService.transaction(sessionStorage.getItem('id'), this.datasetForDownload.id, sessionStorage.getItem('Wallet'), this.datasetForDownload.price).subscribe(data => {
+      if (data['status'] == 'ok'){
+      this.showCompletedPurchaseModal = true;
       this.showPurchaseModal = false;
       let updatedBalance = parseInt(sessionStorage.getItem('Wallet')) - Number(this.datasetForDownload.price);
-      sessionStorage.setItem('Wallet',updatedBalance.toString());
+      sessionStorage.setItem('Wallet', updatedBalance.toString());
       this.walletAmount = updatedBalance;
       this.fetchFile(this.datasetForDownload);
       this.datasetForDownload.purchased = true;
-    }else if(data['status']=='balance'){
+    }else if (data['status'] == 'balance'){
       //TODO: Show modal that there is not enough balance
     }
       // this.datasetForDownload = null;
     })
   }
-  checkBalance():Boolean{
-    if((Number(this.walletAmount) - Number(this.datasetForDownload.price))<0){
+  checkBalance(): Boolean{
+    if ((Number(this.walletAmount) - Number(this.datasetForDownload.price)) < 0){
       return true;
     }else{
       return false;
     }
   }
-  directDownload($event:Result){
+  //Called when the user is logged in and the download has to be initiated
+  directDownload($event: Result){
     this.fetchFile($event)
   }
 
@@ -574,54 +678,156 @@ export class SearchPageComponent implements OnInit {
     this.locationFocusControl.get('selectLocationFocus').patchValue('Unfocused');
     this.sortControl.get('sortType').patchValue('Relevance');
     this.updateResultArrays(this.filter(this.allResults));
-
+    window.scrollTo(0, 0);
   }
 
+  //Explicitly resets everything
+  resetFilters(){
+    this.updateResultArrays(this.allResults);
+    this.locationFocusControl.get('selectLocationFocus').patchValue('Unfocused');
+    this.sortControl.get('sortType').patchValue('Relevance');
+    this.filterIndustry.reset();
+    this.filterInformationType.reset();
+    this.filterInformationFormat.reset();
+   
+
+    //patch the value of show all controls
+    this.filterInformationFormat.get('showAllFormats').patchValue(true);
+    this.filterIndustry.get('selectAllIndustry').patchValue(true);
+    this.filterInformationType.get('showAll').patchValue(true);
+
+    //Set the controlling parameters to true
+    this.showAllIndustries = true;
+    this.showAllInformationFormat = true;
+    this.showAllInformationType = true;
+
+    //Set the induvidual controls to true
+    this.filterIndustry.get('chemicals').patchValue(true);
+    this.filterIndustry.get('aviation').patchValue(true);
+    this.filterIndustry.get('banking').patchValue(true);
+    this.filterIndustry.get('automobiles').patchValue(true);
+    this.filterIndustry.get('agricultureAndAlliedIndustries').patchValue(true);
+
+    this.filterInformationType.get('marketSize').patchValue(true);
+    this.filterInformationType.get('price').patchValue(true);
+    this.filterInformationType.get('costOfProduction').patchValue(true);
+    this.filterInformationType.get('demand').patchValue(true);
+    this.filterInformationType.get('marketValue').patchValue(true);
+    this.filterInformationType.get('uncategorized').patchValue(true);
+
+    this.filterInformationFormat.get('word').patchValue(true);
+    this.filterInformationFormat.get('excel').patchValue(true);
+    this.filterInformationFormat.get('pdf').patchValue(true);
+    this.filterInformationFormat.get('image').patchValue(true);
+
+  }
+  
+  //Check if no industry is selected, if true return true else if one industry is true, then return false;
+
+
   // General purpose function
-  filter(data:Result[]):Result[] {
+  filter(data: Result[]): Result[] {
     console.log("Filters")
-    console.log(this.showAllIndustries , this.showAllInformationType)
+    console.log(this.showAllIndustries , this.showAllInformationType, this.showAllInformationFormat)
 
     // If both the show all controls are true,then dont filter anything
-    if(this.showAllIndustries == true && this.showAllInformationType == true) {
+    if (this.showAllIndustries == true && this.showAllInformationType == true && this.showAllInformationFormat == true) {
       
-      return this.allResults;
+      return data;
     } else {
       let industries = this.filterIndustry.value;
       let informationType = this.filterInformationType.value;
+      let infomationFormats = this.filterInformationFormat.value;
 
+      //Main filter array
       let filters = [];
       let industryKeys = Object.keys(industries);
       let informationTypeKeys = Object.keys(informationType);
+      let formatKeys = Object.keys(infomationFormats);
 
-      for( var i of industryKeys) {
-        if(industries[i] == true) {
-          console.log("pushing industry "+i)
+      //Push the selected filters to the main filter , if there are none selected,then show alert that no filters are selected for a particular category
+      let industryPushCount = 0;
+      for ( var i of industryKeys) {
+        if (industries[i] == true) {
+          console.log("pushing industry " + i)
           filters.push(i.toLowerCase().replace(/ /g, ""))
+          industryPushCount++;
         }
       }
-      for(var i of informationTypeKeys) {
-        if(informationType[i] == true) {
-          console.log("pushing information type "+i)
 
+      let typePushCount = 0;
+      for (var i of informationTypeKeys) {
+        if (informationType[i] == true) {
+          console.log("pushing information type " + i)
+          typePushCount++;
           filters.push(i.toLowerCase().replace(/ /g, ""));
         }
       }
+
+      let formatPushCount = 0;
+      for(var i of formatKeys){
+        if(infomationFormats[i]==true){
+          console.log("pushing informatio format "+i);
+          formatPushCount++;
+          filters.push(i);
+        }
+      }
+
+      if (industryPushCount == 0){
+        alert("Please select atleast one industry form the Filters section");
+        return null;
+      }else if (typePushCount == 0){
+        alert("Please select atleast one data type form the Filters section");
+        return null;
+      }else if(formatPushCount == 0){
+        alert("Please select atleast one form type form the Filters section");
+        return null;
+      }
+
       console.log(filters);
 
-      let filteredResults = data.filter((element)=>{
-        if(this.showAllIndustries==false && this.showAllInformationType == true) {
-          if(filters.includes(element.information_type.toLowerCase().replace(/ /g, ""))) {
+
+      //Filter process
+      let filteredResults = data.filter((element) => {
+        if(this.showAllIndustries && this.showAllInformationType){
+          return element;
+        }
+
+        if (this.showAllIndustries == false && this.showAllInformationType == true) {
+
+          //Show all information types, but select on the basis of the industry
+          if (filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))) {
             return element;
           }
-        } else if(this.showAllIndustries == true && this.showAllInformationType == false) {
-          if(filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))) {
+
+        } else if (this.showAllIndustries == true && this.showAllInformationType == false) {
+
+          //Show all industries but choose specific information types, compare only on the basis of the infomation type
+          if (filters.includes(element.information_type.toLowerCase().replace(/ /g, ""))) {
+            return element;
+          }
+
+        }else{
+          //If both show alls are false, then only show specific data
+          if (filters.includes(element.information_type.toLowerCase().replace(/ /g, "")) && filters.includes(element.data_of_industry.toLowerCase().replace(/ /g, ""))) {
+            return element;
+          }
+        }
+
+      })
+
+      let typeFiltering = filteredResults.filter((element)=>{
+        if(this.showAllInformationFormat){
+          return element;
+        }else{
+          if(filters.includes(element['fileType'])){
+            console.log(element)
             return element;
           }
         }
       })
 
-      return filteredResults;
+      return typeFiltering;
     }
   }
 }

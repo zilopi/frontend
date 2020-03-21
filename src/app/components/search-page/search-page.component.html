@@ -19,7 +19,7 @@
           <hr>
           <p style="font-size: large;">Not a part of us?</p>
           <div>
-            <button class="btn-large ui-flat-button" [routerLink]="['/user/register-client']">Join as a Client</button>
+            <button class="btn-large ui-flat-button" [routerLink]="['/register']">Join as a Client</button>
           </div>
         </div>
       </div>
@@ -126,7 +126,7 @@
       <div class="modal-content" *ngIf="showLowBalanceModal">
         <div class="modal-header">
           <h4>Not enough balance</h4>
-          <a href="">
+          <a>
             <i class="material-icons close-modal" (click)="closeLowBalanceModal()">close</i>
           </a>
         </div>
@@ -473,9 +473,17 @@
       </div>
       <div class="row">
         <!-- Left Hand Side Controls -->
+        
         <div class="col s3 filters-container " style="border-right: 1px solid grey;">
           <div>
-
+            <div style="margin-top: 1rem;margin-bottom:1rem; text-align: center;">
+              <button class="btn green" style="width: 100%;margin-top:
+              1rem" (click)="callFilter()">Set Filters</button>
+              &nbsp;
+              <button class="btn red" style="width: 100%;" (click)="resetFilters()">Reset Filters</button>
+              <br>
+             
+            </div>
           </div>
           <div class="search-filter-categories" style="border-top: none;">
             <div class="filter-headings">
@@ -493,6 +501,9 @@
                   </label>
                 </div>
               </div>
+              <!-- <div *ngIf="checkAtLeastOneIndustry()">
+                <p style="color: red;text-align: center;">Check atleast one Industry</p>
+              </div> -->
               <div class="align-left">
                 <label>
                   <input type="checkbox" class="filled-in value-input-industry" checked="checked"
@@ -548,6 +559,9 @@
                   </label>
                 </div>
               </div>
+              <!-- <div *ngIf="checkAtLeastOneType()">
+                <p style="color: red; text-align: center;">Check atleast one type</p>
+              </div> -->
               <div class="align-left">
                 <label>
                   <input type="checkbox" checked="checked" formControlName="marketSize"
@@ -592,9 +606,9 @@
 
             </form>
           </div>
-          <div class="search-filter-categories">
+          <div class="search-filter-categories" >
             <div class="filter-headings">
-              <h6>Information Format</h6>
+              <h6>Information Formats</h6>
             </div>
             <form action="" [formGroup]="filterInformationFormat">
               <div style="padding-bottom: 1rem;">
@@ -602,7 +616,7 @@
                 <div class="switch inline-switch">
                   <label>
                     Off
-                    <input type="checkbox" formControlName="showAllFormats">
+                    <input type="checkbox" formControlName="showAllFormats" (click)="toggleInformationFormat()">
                     <span class="lever"></span>
                     On
                   </label>
@@ -610,32 +624,32 @@
               </div>
               <div class="align-left">
                 <label>
-                  <input type="checkbox" class="filled-in" checked="checked" formControlName="word" />
+                  <input type="checkbox" class="filled-in value-input-format" checked="checked" formControlName="word" />
                   <span>Word</span>
                 </label>
               </div>
               <div class="align-left">
                 <label>
-                  <input type="checkbox" class="filled-in" checked="checked" formControlName="excel" />
+                  <input type="checkbox" class="filled-in value-input-format" checked="checked" formControlName="excel" />
                   <span>Excel</span>
                 </label>
               </div>
               <div class="align-left">
                 <label>
-                  <input type="checkbox" class="filled-in" checked="checked" formControlName="pdf" />
+                  <input type="checkbox" class="filled-in value-input-format" checked="checked" formControlName="pdf" />
                   <span>PDF</span>
                 </label>
               </div>
               <div class="align-left">
                 <label>
-                  <input type="checkbox" class="filled-in" checked="checked" formControlName="image" />
+                  <input type="checkbox" class="filled-in value-input-format" checked="checked" formControlName="image" />
                   <span>Image</span>
                 </label>
               </div>
             </form>
           </div>
           <div style="margin-top: 1rem; text-align: center;">
-            <button class="btn red" style="width: 100%;">Reset Filters</button>
+            <button class="btn red" style="width: 100%;" (click)="resetFilters()">Reset Filters</button>
             <br>
             <button class="btn green" style="width: 100%;margin-top:
             1rem" (click)="callFilter()">Set Filters</button>

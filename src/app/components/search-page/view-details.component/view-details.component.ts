@@ -120,8 +120,14 @@ export class ViewSearchDetailsComponent implements OnInit {
         //check if logged in and is a client
         if(sessionStorage.getItem('id')==null||sessionStorage.getItem('id')==undefined||sessionStorage.getItem('Wallet')==null||sessionStorage.getItem('Wallet')==undefined){
             this.showLoginModal = true;
+        
         }else{
-            this.showBuyModal = true;
+            if(this.checkBalance()==false){
+                this.showBuyModal = true;
+            }else{
+                this.showLowBalanceModal = true;
+            }
+       
         }
     }
     public showFile(value): void {
@@ -163,4 +169,23 @@ export class ViewSearchDetailsComponent implements OnInit {
                 }, 100);
             });
     }
+    closeTransaction(){
+        this.showPurchaseModal = true;
+        this.showCompletedPurchaseModal =false;
+        this.showBuyModal = false;
+        this.ViewData = null;
+      }
+      showLowBalanceModal = false;
+      closeLowBalanceModal(){
+        this.showBuyModal = false;
+        this.showPurchaseModal = true;
+        this.showLowBalanceModal = false;
+      }
+      checkBalance():Boolean{
+        if((Number(this.walletAmount) - Number(this.ViewData.price))<0){
+          return true;
+        }else{
+          return false;
+        }
+      }
 }

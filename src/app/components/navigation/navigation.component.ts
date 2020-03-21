@@ -45,13 +45,16 @@ export class NavigationComponent implements OnInit {
     });
     }
  
+    executeSearch(query){
+      this.router.navigate([`/search/${query}`]);
+    }
   ngOnInit() {
-    
+
 
   }
  //For industry
- 
-
+  showIndustryDropDown = false;
+  
 
  
  //For Profile

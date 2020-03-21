@@ -10,8 +10,15 @@
 }
 ul>li{
     list-style-type: disc;
+    font-size: 1.4rem;
 }
-
+.tabs .tab a:hover, .tabs .tab a.active {
+    background-color: transparent;
+    color: white;
+    /* border-bottom: 5px solid black; */
+    font-weight: 500;
+    background-color: #08264D;
+}
 
 .navigation{
     margin-left: 2%;

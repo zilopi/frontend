@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { refreshScripts } from 'src/app/helpers/refreshScripts';
 // import { DynamicScriptLoaderService } from 'src/app/services/script-loader.service';
 
@@ -25,7 +25,11 @@ export class LandingPageComponent implements OnInit {
     setTimeout(()=>{
       refreshScripts();
     },500);
-   
+   this.router.events.subscribe(()=>{
+     setTimeout(()=>{
+       this.searchInit = false;
+     },5000);
+   })
   }
  
 

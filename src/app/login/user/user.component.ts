@@ -4,6 +4,7 @@ import { AccountService } from 'src/app/services/account-service/account.service
 import { LoginService } from 'src/app/services/login-service/login-service';
 import { Router } from '@angular/router';
 import { refreshScripts } from 'src/app/helpers/refreshScripts';
+import { DataStoreService } from 'src/app/components/search-page/data-store.service';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +17,7 @@ export class UserComponent implements OnInit {
   displayLoader = false;
   displayError = false;
 
-  constructor(private loginService: LoginService,private router: Router) {
+  constructor(private loginService: LoginService,private router: Router,private  dataStoreForSearch:DataStoreService) {
 
   }
 
@@ -48,6 +49,9 @@ export class UserComponent implements OnInit {
         sessionStorage.setItem('AboutMe' , data.about_me);
         sessionStorage.setItem('AccountType',"Client");
         sessionStorage.setItem('Wallet',data.wallet_balance);
+
+        //clear the datastore which was obtained by the search
+        this.dataStoreForSearch.setStoreResult(null);
         this.router.navigate(['landing-page']);
       }else{
         this.displayError = true;

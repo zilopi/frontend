@@ -12,9 +12,10 @@
       
       <ul id="nav-mobile" class=" hide-on-med-and-down right">
         <span>
-        <li><a *ngIf="!currentRoute.includes('landing-page')" [routerLink]="['landing-page']">Home</a></li>
-        <li class="industryDropDown"><a>Industry</a></li>
-        <li><a>Product Offering</a></li>
+          <li (mouseenter)="showIndustryDropDown=false"><a style="visibility:hidden">Null</a></li>
+        <li><a *ngIf="!currentRoute.includes('landing-page')" [routerLink]="['landing-page']" (mouseenter)="showIndustryDropDown=false">Home</a></li>
+        <li class="industryDropDown" (mouseenter)="showIndustryDropDown=true" ><a>Industry</a></li>
+        <li (mouseenter)="showIndustryDropDown=false"><a>Product Offering</a></li>
         <li><a>About Us</a></li>
       </span>
       <li *ngIf="currentRoute.includes('partner-account') && !currentRoute.includes('addData')"><a href="" class="btn" style="background-color:#08264D;border:1px solid black" [routerLink]="['/partner-account/addData']"><i class="material-icons left" >show_chart</i>Upload dataset</a></li>
@@ -97,45 +98,45 @@
       
     </div>
     
-    <div id="industries-container"  class="accent-background industryDropDown" *ngIf='false' >
+    <div id="industries-container"  class="accent-background industryDropDown" *ngIf='showIndustryDropDown' (mouseover)='showIndustryDropDown=true' (mouseleave)='showIndustryDropDown=false' >
         <h4 style="text-align: center; color: white; text-transform: uppercase;font-size: 25px;">Industries that we provide data for</h4>
 
         <div class="accent-background" id="industry-topics">
-          <a href="" class="btn">Argriculture and Allied Industries</a>
-          <a href="" class="btn">Automobiles</a>
-          <a href="" class="btn">Auto Components</a>
-          <a href="" class="btn">Aviation</a>
-          <a href="" class="btn">Banking</a>
-          <a href="" class="btn">Cement</a>
-          <a href="" class="btn">Consumer Durable</a>
-          <a href="" class="btn">E Commerce</a>
-          <a href="" class="btn">Education and Training</a>
-          <a href="" class="btn">Engineering and Capital Goods </a>
-          <a href="" class="btn">Financial Services</a>
-          <a href="" class="btn">FMCG</a>
-          <a href="" class="btn">Gems and Jewellery</a>
-          <a href="" class="btn">HealthCare</a>
-          <a href="" class="btn">Infrastructure</a>
-          <a href="" class="btn">Insurance</a>
-          <a href="" class="btn">IT & ITES</a>
-          <a href="" class="btn">Manufacturing</a>
-          <a href="" class="btn">Media and entertainment</a>
-          <a href="" class="btn">Metals and mining</a>
-          <a href="" class="btn">Oil and gas</a>
-          <a href="" class="btn">Pharmaceuticals</a>
-          <a href="" class="btn">Ports</a>
-          <a href="" class="btn">Power</a>
-          <a href="" class="btn">Railways</a>
-          <a href="" class="btn">real estate</a>
-          <a href="" class="btn">renewable energy</a>
-          <a href="" class="btn">retail</a>
-          <a href="" class="btn">roads</a>
-          <a href="" class="btn">Science and technology</a>
-          <a href="" class="btn">services</a>
-          <a href="" class="btn">steel</a>
-          <a href="" class="btn">telecommunications</a>
-          <a href="" class="btn">textiles</a>
-          <a href="" class="btn">tourism and hospitality</a>
+          <a  class="btn" (click)="executeSearch('Agriculture and Allied Industries')">Agriculture and Allied Industries</a>
+          <a  class="btn" (click)="executeSearch('Automobiles')">Automobiles</a>
+          <a  class="btn" (click)="executeSearch('Auto Components')">Auto Components</a>
+          <a  class="btn" (click)="executeSearch('Aviation')">Aviation</a>
+          <a  class="btn" (click)="executeSearch('Banking')">Banking</a>
+          <a  class="btn" (click)="executeSearch('Cement')">Cement</a>
+          <a  class="btn" (click)="executeSearch('Consumer Durable')">Consumer Durable</a>
+          <a  class="btn" (click)="executeSearch('E Commerce')">E Commerce</a>
+          <a  class="btn" (click)="executeSearch('Education and Training')">Education and Training</a>
+          <a  class="btn" (click)="executeSearch('Engineering and Capital Goods')">Engineering and Capital Goods </a>
+          <a  class="btn" (click)="executeSearch('Financial Services')">Financial Services</a>
+          <a  class="btn" (click)="executeSearch('FMCG')">FMCG</a>
+          <a  class="btn" (click)="executeSearch('Gems and Jewellery')">Gems and Jewellery</a>
+          <a  class="btn" (click)="executeSearch('HealthCare')">HealthCare</a>
+          <a  class="btn" (click)="executeSearch('Infrastructure')">Infrastructure</a>
+          <a  class="btn" (click)="executeSearch('Insurance')">Insurance</a>
+          <a  class="btn" (click)="executeSearch('IT & ITES')">IT & ITES</a>
+          <a  class="btn" (click)="executeSearch('Manufacturing')">Manufacturing</a>
+          <a  class="btn" (click)="executeSearch('Media and entertainment')">Media and entertainment</a>
+          <a  class="btn" (click)="executeSearch('Metals and mining')">Metals and mining</a>
+          <a  class="btn" (click)="executeSearch('Oil and gas')">Oil and gas</a>
+          <a  class="btn" (click)="executeSearch('Pharmaceuticals')">Pharmaceuticals</a>
+          <a  class="btn" (click)="executeSearch('Ports')">Ports</a>
+          <a  class="btn" (click)="executeSearch('Power')">Power</a>
+          <a  class="btn" (click)="executeSearch('Railways')">Railways</a>
+          <a  class="btn" (click)="executeSearch('real estate')">real estate</a>
+          <a  class="btn" (click)="executeSearch('renewable energy')">renewable energy</a>
+          <a  class="btn" (click)="executeSearch('retail')">retail</a>
+          <a  class="btn" (click)="executeSearch('roads')">roads</a>
+          <a  class="btn" (click)="executeSearch('Science and technology')">Science and technology</a>
+          <a  class="btn" (click)="executeSearch('services')">services</a>
+          <a  class="btn" (click)="executeSearch('steel')">steel</a>
+          <a  class="btn" (click)="executeSearch('telecommunications')">telecommunications</a>
+          <a  class="btn" (click)="executeSearch('textiles')">textiles</a>
+          <a  class="btn" (click)="executeSearch('tourism and hospitality')">tourism and hospitality</a>
 
 
 

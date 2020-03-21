@@ -42,7 +42,7 @@
             </div>
 
             <div class="row">
-              <div class="col s8" style="padding-left: 2%;padding-right:2%;">
+              <div class="col s7" style="padding-left: 2%;padding-right:2%;">
                 <h4>Fill your details</h4>
                 <form action="" class="col s12" [formGroup]="clientFrom">
                   <div class="col s12">
@@ -366,8 +366,9 @@
                 </form>
 
               </div>
-              <div class="col s4" style="padding-top: 3rem;">
-                <h6>After creating a Free Zilopi Client Account, You'll get</h6>
+              <div class="col s5" style="padding-top: 3rem;">
+                <h6 style="font-size: 23px;
+                font-weight: 400;">After creating a Free Zilopi Client Account, You'll get</h6>
                 <ul>
                   <li>100$ Free Credit to get you started</li>
                   <li>Get access to hundreds of reports, read detailed description before downloading.</li>
@@ -407,7 +408,7 @@
 
 
 
-              <div class="col s8" style="padding-left: 2%;padding-right:2%;">
+              <div class="col s7" style="padding-left: 2%;padding-right:2%;">
                 <h4>Fill your Details</h4>
                 <form action="" class="col s12" [formGroup]="partnerForm">
                   <div class="col s12">
@@ -455,8 +456,46 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="input-field col s12"><input type="text" name="" id="" formControlName="industry"
-                          style="width: 90%;"><label for="">Your Industry</label>
+                      <div class="input-field col s12">
+                        <select name="" id="" formControlName="industry" style="width: 80%;">
+                          <option value="Chemicals">Chemicals</option>
+                          <option value="Agriculture and Allied Industries">Agriculture and Allied Industries</option>
+                          <option value="Automobiles">Automobiles</option>
+                          <option value="Auto Components">Auto Components</option>
+                          <option value="Aviation">Aviation</option>
+                          <option value="Banking">Banking</option>
+                          <option value="Cement">Cement</option>
+                          <option value="Consumer Durables">Consumer Durables</option>
+                          <option value="E-Commerce">E-Commerce</option>
+                          <option value="Education and Training ">Education and Training </option>
+                          <option value="Engineering and Capital Goods">Engineering and Capital Goods</option>
+                          <option value="Financial Services">Financial Services</option>
+                          <option value="FMCG">FMCG</option>
+                          <option value="Gems and Jewellery">Gems and Jewellery</option>
+                          <option value="HealthCare">HealthCare</option>
+                          <option value="Infrastructure">Infrastructure</option>
+                          <option value="IT & ITES">IT & ITES</option>
+                          <option value="Manufacturing">Manufacturing</option>
+                          <option value="Media and Entertainment">Media and Entertainment</option>
+                          <option value="Metals and Mining">Metals and Mining</option>
+                          <option value="Oil and Gas">Oil and Gas</option>
+                          <option value="Pharmaceticals">Pharmaceticals</option>Pharmaceticals
+                          <option value="Ports">Ports</option>
+                          <option value="Power">Power</option>
+                          <option value="Railways">Railways</option>
+                          <option value="Real Estate">Real Estate</option>
+                          <option value="Renewable Energy">Renewable Energy</option>
+                          <option value="Retail">Retail</option>
+                          <option value="Roads">Roads</option>
+                          <option value="Science and Technology">Science and Technology</option>
+                          <option value="Services">Services</option>
+                          <option value="Telecommunications">Telecommunications</option>
+                          <option value="Textiles">Textiles</option>
+                          <option value="Tourism and Hospitality">Tourism and Hospitality</option>
+    
+    
+                        </select>
+                        <label for="">Add the industries you have experience in</label>
                         <button class="btn" style="margin-left: 2rem;" (click)="addToIndustries($event)">Add</button>
                       </div>
                       <div class="col s12" *ngIf="industries.length>0" style="padding-bottom:1rem">
@@ -486,14 +525,15 @@
                   <div class="row">
                     <div class="col s4 offset-s4">
                       <button class="btn" style="width: 100%;"
-                        [disabled]="partnerForm.status!='VALID' || matchPasswordPartner == false" (click)="register()">
+                        [disabled]="partnerForm.status!='VALID' || matchPasswordPartner == false || industries.length ==0" (click)="register()">
                         Register</button>
                     </div>
                   </div>
                 </form>
               </div>
-              <div class="col s4" style="padding-top: 3rem;">
-                <h6>Welcome to Zilopi family </h6>
+              <div class="col s5" style="padding-top: 3rem;">
+                <h6 style="font-size: 23px;
+                font-weight: 400;">Welcome to Zilopi family </h6>
                 <ul>
                   <li>Put your knowledge/data to use to earn extra income. Upload any business data related to your
                     industry. </li>

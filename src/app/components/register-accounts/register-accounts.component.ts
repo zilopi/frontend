@@ -116,7 +116,7 @@ export class RegisterComponent implements OnInit{
 
     addToIndustries(elem:ElementRef){
       const value =   this.partnerForm.get('industry').value;
-      this.partnerForm.get('industry').patchValue(' ');
+      
       this.industries.push(value);
     
       }
